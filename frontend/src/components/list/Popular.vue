@@ -6,9 +6,19 @@
           <div class="d-flex align-items-center justify-content-between">
             <h4 class="main-title">인기별</h4>
           </div>
-          <div class="upcoming-contens">
+          <div class="upcoming-contens ma-5">
             <VueSlickCarousel v-bind="settings">
-              <img v-for="item in items" :src="item.url" :key="item.url"/>
+              <img
+                v-for="(item, index) in items"
+                :src="item.url"
+                :key="index"
+                @click="showModal(index)"
+              />
+              <b-modal v-model="modalShow" centered>
+                <p class="my-4">{{ selected }}</p>
+                <b-button @click="goWrite">받아쓰기</b-button>
+                <b-button @click="goTalk">말하기</b-button>
+              </b-modal>
             </VueSlickCarousel>
           </div>
         </b-col>
@@ -49,20 +59,38 @@ export default {
         },
       ],
       settings: {
-        dots: true,
-        focusOnSelect: true,
+        arrows: true,
         infinite: true,
-        speed: 500,
+        // focusOnSelect: true,
+        speed: 2000,
         slidesToShow: 3,
         slidesToScroll: 3,
-        touchThreshold: 5,
       },
+      selected: '',
+      modalShow: false,
     };
   },
   methods: {
-    modal(val) {
-      console.log(val);
+    showModal(index) {
+      this.selected = index;
+      this.modalShow = true;
+    },
+    goWrite() {
+      this.$router.push({ name: 'Write', params: { index: String(this.selected) } });
+    },
+    goTalk() {
+      this.$router.push({ name: 'Talk', params: { index: String(this.selected) } });
     },
   },
 };
 </script>
+<style>
+.slick-prev:before {
+  color: red !important;
+  background-color: #eee;
+}
+.slick-next:before {
+  color: red !important;
+  background-color: #eee;
+}
+</style>
