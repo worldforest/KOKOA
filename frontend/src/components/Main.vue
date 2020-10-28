@@ -13,6 +13,10 @@ export default {
   components: {
     Popular,
   },
-  data() {},
+  data() {
+    return {
+
+    };
+  },
 };
 </script>
