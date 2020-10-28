@@ -1,4 +1,4 @@
-package controller;
+package com.example.controller;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,7 +14,7 @@ import io.swagger.annotations.ApiResponses;
 	      @ApiResponse(code = 500, message = "Failure"),
 	})
 @CrossOrigin(origins = { "*" })
-@RestController()
+@RestController
 @RequestMapping("/sst")
 public class SSTController {
 
