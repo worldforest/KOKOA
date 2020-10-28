@@ -1,23 +1,22 @@
 <template>
-<div>받아쓰기 페이지</div>
+  <div>
+    <h1>받아쓰기 페이지</h1>
+    <h2>name: {{ $route.params.index }}</h2>
+  </div>
 </template>
 <script>
 export default {
   name: 'Write',
   props: {
     index: {
-      type: Number,
-      default: 0,
+      type: String,
+      default: '',
     },
   },
   mounted() {},
   data() {
-    return {
-
-    };
+    return {};
   },
 };
 </script>
-<style>
-
-</style>
+<style></style>
