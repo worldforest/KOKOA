@@ -1,23 +1,22 @@
 <template>
-<div>말하기 페이지</div>
+  <div>
+    <h1>말하기 페이지</h1>
+    <h2>name: {{ $route.params.index }}</h2>
+  </div>
 </template>
 <script>
 export default {
   name: 'Talk',
   props: {
     index: {
-      type: Number,
-      default: 0,
+      type: String,
+      default: '',
     },
   },
   mounted() {},
   data() {
-    return {
-
-    };
+    return {};
   },
 };
 </script>
-<style>
-
-</style>
+<style></style>
