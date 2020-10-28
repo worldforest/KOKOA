@@ -76,10 +76,10 @@ export default {
       this.modalShow = true;
     },
     goWrite() {
-      this.$router.push({ name: 'write', params: { name: this.selected } });
+      this.$router.push({ name: 'write', params: { index: this.selected } });
     },
     goTalk() {
-      this.$router.push({ name: 'talk', params: { name: this.selected } });
+      this.$router.push({ name: 'talk', params: { index: this.selected } });
     },
   },
 };

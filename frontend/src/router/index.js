@@ -1,7 +1,9 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import Home from '../views/Home.vue';
-import Login from '../components/user/Login.vue';
+import Write from '@/components/training/Write.vue';
+import Talk from '@/components/training/Talk.vue';
+import Home from '@/views/Home.vue';
+import Login from '@/components/user/Login.vue';
 
 Vue.use(VueRouter);
 
@@ -12,9 +14,21 @@ const routes = [
     component: Home,
   },
   {
-    path: '/',
+    path: '/Login',
     name: 'Login',
     component: Login,
+  },
+  {
+    path: '/write',
+    component: Write,
+    name: 'Write',
+    props: true,
+  },
+  {
+    path: '/talk',
+    component: Talk,
+    name: 'Talk',
+    props: true,
   },
 ];
 

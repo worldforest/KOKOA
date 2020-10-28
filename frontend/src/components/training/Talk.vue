@@ -1,9 +1,9 @@
 <template>
-<div>받아쓰기 페이지</div>
+<div>말하기 페이지</div>
 </template>
 <script>
 export default {
-  name: 'Write',
+  name: 'Talk',
   props: {
     index: {
       type: Number,
