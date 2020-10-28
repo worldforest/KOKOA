@@ -47,9 +47,7 @@ export default {
         {
           url: 'http://img.youtube.com/vi/WotZgTcbHRA/0.jpg',
         },
-        {
-          url: 'http://img.youtube.com/vi/WotZgTcbHRA/0.jpg',
-        },
+
       ],
       settings: {
         dots: true,
