@@ -30,7 +30,7 @@ public class SwaggerConfig {
                     .version("1.0").build())
               .select()
                 .apis(RequestHandlerSelectors.
-                        basePackage("controller"))
+                        basePackage("com.example.controller"))
                 .paths(PathSelectors.any()).build();
     }
 }
