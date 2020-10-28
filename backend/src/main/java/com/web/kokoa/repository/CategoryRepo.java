@@ -1,4 +1,13 @@
 package com.web.kokoa.repository;
 
-public class CategoryRepo {
+import com.web.kokoa.model.category;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface CategoryRepo extends JpaRepository<category,String>{
+
+    @Query(value = "select id from category where groupname = :groupname", nativeQuery = true)
+    int findIdByGroupname(String groupname);
 }
