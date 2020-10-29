@@ -5,8 +5,8 @@
         :video-id="url"
         ref="youtube"
         :player-vars="playerVars"
-        @ended="onEnded"
         flex
+        @ended="onEnded"
       ></youtube>
     </div>
     <div class="d-flex justify-space-around my-5">
@@ -21,39 +21,34 @@
       <div></div>
       <div></div>
     </div>
-      <!-- <youtube
-        :video-id="url"
-        ref="youtube"
-        :player-vars="playerVars"
-        @ended="onEnded"
-        flex
-      ></youtube> -->
-
     <div>
-      <draggable
-        v-model="rows"
-        class="row wrap fill-height align-center sortable-list"
-        style="background: grey;"
-      >
-        <v-flex
-          v-for="row in rows"
-          :key="row.index"
-          class="sortable"
-          xs12
-          my-2
-          style="background: red"
-        >
+      <div class="row d-flex justify-center ma-5">
+        <div class="col-8">
+          <h3 class="d-flex justify-center">Answer</h3>
           <draggable
-            :list="row.items"
-            :group="{ name: 'row' }"
-            class="row wrap justify-space-around"
+            class="row wrap fill-height align-center sortable-list"
+            :list="checklist"
+            group="people"
           >
-            <v-flex v-for="item in row.items" :key="item.title" xs4 pa-3 class="row-v">
-              <v-card style="height: 100px;">{{ item.title }}</v-card>
-            </v-flex>
+            <div class="list-group-item" v-for="(element, index) in checklist" :key="element.name">
+              {{ element.name }} {{ index }}
+            </div>
           </draggable>
-        </v-flex>
-      </draggable>
+        </div>
+
+        <div class="col-8">
+          <h3 class="d-flex justify-center">Choice</h3>
+          <draggable
+            class="row wrap fill-height align-center sortable-list"
+            :list="choicelist"
+            group="people"
+          >
+            <div class="list-group-item" v-for="(element, index) in choicelist" :key="element.name">
+              {{ element.name }} {{ index }}
+            </div>
+          </draggable>
+        </div>
+      </div>
     </div>
     <b-button v-for="(item, index) in video" :key="index" @click="play(index)">{{
       item.eng
@@ -74,16 +69,25 @@ export default {
       default: '',
     },
   },
-  created() {},
+  created() {
+    this.answer = [];
+    this.choicelist = [];
+    const list = this.video[0].kor.split(' ');
+    for (let i = 0; i < list.length; i += 1) {
+      this.answer.push({ name: list[i], id: i });
+      this.choicelist.push({ name: list[i], id: i });
+    }
+    this.choicelist = this.shuffle(this.choicelist);
+    this.checklist = [];
+  },
   mounted() {},
   data() {
     return {
       url: 'mLx7D98zP_A',
-      // origin: '?enablejsapi=1&origin=*',
       replay: 0,
       video: [
         {
-          starttime: '00:00:00,000',
+          starttime: '00:00:00,001',
           endtime: '00:00:01,831',
           eng: '[National treasure zombie beast 2PM]',
           kor: '[국보급 짐승 좀비 2PM]',
@@ -111,28 +115,22 @@ export default {
         showinfo: 0,
         playlist: '',
       },
-      enabled: true,
-      rows: [
-        {
-          index: 1,
-          items: [
-            {
-              title: 'item 1',
-            },
-          ],
-        },
-        {
-          index: 2,
-          items: [
-            {
-              title: 'item 2',
-            },
-            {
-              title: 'item 3',
-            },
-          ],
-        },
+      checklist: [
+        { name: 'John', id: 1 },
+        { name: 'Joao', id: 2 },
+        { name: 'Jean', id: 3 },
+        { name: 'Gerard', id: 4 },
       ],
+      choicelist: [
+        { name: 'Juan', id: 5 },
+        { name: 'Edgard', id: 6 },
+        { name: 'Johnson', id: 7 },
+      ],
+      answer: [
+        { name: 'Jean', id: 3 },
+        { name: 'Gerard', id: 4 },
+      ],
+      fail: false,
     };
   },
   computed: {
@@ -140,20 +138,46 @@ export default {
       return this.$refs.youtube.player;
     },
   },
+  watch: {
+    checklist() {
+      console.log(this.checklist);
+      console.log(this.choicelist);
+      console.log(this.answer);
+      let tmp = true;
+      if (this.checklist.length === 0 || this.checklist.length !== this.answer.length) {
+        tmp = false;
+      }
+      for (let i = 0; i < this.checklist.length; i += 1) {
+        if (this.answer[i].id !== this.checklist[i].id) {
+          tmp = false;
+          break;
+        }
+      }
+      console.log(tmp);
+      this.fail = tmp;
+    },
+  },
   methods: {
-    async play() {
+    play() {
+      console.log(this.replay);
       const start = this.timer(this.video[this.replay].starttime);
       const end = this.timer(this.video[this.replay].endtime);
-      await this.player.loadVideoById({
+      console.log(start, end);
+      this.player.loadVideoById({
         videoId: this.url,
         startSeconds: start,
         endSeconds: end,
         suggestedQuality: 'default',
       });
-      this.replay += 1;
+      console.log(this.fail);
+      if (this.fail === true) {
+        this.replay += 1;
+        this.fail = false;
+        this.choicelist = [];
+      }
     },
-    async playVideo() {
-      await this.play();
+    playVideo() {
+      this.play();
     },
     async stopVideo() {
       await this.player.pauseVideo();
@@ -166,7 +190,24 @@ export default {
       return ms;
     },
     onEnded() {
-      this.play(this.replay);
+      this.play();
+    },
+    shuffle(array) {
+      let currentIndex = array.length;
+      let temporaryValue;
+      let randomIndex;
+      const tmp = array;
+      // While there remain elements to shuffle...
+      while (currentIndex !== 0) {
+      //   // Pick a remaining element...
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex -= 1;
+        //   // And swap it with the current element.
+        temporaryValue = tmp[currentIndex];
+        tmp[currentIndex] = tmp[randomIndex];
+        tmp[randomIndex] = temporaryValue;
+      }
+      return tmp;
     },
   },
 };
