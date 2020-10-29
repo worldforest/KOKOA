@@ -4,6 +4,10 @@
     <h2>name: {{ $route.params.index }}</h2>
     <youtube :video-id="url" ref="youtube" :player-vars="playerVars" @ended="onEnded"></youtube>
     <button @click="playVideo">play</button>
+    <button @click="stopVideo">stop</button>
+    <div>
+      {{video[replay].kor}}
+    </div>
     <div>
       <b-button v-for="(item, index) in video" :key="index" @click="play(index)">{{
         item.eng
@@ -25,8 +29,8 @@ export default {
   data() {
     return {
       url: 'mLx7D98zP_A',
-      origin: '?enablejsapi=1&origin=*',
-      replay: '',
+      // origin: '?enablejsapi=1&origin=*',
+      replay: 0,
       video: [
         {
           starttime: '00:00:00,000',
@@ -48,10 +52,17 @@ export default {
         },
       ],
       playerVars: {
+        modestbranding: 1,
         autoplay: 1,
         controls: 0,
         loop: 1,
+        fs: 0,
+        rel: 1,
+        showinfo: 0,
+        playlist: '',
       },
+      answer: '',
+      choice: '',
     };
   },
   computed: {
@@ -60,19 +71,22 @@ export default {
     },
   },
   methods: {
-    async play(index) {
-      const start = this.timer(this.video[index].starttime);
-      const end = this.timer(this.video[index].endtime);
-      this.replay = index;
+    async play() {
+      const start = this.timer(this.video[this.replay].starttime);
+      const end = this.timer(this.video[this.replay].endtime);
       await this.player.loadVideoById({
         videoId: this.url,
         startSeconds: start,
         endSeconds: end,
         suggestedQuality: 'default',
       });
+      this.replay += 1;
     },
     async playVideo() {
-      await this.player.playVideo();
+      await this.play();
+    },
+    async stopVideo() {
+      await this.player.pauseVideo();
     },
     timer(input) {
       const hms = input;
