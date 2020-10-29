@@ -1,23 +1,73 @@
 <template>
   <div>
-    <h1>받아쓰기 페이지</h1>
-    <h2>name: {{ $route.params.index }}</h2>
-    <youtube :video-id="url" ref="youtube" :player-vars="playerVars" @ended="onEnded"></youtube>
-    <button @click="playVideo">play</button>
-    <button @click="stopVideo">stop</button>
-    <div>
-      {{video[replay].kor}}
+    <div class="d-flex justify-center mt-3">
+      <youtube
+        :video-id="url"
+        ref="youtube"
+        :player-vars="playerVars"
+        @ended="onEnded"
+        flex
+      ></youtube>
     </div>
-    <div>
-      <b-button v-for="(item, index) in video" :key="index" @click="play(index)">{{
-        item.eng
-      }}</b-button>
+    <div class="d-flex justify-space-around my-5">
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <b-button class="mx-5" variant="success" @click="playVideo">play</b-button>
+      <b-button variant="danger" @click="stopVideo">stop</b-button>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
     </div>
+      <!-- <youtube
+        :video-id="url"
+        ref="youtube"
+        :player-vars="playerVars"
+        @ended="onEnded"
+        flex
+      ></youtube> -->
+
+    <div>
+      <draggable
+        v-model="rows"
+        class="row wrap fill-height align-center sortable-list"
+        style="background: grey;"
+      >
+        <v-flex
+          v-for="row in rows"
+          :key="row.index"
+          class="sortable"
+          xs12
+          my-2
+          style="background: red"
+        >
+          <draggable
+            :list="row.items"
+            :group="{ name: 'row' }"
+            class="row wrap justify-space-around"
+          >
+            <v-flex v-for="item in row.items" :key="item.title" xs4 pa-3 class="row-v">
+              <v-card style="height: 100px;">{{ item.title }}</v-card>
+            </v-flex>
+          </draggable>
+        </v-flex>
+      </draggable>
+    </div>
+    <b-button v-for="(item, index) in video" :key="index" @click="play(index)">{{
+      item.eng
+    }}</b-button>
   </div>
 </template>
 <script>
+import draggable from 'vuedraggable';
+
 export default {
   name: 'Write',
+  components: {
+    draggable,
+  },
   props: {
     index: {
       type: String,
@@ -61,8 +111,28 @@ export default {
         showinfo: 0,
         playlist: '',
       },
-      answer: '',
-      choice: '',
+      enabled: true,
+      rows: [
+        {
+          index: 1,
+          items: [
+            {
+              title: 'item 1',
+            },
+          ],
+        },
+        {
+          index: 2,
+          items: [
+            {
+              title: 'item 2',
+            },
+            {
+              title: 'item 3',
+            },
+          ],
+        },
+      ],
     };
   },
   computed: {
@@ -101,4 +171,10 @@ export default {
   },
 };
 </script>
-<style></style>
+<style>
+iframe {
+  width: 60%;
+  height: 50vh;
+  /* max-width: 1000px; Also helpful. Optional. */
+}
+</style>
