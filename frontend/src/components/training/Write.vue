@@ -6,16 +6,14 @@
         ref="youtube"
         :player-vars="playerVars"
         flex
-        @ended="onEnded"
       ></youtube>
     </div>
     <div class="d-flex justify-space-around my-5">
       <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
-      <b-button class="mx-5" variant="success" @click="playVideo">play</b-button>
-      <b-button variant="danger" @click="stopVideo">stop</b-button>
+      <b-button class="mx-5"  @click="previous">previous</b-button>
+      <b-button class="mx-5" variant="success" @click="playVideo">replay</b-button>
+      <b-button class="mx-5"  @click="next">next</b-button>
+
       <div></div>
       <div></div>
       <div></div>
@@ -84,7 +82,7 @@ export default {
   data() {
     return {
       url: 'mLx7D98zP_A',
-      replay: 0,
+      current: 0,
       video: [
         {
           starttime: '00:00:00,001',
@@ -140,9 +138,6 @@ export default {
   },
   watch: {
     checklist() {
-      console.log(this.checklist);
-      console.log(this.choicelist);
-      console.log(this.answer);
       let tmp = true;
       if (this.checklist.length === 0 || this.checklist.length !== this.answer.length) {
         tmp = false;
@@ -153,34 +148,39 @@ export default {
           break;
         }
       }
-      console.log(tmp);
       this.fail = tmp;
+      if (this.fail === true) {
+        this.current += 1;
+      }
+      console.log(tmp);
+    },
+    current() {
+      this.fail = false;
+      this.answer = [];
+      this.choicelist = [];
+      const list = this.video[this.current].kor.split(' ');
+      for (let i = 0; i < list.length; i += 1) {
+        this.answer.push({ name: list[i], id: i });
+        this.choicelist.push({ name: list[i], id: i });
+      }
+      this.choicelist = this.shuffle(this.choicelist);
+      this.checklist = [];
+      this.play();
     },
   },
   methods: {
     play() {
-      console.log(this.replay);
-      const start = this.timer(this.video[this.replay].starttime);
-      const end = this.timer(this.video[this.replay].endtime);
-      console.log(start, end);
+      const start = this.timer(this.video[this.current].starttime);
+      const end = this.timer(this.video[this.current].endtime);
       this.player.loadVideoById({
         videoId: this.url,
         startSeconds: start,
         endSeconds: end,
         suggestedQuality: 'default',
       });
-      console.log(this.fail);
-      if (this.fail === true) {
-        this.replay += 1;
-        this.fail = false;
-        this.choicelist = [];
-      }
     },
     playVideo() {
       this.play();
-    },
-    async stopVideo() {
-      await this.player.pauseVideo();
     },
     timer(input) {
       const hms = input;
@@ -189,25 +189,25 @@ export default {
       const ms = Number(a[0] * 60 * 60) + Number(a[1] * 60) + Number(s[0]) + Number(s[1] / 1000);
       return ms;
     },
-    onEnded() {
-      this.play();
-    },
     shuffle(array) {
       let currentIndex = array.length;
       let temporaryValue;
       let randomIndex;
       const tmp = array;
-      // While there remain elements to shuffle...
       while (currentIndex !== 0) {
-      //   // Pick a remaining element...
         randomIndex = Math.floor(Math.random() * currentIndex);
         currentIndex -= 1;
-        //   // And swap it with the current element.
         temporaryValue = tmp[currentIndex];
         tmp[currentIndex] = tmp[randomIndex];
         tmp[randomIndex] = temporaryValue;
       }
       return tmp;
+    },
+    previous() {
+      this.current -= 1;
+    },
+    next() {
+      this.current += 1;
     },
   },
 };
