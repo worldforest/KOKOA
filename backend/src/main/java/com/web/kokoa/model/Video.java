@@ -1,4 +1,4 @@
-package com.web.kokoa.model;
-
-public class video {
-}
+//package com.web.kokoa.model;
+//
+//public class video {
+//}

@@ -1,4 +1,4 @@
-package com.web.kokoa.model;
-
-public class user {
-}
+//package com.web.kokoa.model;
+//
+//public class user {
+//}
