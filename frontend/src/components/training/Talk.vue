@@ -65,9 +65,10 @@
       >
         <div>
           //음성녹음 컴포넌트//
+          <Record @child-event="receiveText"/>
         </div>
         <h2>
-          감사합니다 여러분
+          테스트 : {{speechText}}
         </h2>
         <div class="d-flex justify-space-around">
           <v-btn
@@ -95,8 +96,13 @@
   </div>
 </template>
 <script>
+import Record from './Record.vue';
+
 export default {
   name: 'Talk',
+  components: {
+    Record,
+  },
   props: {
     index: {
       type: String,
@@ -111,6 +117,7 @@ export default {
   },
   data() {
     return {
+      speechText: '',
       url: 'mLx7D98zP_A',
       replay: 0,
       video: [
@@ -178,6 +185,9 @@ export default {
     },
     like() {
       // like sentences list에 추가
+    },
+    receiveText(text){
+      this.speechText = text;
     },
   },
 };
