@@ -1,26 +1,21 @@
 <template>
-  <div>
-    <div class="d-flex justify-center mt-3">
-      <youtube
-        :video-id="url"
-        ref="youtube"
-        :player-vars="playerVars"
-        flex
-      ></youtube>
-    </div>
-    <div class="d-flex justify-space-around my-5">
-      <div></div>
-      <b-button class="mx-5"  @click="previous">Previous</b-button>
-      <b-button class="mx-5" variant="success" @click="playVideo">PLAY</b-button>
-      <b-button class="mx-5"  @click="next">Next</b-button>
-      <div></div>
-    </div>
-    <div>
-      <div class="row d-flex justify-center ma-5">
-        <div class="col-8">
+  <v-row>
+    <v-col class="youtubeContainer" cols="12" lg="8">
+      <div class="d-flex justify-center mt-3">
+        <youtube :video-id="url" ref="youtube" :player-vars="playerVars" flex></youtube>
+      </div>
+      <div class="d-flex justify-space-around my-5">
+        <b-button  @click="previous">Previous</b-button>
+        <b-button variant="success" @click="playVideo">PLAY</b-button>
+        <b-button  @click="next">Next</b-button>
+      </div>
+    </v-col>
+    <v-col class="testContainer" cols="12" lg="4">
+      <v-row class="d-flex justify-center ma-5">
+        <v-col cols="12">
           <h3 class="d-flex justify-center">Answer</h3>
           <draggable
-            class="row wrap fill-height align-center sortable-list"
+            class="row wrap fill-height align-center justify-center sortable-list"
             :list="checklist"
             group="people"
           >
@@ -28,12 +23,12 @@
               {{ element.name }} {{ index }}
             </div>
           </draggable>
-        </div>
+        </v-col>
 
-        <div class="col-8">
+        <v-col cols="12">
           <h3 class="d-flex justify-center">Choice</h3>
           <draggable
-            class="row wrap fill-height align-center sortable-list"
+            class="row wrap fill-height align-center justify-center sortable-list"
             :list="choicelist"
             group="people"
           >
@@ -41,10 +36,10 @@
               {{ element.name }} {{ index }}
             </div>
           </draggable>
-        </div>
-      </div>
-    </div>
-  </div>
+        </v-col>
+      </v-row>
+    </v-col>
+  </v-row>
 </template>
 <script>
 import draggable from 'vuedraggable';
@@ -120,13 +115,11 @@ export default {
       correctAnswer: {
         icon: 'success',
         title: 'Good Job!',
-        text: 'Let\'s go next sentence',
+        text: "Let's go next sentence",
         timer: 1000,
         willOpen: () => {
           this.$swal.showLoading();
-          this.timerInterval = setInterval(() => {
-
-          }, 100);
+          this.timerInterval = setInterval(() => {}, 100);
         },
       },
     };
@@ -223,7 +216,7 @@ export default {
 </script>
 <style>
 iframe {
-  width: 60%;
-  height: 50vh;
+  width: 90%;
+  height: 60vh;
 }
 </style>
