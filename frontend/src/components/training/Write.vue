@@ -10,13 +10,9 @@
     </div>
     <div class="d-flex justify-space-around my-5">
       <div></div>
-      <b-button class="mx-5"  @click="previous">previous</b-button>
-      <b-button class="mx-5" variant="success" @click="playVideo">replay</b-button>
-      <b-button class="mx-5"  @click="next">next</b-button>
-
-      <div></div>
-      <div></div>
-      <div></div>
+      <b-button class="mx-5"  @click="previous">Previous</b-button>
+      <b-button class="mx-5" variant="success" @click="playVideo">PLAY</b-button>
+      <b-button class="mx-5"  @click="next">Next</b-button>
       <div></div>
     </div>
     <div>
