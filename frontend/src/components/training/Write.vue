@@ -44,9 +44,6 @@
         </div>
       </div>
     </div>
-    <b-button v-for="(item, index) in video" :key="index" @click="play(index)">{{
-      item.eng
-    }}</b-button>
   </div>
 </template>
 <script>
