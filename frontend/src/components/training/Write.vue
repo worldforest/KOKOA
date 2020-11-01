@@ -110,6 +110,18 @@ export default {
       choicelist: [],
       answer: [],
       fail: false,
+      wrongAnswer: {
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Something is Wrong!!',
+        timer: 2000,
+      },
+      correctAnswer: {
+        icon: 'success',
+        title: 'Good Job!',
+        text: 'Your writing skill is good!!',
+        timer: 2000,
+      },
     };
   },
   computed: {
@@ -124,15 +136,17 @@ export default {
         tmp = false;
         return;
       }
+      const n = this;
       for (let i = 0; i < this.checklist.length; i += 1) {
         if (this.answer[i].id !== this.checklist[i].id) {
           tmp = false;
-          this.$swal('틀렸습니다.');
+          this.$swal.fire(n.wrongAnswer);
           break;
         }
       }
       this.fail = tmp;
       if (this.fail === true) {
+        this.$swal.fire(n.correctAnswer);
         this.current += 1;
       }
     },
