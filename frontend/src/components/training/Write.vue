@@ -122,10 +122,12 @@ export default {
       let tmp = true;
       if (this.checklist.length === 0 || this.checklist.length !== this.answer.length) {
         tmp = false;
+        return;
       }
       for (let i = 0; i < this.checklist.length; i += 1) {
         if (this.answer[i].id !== this.checklist[i].id) {
           tmp = false;
+          this.$swal('틀렸습니다.');
           break;
         }
       }
