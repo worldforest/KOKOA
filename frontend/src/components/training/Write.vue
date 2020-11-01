@@ -116,11 +116,18 @@ export default {
         text: 'Something is Wrong!!',
         timer: 2000,
       },
+      timerInterval: '',
       correctAnswer: {
         icon: 'success',
         title: 'Good Job!',
-        text: 'Your writing skill is good!!',
-        timer: 2000,
+        text: 'Let\'s go next sentence',
+        timer: 1000,
+        willOpen: () => {
+          this.$swal.showLoading();
+          this.timerInterval = setInterval(() => {
+
+          }, 100);
+        },
       },
     };
   },
@@ -146,8 +153,10 @@ export default {
       }
       this.fail = tmp;
       if (this.fail === true) {
-        this.$swal.fire(n.correctAnswer);
-        this.current += 1;
+        this.$swal.fire(n.correctAnswer).then(() => {
+          this.current += 1;
+        });
+        // this.current += 1;
       }
     },
     current() {
