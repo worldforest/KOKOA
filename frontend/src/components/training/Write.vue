@@ -113,21 +113,9 @@ export default {
         showinfo: 0,
         playlist: '',
       },
-      checklist: [
-        { name: 'John', id: 1 },
-        { name: 'Joao', id: 2 },
-        { name: 'Jean', id: 3 },
-        { name: 'Gerard', id: 4 },
-      ],
-      choicelist: [
-        { name: 'Juan', id: 5 },
-        { name: 'Edgard', id: 6 },
-        { name: 'Johnson', id: 7 },
-      ],
-      answer: [
-        { name: 'Jean', id: 3 },
-        { name: 'Gerard', id: 4 },
-      ],
+      checklist: [],
+      choicelist: [],
+      answer: [],
       fail: false,
     };
   },
