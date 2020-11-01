@@ -191,10 +191,14 @@ export default {
       return tmp;
     },
     previous() {
-      this.current -= 1;
+      if (this.current > 0) {
+        this.current -= 1;
+      }
     },
     next() {
-      this.current += 1;
+      if (this.current < this.video.length - 1) {
+        this.current += 1;
+      }
     },
   },
 };
