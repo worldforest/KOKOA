@@ -1,6 +1,6 @@
 <template>
   <v-app id="inspire">
-    <v-navigation-drawer v-model="drawer" app>
+    <v-navigation-drawer stateless v-model="drawer" app>
       <v-sheet color="grey lighten-4" class="pa-4">
         <v-btn v-if="!isLogin"  @click="getAuth()">
            <img src="@/assets/google.png" alt="구글로그인버튼" style="width:30px" />

@@ -1,30 +1,21 @@
 <template>
-  <div>
-    <div class="d-flex justify-center mt-3">
-      <youtube
-        :video-id="url"
-        ref="youtube"
-        :player-vars="playerVars"
-        flex
-      ></youtube>
-    </div>
-    <div class="d-flex justify-space-around my-5">
-      <div></div>
-      <b-button class="mx-5"  @click="previous">previous</b-button>
-      <b-button class="mx-5" variant="success" @click="playVideo">replay</b-button>
-      <b-button class="mx-5"  @click="next">next</b-button>
-
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
-    </div>
-    <div>
-      <div class="row d-flex justify-center ma-5">
-        <div class="col-8">
+  <v-row>
+    <v-col class="youtubeContainer" cols="12" lg="8">
+      <div class="d-flex justify-center mt-3">
+        <youtube :video-id="url" ref="youtube" :player-vars="playerVars" flex></youtube>
+      </div>
+      <div class="d-flex justify-space-around my-5">
+        <b-button  @click="previous">Previous</b-button>
+        <b-button variant="success" @click="playVideo">PLAY</b-button>
+        <b-button  @click="next">Next</b-button>
+      </div>
+    </v-col>
+    <v-col class="testContainer" cols="12" lg="4">
+      <v-row class="d-flex justify-center ma-5">
+        <v-col cols="12">
           <h3 class="d-flex justify-center">Answer</h3>
           <draggable
-            class="row wrap fill-height align-center sortable-list"
+            class="row wrap fill-height align-center justify-center sortable-list"
             :list="checklist"
             group="people"
           >
@@ -32,12 +23,12 @@
               {{ element.name }} {{ index }}
             </div>
           </draggable>
-        </div>
+        </v-col>
 
-        <div class="col-8">
+        <v-col cols="12">
           <h3 class="d-flex justify-center">Choice</h3>
           <draggable
-            class="row wrap fill-height align-center sortable-list"
+            class="row wrap fill-height align-center justify-center sortable-list"
             :list="choicelist"
             group="people"
           >
@@ -45,13 +36,10 @@
               {{ element.name }} {{ index }}
             </div>
           </draggable>
-        </div>
-      </div>
-    </div>
-    <b-button v-for="(item, index) in video" :key="index" @click="play(index)">{{
-      item.eng
-    }}</b-button>
-  </div>
+        </v-col>
+      </v-row>
+    </v-col>
+  </v-row>
 </template>
 <script>
 import draggable from 'vuedraggable';
@@ -113,22 +101,27 @@ export default {
         showinfo: 0,
         playlist: '',
       },
-      checklist: [
-        { name: 'John', id: 1 },
-        { name: 'Joao', id: 2 },
-        { name: 'Jean', id: 3 },
-        { name: 'Gerard', id: 4 },
-      ],
-      choicelist: [
-        { name: 'Juan', id: 5 },
-        { name: 'Edgard', id: 6 },
-        { name: 'Johnson', id: 7 },
-      ],
-      answer: [
-        { name: 'Jean', id: 3 },
-        { name: 'Gerard', id: 4 },
-      ],
+      checklist: [],
+      choicelist: [],
+      answer: [],
       fail: false,
+      wrongAnswer: {
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Something is Wrong!!',
+        timer: 2000,
+      },
+      timerInterval: '',
+      correctAnswer: {
+        icon: 'success',
+        title: 'Good Job!',
+        text: "Let's go next sentence",
+        timer: 1000,
+        willOpen: () => {
+          this.$swal.showLoading();
+          this.timerInterval = setInterval(() => {}, 100);
+        },
+      },
     };
   },
   computed: {
@@ -141,18 +134,23 @@ export default {
       let tmp = true;
       if (this.checklist.length === 0 || this.checklist.length !== this.answer.length) {
         tmp = false;
+        return;
       }
+      const n = this;
       for (let i = 0; i < this.checklist.length; i += 1) {
         if (this.answer[i].id !== this.checklist[i].id) {
           tmp = false;
+          this.$swal.fire(n.wrongAnswer);
           break;
         }
       }
       this.fail = tmp;
       if (this.fail === true) {
-        this.current += 1;
+        this.$swal.fire(n.correctAnswer).then(() => {
+          this.current += 1;
+        });
+        // this.current += 1;
       }
-      console.log(tmp);
     },
     current() {
       this.fail = false;
@@ -204,18 +202,21 @@ export default {
       return tmp;
     },
     previous() {
-      this.current -= 1;
+      if (this.current > 0) {
+        this.current -= 1;
+      }
     },
     next() {
-      this.current += 1;
+      if (this.current < this.video.length - 1) {
+        this.current += 1;
+      }
     },
   },
 };
 </script>
 <style>
 iframe {
-  width: 60%;
-  height: 50vh;
-  /* max-width: 1000px; Also helpful. Optional. */
+  width: 90%;
+  height: 60vh;
 }
 </style>
