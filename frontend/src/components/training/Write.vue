@@ -140,7 +140,6 @@ export default {
       if (this.fail === true) {
         this.current += 1;
       }
-      console.log(tmp);
     },
     current() {
       this.fail = false;
@@ -204,6 +203,5 @@ export default {
 iframe {
   width: 60%;
   height: 50vh;
-  /* max-width: 1000px; Also helpful. Optional. */
 }
 </style>
