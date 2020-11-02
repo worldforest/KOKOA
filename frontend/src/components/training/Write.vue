@@ -13,7 +13,10 @@
     <v-col class="testContainer" cols="12" lg="4">
       <v-row class="d-flex justify-center ma-5">
         <v-col cols="12">
-          <h3 class="d-flex justify-center">Answer</h3>
+          <div class="answerDiv">
+            <h3 class="d-flex justify-center">Answer</h3>
+            <b-button class="ml-10" @click="reset">Reset</b-button>
+          </div>
           <draggable
             class="row wrap fill-height align-center justify-center sortable-list"
             :list="checklist"
@@ -93,7 +96,7 @@ export default {
       ],
       playerVars: {
         modestbranding: 1,
-        autoplay: 1,
+        // autoplay: 1,
         controls: 0,
         loop: 1,
         fs: 0,
@@ -211,6 +214,18 @@ export default {
         this.current += 1;
       }
     },
+    reset() {
+      this.fail = false;
+      this.answer = [];
+      this.choicelist = [];
+      const list = this.video[this.current].kor.split(' ');
+      for (let i = 0; i < list.length; i += 1) {
+        this.answer.push({ name: list[i], id: i });
+        this.choicelist.push({ name: list[i], id: i });
+      }
+      this.choicelist = this.shuffle(this.choicelist);
+      this.checklist = [];
+    },
   },
 };
 </script>
@@ -218,5 +233,17 @@ export default {
 iframe {
   width: 90%;
   height: 60vh;
+}
+.answerDiv{
+  display: relative;
+}
+.answerDiv h3{
+  display: block;
+  margin: auto;
+}
+.answerDiv button{
+  position:absolute;
+  top: 0;
+  right: 0;
 }
 </style>
