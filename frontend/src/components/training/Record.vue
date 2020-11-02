@@ -1,14 +1,19 @@
 <template>
-  <span>
-    <v-btn v-show="btn" @click="start" block round color="primary" dark>
-    <v-icon left>mic</v-icon> Recording</v-btn>
-    <v-btn v-show="btnStop" @click.native="stopRecording" block round color="error" dark>
-    <v-icon left>stop</v-icon> Stop</v-btn>
+  <div>
+    <span @click="clickRCBtn(audioFlag)" style="width:64px; height:64px;">
+      <vue-record-audio @result="onResult" mode="press" />
+    </span>
+    <audio :src="audioSrc" controls="controls"></audio>
     <!-- <p v-for="word in transcription">{{ word }}</p> -->
     <!-- <h1>발음 : {{ finalTranscript }}</h1> -->
-  </span>
+  </div>
 </template>
 <script>
+import Vue from 'vue';
+import VueRecord from '@codekraft-studio/vue-record';
+
+Vue.use(VueRecord);
+
 window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 
 const recognition = new window.SpeechRecognition();
@@ -17,8 +22,20 @@ recognition.interimResults = true;
 
 export default {
   name: 'Record',
+  data() {
+    return {
+      btn: true,
+      btnStop: true,
+      isRecognizing: false,
+      ignoreEndProcess: false,
+      finalTranscript: '',
+      myRecord: true,
+      audioSrc: '',
+      audioFlag: false,
+    };
+  },
   mounted() {
-    let ref = this;
+    const ref = this;
     /**
     * 음성 인식 시작 처리
     */
@@ -60,7 +77,7 @@ export default {
       }
 
       for (let i = event.resultIndex; i < event.results.length; i += 1) {
-        let transcript = ''; 
+        let transcript = '';
         transcript = event.results[i][0].transcript;
 
         if (event.results[i].isFinal) {
@@ -95,16 +112,16 @@ export default {
     };
   },
   computed: {},
-  data() {
-    return {
-      btn: true,
-      btnStop: true,
-      isRecognizing: false,
-      ignoreEndProcess: false,
-      finalTranscript: '',
-    };
-  },
   methods: {
+    clickRCBtn(flag) {
+      if (!flag) {
+        this.start();
+        this.audioFlag = true;
+      } else {
+        this.stopRecording();
+        this.audioFlag = false;
+      }
+    },
     start() {
       if (this.isRecognizing) {
         recognition.stop();
@@ -116,10 +133,16 @@ export default {
       // this.finalTranscript = '';
       // final_span.innerHTML = '';
       // interim_span.innerHTML = '';
+      //
     },
     stopRecording() {
       recognition.stop();
-    }
+    },
+    onResult(data) {
+      // console.log('The blob data:', data);
+      // console.log('Downloadable audio', window.URL.createObjectURL(data));
+      this.audioSrc = window.URL.createObjectURL(data);
+    },
 
   },
 };
@@ -161,36 +184,6 @@ export default {
   }
   ul li {
     font-size: 1em;
-  }
-
-  .red {
-    background: red;
-  }
-  .blue {
-    background: blue;
-    color: #fff !important;
-  }
-  .green {
-    background: green;
-  }
-  .yellow {
-    background: yellow;
-  }
-  .orange {
-    background: orange;
-  }
-  .grey {
-    background: grey;
-  }
-  .gold {
-    background: gold;
-  }
-  .white {
-    background: white;
-  }
-  .black {
-    background: black;
-    color: #fff !important;
   }
   .visible {
     display: block !important;

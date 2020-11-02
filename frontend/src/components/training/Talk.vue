@@ -186,7 +186,7 @@ export default {
     like() {
       // like sentences list에 추가
     },
-    receiveText(text){
+    receiveText(text) {
       this.speechText = text;
     },
   },
