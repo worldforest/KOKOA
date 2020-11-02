@@ -5,9 +5,9 @@
         <youtube :video-id="url" ref="youtube" :player-vars="playerVars" flex></youtube>
       </div>
       <div class="d-flex justify-space-around my-5">
-        <b-button  @click="previous">Previous</b-button>
+        <b-button @click="previous">Previous</b-button>
         <b-button variant="success" @click="playVideo">PLAY</b-button>
-        <b-button  @click="next">Next</b-button>
+        <b-button @click="next">Next</b-button>
       </div>
     </v-col>
     <v-col class="testContainer" cols="12" lg="4">
@@ -15,15 +15,15 @@
         <v-col cols="12">
           <div class="answerDiv">
             <h3 class="d-flex justify-center">Answer</h3>
-            <b-button class="ml-10" @click="reset">Reset</b-button>
+            <b-button class="mr-10" @click="reset">Reset</b-button>
           </div>
           <draggable
             class="row wrap fill-height align-center justify-center sortable-list"
             :list="checklist"
             group="people"
           >
-            <div class="list-group-item" v-for="(element, index) in checklist" :key="element.name">
-              {{ element.name }} {{ index }}
+            <div class="list-group-item" v-for="element in checklist" :key="element.name">
+              {{ element.name }}
             </div>
           </draggable>
         </v-col>
@@ -35,8 +35,8 @@
             :list="choicelist"
             group="people"
           >
-            <div class="list-group-item" v-for="(element, index) in choicelist" :key="element.name">
-              {{ element.name }} {{ index }}
+            <div class="list-group-item" v-for="element in choicelist" :key="element.name">
+              {{ element.name }}
             </div>
           </draggable>
         </v-col>
@@ -96,7 +96,6 @@ export default {
       ],
       playerVars: {
         modestbranding: 1,
-        // autoplay: 1,
         controls: 0,
         loop: 1,
         fs: 0,
@@ -232,17 +231,17 @@ export default {
 <style>
 iframe {
   width: 90%;
-  height: 60vh;
+  height: 50vh;
 }
-.answerDiv{
+.answerDiv {
   display: relative;
 }
-.answerDiv h3{
+.answerDiv h3 {
   display: block;
   margin: auto;
 }
-.answerDiv button{
-  position:absolute;
+.answerDiv button {
+  position: absolute;
   top: 0;
   right: 0;
 }
