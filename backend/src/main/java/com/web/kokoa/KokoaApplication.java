@@ -8,5 +8,7 @@ public class KokoaApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(KokoaApplication.class, args);
-    };
+    }
+
+
 }
