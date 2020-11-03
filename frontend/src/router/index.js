@@ -4,9 +4,10 @@ import Write from '@/components/training/Write.vue';
 import Talk from '@/components/training/Talk.vue';
 import Home from '@/views/Home.vue';
 import Login from '@/components/user/Login.vue';
+import VueYoutube from 'vue-youtube';
 
+Vue.use(VueYoutube);
 Vue.use(VueRouter);
-
 const routes = [
   {
     path: '/',
