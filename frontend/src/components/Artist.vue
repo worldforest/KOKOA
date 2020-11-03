@@ -1,24 +1,32 @@
 <template>
-<div class="artist">
-  <!-- header -->
-  <div class="header mr-auto"
-  :style="{'background-image': 'url('+ require(`@/assets/img/${team}/${team}.jpg`) + ')',}">
-    <div>{{name}}</div>
-  </div>
-  <!-- 멤버 -->
-  <v-row justify="space-around" class="member">
-    <div class="" v-for="member in team" :key="member">
-      <img :src="require(`@/assets/img/${team}/${team}.jpg`)" alt="">
-      <div>{{member}}</div>
+  <div class="artist">
+    <!-- header -->
+    <div
+      class="header mr-auto"
+      :style="{ 'background-image': 'url(' + require(`@/assets/img/${team}/${team}.jpg`) + ')' }"
+    >
+      <div>{{ team }}</div>
     </div>
-  </v-row>
-  <!-- 영상 리스트 -->
-  <Popular />
-</div>
+    <!-- 멤버 -->
+    <v-row justify="space-around" class="member">
+      <div class="list" v-for="(member,index) in members" :key="index">
+        <img :class="{active: isActive==index}"
+          :src="require(`@/assets/img/${team}/${member.name}.jpg`)"
+          alt=""
+          @click="changeSelected(index)"
+        />
+        <div>{{ member.name }}</div>
+      </div>
+    </v-row>
+    <!-- 영상 리스트 -->
+    <Popular />
+  </div>
 </template>
 
 <script>
 import Popular from './list/Popular.vue';
+import channelList from './core/channelList.json';
+import memberList from './core/memberList.json';
 
 export default {
   name: 'Artist',
@@ -27,13 +35,35 @@ export default {
   },
   data() {
     return {
-      name: this.$route.query.name,
+      groupid: this.$route.query.groupid,
       team: '',
+      teams: channelList,
+      stars: memberList,
+      members: [],
+      filters: '',
+      isActive: '',
     };
   },
   created() {
-    console.log(this.$route.query.name);
-    this.team = this.$route.query.name;
+    this.team = this.teams[this.groupid - 1].groupname;
+    this.filters = this.team;
+    this.members = [];
+    this.members.push({ name: this.team });
+    for (let i = 0; i < this.stars.length; i += 1) {
+      // console.log(this.stars[i].groupid, this.groupid);
+      if (String(this.stars[i].groupid) === this.groupid) {
+        this.members.push(this.stars[i]);
+      }
+    }
+  },
+  methods: {
+    changeFilter(name) {
+      this.filters = name;
+    },
+    changeSelected(index) {
+      this.isActive = (index === this.isActive ? '' : index);
+      this.filters = this.members[index].name;
+    },
   },
 };
 </script>
@@ -52,7 +82,7 @@ export default {
   /* background-size: 80% 80%; */
   background-size: contain;
   background-position: center;
-  background-repeat:no-repeat;
+  background-repeat: no-repeat;
   border: 2px solid;
   color: rgb(180, 91, 180);
   resize: both;
@@ -70,4 +100,8 @@ export default {
   width: 100px;
   height: 100px;
 }
+.active {
+  border: 10px solid #0F0;
+}
+
 </style>
