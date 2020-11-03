@@ -5,7 +5,7 @@
       <v-layout wrap>
         <v-flex xs12 sm6 md4 lg3 xl2 v-for="(data, index) in items" :key="index">
           <v-card class="ma-3 " @click="enter(data.groupname)">
-            <v-img class="scale" aspect-ratio="1" :src="require(`@/assets` + data.img)" alt="" />
+            <v-img class="scale" aspect-ratio="1" :src="require(`@/assets` + data.img)" />
             <v-card-title class="justify-center">{{ data.groupname }}</v-card-title>
           </v-card>
         </v-flex>
@@ -44,7 +44,7 @@ export default {
   transition: all 0.3s ease-in-out;
 }
 .scale:hover {
-  transform: scale(1.5);
+  transform: scale(1.1);
   z-index:1
   /* -webkit-transform: scale(1.2);
   -moz-transform: scale(1.2);
