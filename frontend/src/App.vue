@@ -31,7 +31,7 @@
 
     <v-app-bar app>
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
-      <v-toolbar-title>KOKOA</v-toolbar-title>
+      <v-toolbar-title @click="goHome">KOKOA</v-toolbar-title>
 
       <v-spacer></v-spacer>
 
@@ -75,6 +75,9 @@ export default {
         .catch((error) => {
           console.log(error);
         });
+    },
+    goHome() {
+      this.$router.push('/');
     },
   },
 };
