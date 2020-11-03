@@ -1,80 +1,19 @@
 <template>
   <v-app id="create">
-     <v-speed-dial
-      v-model="fab"
-      :top="top"
-      :bottom="bottom"
-      :right="right"
-      :left="left"
-      :direction="direction"
-      :open-on-hover="hover"
-      :transition="transition"
-    >
-      <template v-slot:activator>
-        <v-btn
-          v-model="fab"
-          color="blue darken-2"
-          dark
-          fab
-        >
-          <v-icon v-if="fab">
-            mdi-close
-          </v-icon>
-          <v-icon v-else>
-            mdi-account-circle
-          </v-icon>
-        </v-btn>
-      </template>
-      <v-btn
-        fab
-        dark
-        small
-        color="green"
-      >
-        <v-icon>mdi-pencil</v-icon>
-      </v-btn>
-      <v-btn
-        fab
-        dark
-        small
-        color="indigo"
-      >
-        <v-icon>mdi-plus</v-icon>
-      </v-btn>
-      <v-btn
-        fab
-        dark
-        small
-        color="red"
-      >
-        <v-icon>mdi-delete</v-icon>
-      </v-btn>
-    </v-speed-dial>
-    <v-app-bar flat dense app>
-      <v-toolbar-title black @click="goHome">KOKOA</v-toolbar-title>
-      <div class="navigation">
-        <v-btn text>
-          오답노트
-        </v-btn>
-        <v-btn text>
-          라이크
-        </v-btn>
-        <v-btn icon>
-          <v-icon>mdi-heart</v-icon>
-        </v-btn>
-        <v-btn icon>
-          <v-icon>mdi-dots-vertical</v-icon>
+    <!-- KOKOA LOGO -->
+      <div id="logo" @click="goHome">KOKOA
+        <v-btn v-if="!isLogin" @click="getAuth()">
+          <img src="@/assets/google.png" alt="구글로그인버튼" style="width:30px" />
+          login
         </v-btn>
       </div>
-      <v-spacer></v-spacer>
-      <v-btn v-if="!isLogin" @click="getAuth()">
-        <img src="@/assets/google.png" alt="구글로그인버튼" style="width:30px" />
-        login
-      </v-btn>
-      <v-btn v-else>
-        logout
-      </v-btn>
-    </v-app-bar>
+      <!-- circular menu -->
+      <quick-menu
+      class="circular"
+      :menu-count=count :icon-class=icons :menu-url-list=list
+      :background-color=backgroundColor :color=color :position=position
+      @process=print></quick-menu>
+      <!-- :is-open-new-tab=getIsOpenNewTab @process=print -->
     <v-main>
       <router-view />
     </v-main>
@@ -83,8 +22,16 @@
 </template>
 
 <script>
+// import { RadialMenu, RadialMenuItem } from 'vue-radial-menu';
+import quickMenu from 'vue-quick-menu';
+
 export default {
   name: 'App',
+  components: {
+    // RadialMenu,
+    // RadialMenuItem,
+    quickMenu,
+  },
   data() {
     return {
       isLogin: false,
@@ -105,6 +52,14 @@ export default {
       bottom: false,
       left: false,
       transition: 'slide-x',
+      //
+      count: 4,
+      icons: ['fa fa-github', 'fa fa-comment', 'fa fa-code', 'fa fa-envelope'],
+      list: [{ isLink: false }, { isLink: true, url: '/doo' }, { isLink: true, url: '/foo' }, { isLink: false }],
+      backgroundColor: 'rgb(180, 91, 180)',
+      color: '#ffffff',
+      position: 'top-right',
+      isOpenNewTab: false,
     };
   },
   computed: {
@@ -148,15 +103,28 @@ export default {
     goHome() {
       this.$router.push('/');
     },
+    handleClick(item) {
+      this.lastClicked = item;
+    },
   },
 };
 </script>
 <style>
-  #create .v-speed-dial {
+  .circular {
     position: fixed;
     z-index: 999;
   }
-  #create .v-btn--floating {
+  /* #create .v-btn--floating {
     position: relative;
+  } */
+
+  #create {
+    background-color: rgb(29, 25, 29)
+  }
+
+  #logo {
+    position: fixed;
+    z-index: 999;
+    color: rgb(180, 91, 180)
   }
 </style>
