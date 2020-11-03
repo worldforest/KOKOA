@@ -1,17 +1,16 @@
 <template>
   <v-container>
-    <span>main</span>
-    <Popular />
+    <Channels />
   </v-container>
 </template>
 
 <script>
-import Popular from './list/Popular.vue';
+import Channels from './Channels.vue';
 
 export default {
   name: 'Main',
   components: {
-    Popular,
+    Channels,
   },
   data() {
     return {

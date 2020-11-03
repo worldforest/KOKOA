@@ -4,17 +4,6 @@
       <b-row>
         <b-col sm="12" class="overflow-hidden">
           <div class="d-flex align-items-center justify-content-between">
-            <h4 class="main-title">Your K-Pop Star</h4>
-          </div>
-          <VueSlickCarousel class="choice" v-bind="settings2">
-            <img
-              v-for="(star, index) in stars"
-              :src="require(`@/assets/`+star.group)"
-              :key="index"
-              class="pa-1"
-            />
-          </VueSlickCarousel>
-          <div class="d-flex align-items-center justify-content-between">
             <h4 class="main-title">Favorite</h4>
           </div>
           <div class="upcoming-contens ma-5">
@@ -68,50 +57,6 @@ export default {
         },
         {
           url: 'http://img.youtube.com/vi/WotZgTcbHRA/0.jpg',
-        },
-      ],
-      stars: [
-        {
-          group: 'iu.jpg',
-          member: {
-            0: 'iu.jpg',
-          },
-        },
-        {
-          group: 'redvelvet.jpg',
-          member: {
-            0: 'irene.jpg',
-            1: 'seulki.jpg',
-            2: 'wendy.jpg',
-            3: 'joy.jpg',
-            4: 'yeri.jpg',
-          },
-        },
-        {
-          group: 'iu.jpg',
-          member: {
-            0: 'iu.jpg',
-          },
-        },
-        {
-          group: 'redvelvet.jpg',
-          member: {
-            0: 'irene.jpg',
-            1: 'seulki.jpg',
-            2: 'wendy.jpg',
-            3: 'joy.jpg',
-            4: 'yeri.jpg',
-          },
-        },
-        {
-          group: 'redvelvet.jpg',
-          member: {
-            0: 'irene.jpg',
-            1: 'seulki.jpg',
-            2: 'wendy.jpg',
-            3: 'joy.jpg',
-            4: 'yeri.jpg',
-          },
         },
       ],
       settings: {

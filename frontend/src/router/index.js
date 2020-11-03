@@ -4,6 +4,7 @@ import Write from '@/components/training/Write.vue';
 import Talk from '@/components/training/Talk.vue';
 import Home from '@/views/Home.vue';
 import Login from '@/components/user/Login.vue';
+import Artist from '@/components/Artist.vue';
 import VueYoutube from 'vue-youtube';
 import VueSweetalert2 from 'vue-sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css';
@@ -21,6 +22,11 @@ const routes = [
     path: '/Login',
     name: 'Login',
     component: Login,
+  },
+  {
+    path: '/Artist',
+    name: 'Artist',
+    component: Artist,
   },
   {
     path: '/write',
