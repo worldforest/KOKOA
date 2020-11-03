@@ -3,6 +3,7 @@ package com.web.kokoa.controller;
 import com.web.kokoa.model.subtitles;
 import com.web.kokoa.model.video;
 import com.web.kokoa.repository.CategoryRepo;
+import com.web.kokoa.repository.MemberRepo;
 import com.web.kokoa.service.SearchService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -31,17 +32,29 @@ import java.util.List;
 public class SearchController {
 
     @Autowired
+    private MemberRepo memberRepo;
+
+    @Autowired
     private CategoryRepo categoryRepo;
+
     @Autowired
     private SearchService searchService;
 
     @GetMapping("/idol/{page}")
-    @ApiOperation(value = "좋아하는 가수 검색", notes = "category num과 일치하는 video 반환")
+    @ApiOperation(value = "좋아하는 그룹 클릭", notes = "category num과 일치하는 video 반환")
     private Object SearchIdolVideo(@RequestParam String groupname, @PathVariable int page) {
         int GroupId = categoryRepo.findIdByGroupname(groupname);
         Page<video> list = searchService.getVideo(page, GroupId);
         return new ResponseEntity<Page<video>>(list, HttpStatus.OK);
     }
+    @GetMapping("/member/{page}")
+    @ApiOperation(value = "좋아하는 가수 클릭", notes = "category num과 일치하는 video 반환")
+    private Object SearchIdolMemberVideo(@RequestParam String membername, @PathVariable int page) {
+        int Memberid = memberRepo.findIdByName(membername);
+        Page<video> list = searchService.getVideoMember(page, Memberid);
+        return new ResponseEntity<Page<video>>(list, HttpStatus.OK);
+    }
+
 
     @GetMapping("/video")
     @ApiOperation(value = "영상 자막 정보", notes = "해당 영상번호와 일치하는 자막 정보 모두 제공")
