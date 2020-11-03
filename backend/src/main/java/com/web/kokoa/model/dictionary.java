@@ -1,14 +1,14 @@
-package com.web.kokoa.resultDto;
+package com.web.kokoa.model;
 
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 @Getter
 @Setter
 @ToString
-public class Dictionary {
+@NoArgsConstructor
+@AllArgsConstructor
+public class dictionary {
 	private String kor;
 	private String eng;
 	private String dfn;

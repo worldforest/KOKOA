@@ -1,14 +1,15 @@
 package com.web.kokoa.controller;
 
+import com.web.kokoa.model.dictionary;
 import com.web.kokoa.model.subtitles;
 import com.web.kokoa.model.video;
 import com.web.kokoa.repository.CategoryRepo;
 import com.web.kokoa.repository.MemberRepo;
 import com.web.kokoa.service.SearchService;
+import com.web.kokoa.service.TranslateService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
-import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -16,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -40,13 +42,18 @@ public class SearchController {
     @Autowired
     private SearchService searchService;
 
+    @Autowired
+    private TranslateService translateService;
+
+
     @GetMapping("/idol/{page}")
-    @ApiOperation(value = "좋아하는 그룹 클릭", notes = "category num과 일치하는 video 반환")
+    @ApiOperation(value = "좋아하는 가수 검색", notes = "category num과 일치하는 video 반환")
     private Object SearchIdolVideo(@RequestParam String groupname, @PathVariable int page) {
         int GroupId = categoryRepo.findIdByGroupname(groupname);
         Page<video> list = searchService.getVideo(page, GroupId);
         return new ResponseEntity<Page<video>>(list, HttpStatus.OK);
     }
+
     @GetMapping("/member/{page}")
     @ApiOperation(value = "좋아하는 가수 클릭", notes = "category num과 일치하는 video 반환")
     private Object SearchIdolMemberVideo(@RequestParam String membername, @PathVariable int page) {
@@ -63,15 +70,17 @@ public class SearchController {
         List<subtitles> list = searchService.getSubtitles(videoid);
         List<subtitles> korean = new ArrayList<>();
         List<subtitles> english = new ArrayList<>();
+
         for (subtitles s : list) {
             if (s.getType() == 0)
                 korean.add(s);
-            else
+            else {
                 english.add(s);
+            }
         }
 
         HashMap<String, List<subtitles>> map = new HashMap<>();
-        map.put("Korean", korean);
+        map.put("Korean",korean);
         map.put("English", english);
 
         return new ResponseEntity<HashMap<String, List<subtitles>>>(map, HttpStatus.OK);
