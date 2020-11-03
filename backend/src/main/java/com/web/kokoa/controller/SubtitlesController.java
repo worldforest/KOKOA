@@ -6,19 +6,19 @@ import com.web.kokoa.repository.VideoRepo;
 import com.web.kokoa.service.TranslateService;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import net.crizin.KoreanRomanizer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 @ApiResponses(value = {
         @ApiResponse(code = 401, message = "Unauthorized"),
@@ -45,10 +45,23 @@ public class SubtitlesController {
 
 
     @PostMapping("/speechtotext")
-    public ResponseEntity<String> TransVoice(@RequestParam("files") MultipartFile file) throws Exception {
+    public ResponseEntity<HashMap<String,String>> TransVoice(@RequestParam("files") MultipartFile file) throws Exception {
 
-        String result = translateService.SpeechToTextNaver(file);
+        String resultNaver = translateService.SpeechToTextNaver(file);
+        String resultKaKao = translateService.SpeechToTextKaKao(file);
+        HashMap<String,String> result = new HashMap<>();
 
+        result.put("KaKaoResult",resultKaKao);
+        result.put("NaverResult",resultNaver);
+        return new ResponseEntity<HashMap<String,String>>(result, HttpStatus.OK);
+    }
+    @GetMapping("/roma")
+    public ResponseEntity<String> romaService(@RequestParam String word) {
+        KoreanRomanizer engToko = new KoreanRomanizer();
+        String result = engToko.romanize(word);
         return new ResponseEntity<String>(result, HttpStatus.OK);
     }
+
+
+
 }
