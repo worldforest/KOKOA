@@ -3,14 +3,10 @@
     <h2>Choose Your Star(가제)</h2>
     <v-flex d-flex>
       <v-layout wrap>
-        <v-flex sm4 md3 lg2 v-for="(data, index) in items" :key="index">
-          <v-card @click="enter(data.groupname)">
-            <v-img height="220" :src="require(`@/assets` + data.img)" alt="" />
-            <v-card-text>
-              <v-row class="justify-center mx-0">
-                  <p class="font-weight-black" >{{data.groupname}}</p>
-              </v-row>
-            </v-card-text>
+        <v-flex xs12 sm6 md4 lg3 xl2 v-for="(data, index) in items" :key="index">
+          <v-card class="ma-3" @click="enter(data.groupname)">
+            <v-img  aspect-ratio="1" :src="require(`@/assets` + data.img)" alt="" />
+            <v-card-title class="justify-center">{{data.groupname}}</v-card-title>
           </v-card>
         </v-flex>
       </v-layout>
@@ -36,4 +32,8 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+.img{
+    overflow: scroll;
+}
+</style>
