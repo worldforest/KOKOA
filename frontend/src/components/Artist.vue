@@ -45,6 +45,9 @@ export default {
     };
   },
   created() {
+    if (this.groupid > 6) {
+      this.groupid -= 1;
+    }
     this.team = this.teams[this.groupid - 1].groupname;
     this.filters = this.team;
     this.members = [];
