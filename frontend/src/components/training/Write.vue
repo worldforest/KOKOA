@@ -5,9 +5,17 @@
         <youtube :video-id="url" ref="youtube" :player-vars="playerVars" flex></youtube>
       </div>
       <div class="d-flex justify-space-around my-5">
-        <b-button @click="previous">Previous</b-button>
-        <b-button variant="success" @click="playVideo">PLAY</b-button>
-        <b-button @click="next">Next</b-button>
+        <v-btn @click="previous" icon>
+          <v-icon>
+            mdi-arrow-left
+          </v-icon>
+        </v-btn>
+        <b-button class="mx-5" variant="success" @click="playVideo">play</b-button>
+        <v-btn @click="next" icon>
+          <v-icon>
+            mdi-arrow-right
+          </v-icon>
+        </v-btn>
       </div>
     </v-col>
     <v-col class="testContainer" cols="12" lg="4">
@@ -111,7 +119,10 @@ export default {
         icon: 'error',
         title: 'Oops...',
         text: 'Something is Wrong!!',
-        timer: 2000,
+        // timer: 2000,
+        showDenyButton: true,
+        confirmButtonText: 'Retry',
+        denyButtonText: 'Answer and Save',
       },
       timerInterval: '',
       correctAnswer: {
@@ -142,7 +153,11 @@ export default {
       for (let i = 0; i < this.checklist.length; i += 1) {
         if (this.answer[i].id !== this.checklist[i].id) {
           tmp = false;
-          this.$swal.fire(n.wrongAnswer);
+          this.$swal.fire(n.wrongAnswer).then((result) => {
+            if (result.isDenied) {
+              this.$swal.fire('Answer is', n.answer[0], 'error');
+            }
+          });
           break;
         }
       }
