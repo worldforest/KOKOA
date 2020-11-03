@@ -20,4 +20,5 @@ public class note {
     private int id;
     private int userid;
     private int subtitleid;
+    private int type;
 }
