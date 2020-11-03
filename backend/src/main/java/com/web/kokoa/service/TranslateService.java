@@ -10,10 +10,7 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
-import sun.net.www.http.HttpClient;
 
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -31,17 +28,17 @@ public class TranslateService {
 
     private static File convertMultiPartToFile(MultipartFile file) throws IOException {
         File convFile = new File(file.getOriginalFilename());
+        convFile.createNewFile();
         FileOutputStream fos = new FileOutputStream(convFile);
         fos.write(file.getBytes());
         fos.close();
         return convFile;
     }
 
-    public String SpeechToTextNaver (MultipartFile file) {
+    public String SpeechToTextNaver(MultipartFile file) {
         StringBuffer response = new StringBuffer();
         try {
             File voiceFile = convertMultiPartToFile(file);
-
             String language = "Kor";        // 언어 코드 ( Kor, Jpn, Eng, Chn )
             String apiURL = "https://naveropenapi.apigw.ntruss.com/recog/v1/stt?lang=" + language;
             URL url = new URL(apiURL);
@@ -71,7 +68,7 @@ public class TranslateService {
                 System.out.println("error!!!!!!! responseCode= " + responseCode);
                 br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
             }
-            String inputLine;
+            String inputLine="";
 
             if (br != null) {
                 while ((inputLine = br.readLine()) != null) {
@@ -85,11 +82,14 @@ public class TranslateService {
         } catch (Exception e) {
             System.out.println(e);
         }
-        return response.toString();
-    }
-    public String SpeechToTextKaKao (MultipartFile file) {
 
-        String ret=new String();
+        String answer =  response.toString().split(":")[1].split("}")[0].replace("\"","");
+        return answer;
+    }
+
+    public String SpeechToTextKaKao(MultipartFile file) {
+
+        String ret = new String();
         try {
             CloseableHttpClient client = HttpClientBuilder.create().build(); // HttpClient 생성
             HttpPost postRequest = new HttpPost("https://kakaoi-newtone-openapi.kakao.com/v1/recognize"); //POST 메소드 URL 새성
@@ -106,33 +106,30 @@ public class TranslateService {
             if (response.getStatusLine().getStatusCode() == 200) {
                 ResponseHandler<String> handler = new BasicResponseHandler();
                 String body = EntityUtils.toString(response.getEntity(), "UTF-8");
-                JSONObject jObject = new JSONObject(body);
 
-
-
-                StringTokenizer st=new StringTokenizer(body,"\n");
-                ArrayList<String> al=new ArrayList<>();
-                while(st.hasMoreTokens()) {
+                StringTokenizer st = new StringTokenizer(body, "\n");
+                ArrayList<String> al = new ArrayList<>();
+                while (st.hasMoreTokens()) {
                     al.add(st.nextToken());
                 }
 
-                for(int i=0;i<al.size();i++) {
-                    if(al.get(i).length()==0) continue;
-                    if(al.get(i).charAt(0)=='{') {
-                        if(al.get(i).charAt(9)!='f') continue;
+                for (int i = 0; i < al.size(); i++) {
+                    if (al.get(i).length() == 0) continue;
+                    if (al.get(i).charAt(0) == '{') {
+                        if (al.get(i).charAt(9) != 'f') continue;
                         System.out.println(al.get(i));
-                        int idx=31;
-                        while(true) {
-                            if(al.get(i).charAt(idx)=='"') break;
+                        int idx = 31;
+                        while (true) {
+                            if (al.get(i).charAt(idx) == '"') break;
                             idx++;
                         }
-                        ret=al.get(i).substring(31,idx);
+                        ret = al.get(i).substring(31, idx);
                     }
                 }
             } else {
                 System.out.println("response is error : " + response.getStatusLine().getStatusCode());
             }
-        } catch (Exception e){
+        } catch (Exception e) {
             System.err.println(e.toString());
         }
 

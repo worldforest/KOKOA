@@ -20,11 +20,18 @@ public class SearchService {
     @Autowired
     SubtitlesRepo subtitlesRepo;
 
-    public Page<video> getVideo(int page, int Categoryid){
+    public Page<video> getVideo(int page, int Categoryid) {
         Pageable pageable = PageRequest.of(page, 10);
-        return videoRepo.findVideosByGroupid(pageable,Categoryid);
+        return videoRepo.findVideosByGroupid(pageable, Categoryid);
     }
-    public List<subtitles>getSubtitles(int videoid){
+
+    public List<subtitles> getSubtitles(int videoid) {
         return subtitlesRepo.getAllByVideoid(videoid);
+    }
+
+    public Page<video> getVideoMember(int page, int memberid) {
+        Pageable pageable = PageRequest.of(page,10);
+
+        return videoRepo.findVideosByMemberid(pageable,memberid);
     }
 }
