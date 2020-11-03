@@ -4,9 +4,9 @@
     <v-flex d-flex>
       <v-layout wrap>
         <v-flex xs12 sm6 md4 lg3 xl2 v-for="(data, index) in items" :key="index">
-          <v-card class="ma-3" @click="enter(data.groupname)">
-            <v-img  aspect-ratio="1" :src="require(`@/assets` + data.img)" alt="" />
-            <v-card-title class="justify-center">{{data.groupname}}</v-card-title>
+          <v-card class="ma-3 " @click="enter(data.groupname)">
+            <v-img class="scale" aspect-ratio="1" :src="require(`@/assets` + data.img)" alt="" />
+            <v-card-title class="justify-center">{{ data.groupname }}</v-card-title>
           </v-card>
         </v-flex>
       </v-layout>
@@ -22,6 +22,8 @@ export default {
   data() {
     return {
       items: channelList,
+      loader: null,
+      loading: false,
     };
   },
   methods: {
@@ -33,7 +35,20 @@ export default {
 </script>
 
 <style>
-.img{
-    overflow: scroll;
+.scale {
+  transform: scale(1);
+  /* -webkit-transform: scale(1);
+  -moz-transform: scale(1);
+  -ms-transform: scale(1);
+  -o-transform: scale(1); */
+  transition: all 0.3s ease-in-out;
+}
+.scale:hover {
+  transform: scale(1.5);
+  z-index:1
+  /* -webkit-transform: scale(1.2);
+  -moz-transform: scale(1.2);
+  -ms-transform: scale(1.2);
+  -o-transform: scale(1.2); */
 }
 </style>
