@@ -4,13 +4,13 @@
       <b-row>
         <b-col sm="12" class="overflow-hidden">
           <div class="d-flex align-items-center justify-content-between">
-            <h4 class="main-title">Favorite</h4>
+            <h4 class="main-title">{{option===false ? "Speaking":"Dictation"}}</h4>
           </div>
           <div class="upcoming-contens ma-5">
             <VueSlickCarousel v-bind="settings">
               <img
                 v-for="(item, index) in items"
-                :src="item.url"
+                :src="'http://img.youtube.com/vi/' + item.url + '/0.jpg'"
                 :key="index"
                 @click="showModal(index)"
                 class="pa-1"
@@ -32,6 +32,8 @@
 import VueSlickCarousel from 'vue-slick-carousel';
 import 'vue-slick-carousel/dist/vue-slick-carousel.css';
 import 'vue-slick-carousel/dist/vue-slick-carousel-theme.css';
+import http from '../../util/http-common';
+import channelList from '../core/channelList.json';
 
 export default {
   name: 'Popular',
@@ -39,26 +41,12 @@ export default {
   mounted() {},
   data() {
     return {
-      items: [
-        {
-          url: 'http://img.youtube.com/vi/WotZgTcbHRA/0.jpg',
-        },
-        {
-          url: 'http://img.youtube.com/vi/WotZgTcbHRA/0.jpg',
-        },
-        {
-          url: 'http://img.youtube.com/vi/WotZgTcbHRA/0.jpg',
-        },
-        {
-          url: 'http://img.youtube.com/vi/WotZgTcbHRA/0.jpg',
-        },
-        {
-          url: 'http://img.youtube.com/vi/WotZgTcbHRA/0.jpg',
-        },
-        {
-          url: 'http://img.youtube.com/vi/WotZgTcbHRA/0.jpg',
-        },
-      ],
+      items: [],
+      groupid: this.$route.query.groupid,
+      teams: channelList,
+      team: '',
+      page: 0,
+      option: false,
       settings: {
         arrows: true,
         infinite: true,
@@ -81,6 +69,12 @@ export default {
       modalShow: false,
     };
   },
+  async created() {
+    this.team = this.teams[this.groupid - 1].title;
+    this.items = [];
+    const pages = await this.getTotalPages(this.team);
+    await this.getList(pages, this.team, this.items);
+  },
   methods: {
     showModal(index) {
       this.selected = index;
@@ -92,10 +86,21 @@ export default {
     goTalk() {
       this.$router.push({ name: 'Talk', params: { index: String(this.selected) } });
     },
-    // getImg(index) {
-    //   const img = this.stars[index];
-    //   return `../assets/${img.group}`;
-    // },
+    getTotalPages(team) {
+      return new Promise((resolve) => {
+        http.get(`/search/idol/0?groupname=${team}`).then((res) => {
+          resolve(res.data.totalPages);
+        });
+      });
+    },
+    async getList(page, team, items) {
+      for (let i = 0; i < page; i += 1) {
+        // eslint-disable-next-line no-await-in-loop
+        await http.get(`/search/idol/${i}?groupname=${team}`).then((res) => res.data.content.forEach((element) => {
+          items.push(element);
+        }));
+      }
+    },
   },
 };
 </script>
@@ -109,6 +114,6 @@ export default {
   background-color: #eee;
 }
 .choice img {
-   height:100%;
+  height: 100%;
 }
 </style>

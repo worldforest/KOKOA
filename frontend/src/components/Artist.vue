@@ -19,20 +19,19 @@
       </div>
     </v-row>
     <!-- 영상 리스트 -->
-    <Popular />
+    <Videolist />
   </div>
 </template>
 
 <script>
-import Popular from './list/Popular.vue';
+import Videolist from './list/Videolist.vue';
 import channelList from './core/channelList.json';
 import memberList from './core/memberList.json';
-// import http from '../util/http-common';
 
 export default {
   name: 'Artist',
   components: {
-    Popular,
+    Videolist,
   },
   data() {
     return {
