@@ -91,7 +91,7 @@
             <div class="speech-bubble">
             표시된 부분에 유의해서<br />발음해보세요 :)
             </div>
-          </div>
+          </div></div>
           <h4>
             gamsahamnida yeoreobun
           </h4>
