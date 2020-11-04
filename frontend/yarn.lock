@@ -9530,6 +9530,11 @@
   "resolved" "https://registry.yarnpkg.com/vue-hot-reload-api/-/vue-hot-reload-api-2.3.4.tgz"
   "version" "2.3.4"
 
+"vue-js-toggle-button@^1.3.3":
+  "integrity" "sha512-0b920oztgK+1SqlYF26MPiT28hAieL5aAQE7u21XEym5ryfzD4EMer4hLkgDC/1sWsCHb22GvV+t1Kb4AI6QFw=="
+  "resolved" "https://registry.npmjs.org/vue-js-toggle-button/-/vue-js-toggle-button-1.3.3.tgz"
+  "version" "1.3.3"
+
 "vue-loader-v16@npm:vue-loader@^16.0.0-beta.7":
   "integrity" "sha512-mu9pg6554GbXDSO8LlxkQM6qUJzUkb/A0FJc9LgRqnU9MCnhzEXwCt1Zx5NObvFpzs2mH2dH/uUCDwL8Qaz9sA=="
   "resolved" "https://registry.npmjs.org/vue-loader/-/vue-loader-16.0.0-beta.9.tgz"
@@ -9628,7 +9633,7 @@
     "get-youtube-id" "^1.0.0"
     "youtube-player" "^5.4.0"
 
-"vue@^2.0", "vue@^2.3.3", "vue@^2.5.17", "vue@^2.6.10", "vue@^2.6.11":
+"vue@^2.0", "vue@^2.0.0", "vue@^2.3.3", "vue@^2.5.17", "vue@^2.6.10", "vue@^2.6.11":
   "integrity" "sha512-uhmLFETqPPNyuLLbsKz6ioJ4q7AZHzD8ZVFNATNyICSZouqP2Sz0rotWQC8UNBF6VGSCs5abnKJoStA6JbCbfg=="
   "resolved" "https://registry.yarnpkg.com/vue/-/vue-2.6.12.tgz"
   "version" "2.6.12"
