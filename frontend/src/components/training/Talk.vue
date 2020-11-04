@@ -53,24 +53,12 @@
     <div class="d-flex justify-center mt-3">
         {{video[replay].eng}}
     </div>
-<<<<<<< HEAD
     </v-col>
     <!-- right side -->
     <v-col class="testContainer" cols="12" lg="4">
       <v-row class="d-flex justify-center ma-5">
         <v-col cols="12">
           <div>
-            //음성녹음 컴포넌트//
-=======
-       </v-card>
-       <!-- right side -->
-       <v-card
-        class="pa-2"
-        outlined
-        tile
-      >
-        <div>
-          //음성녹음 컴포넌트//
           <Record @child-event="receiveText"/>
         </div>
         <h2>
@@ -87,7 +75,6 @@
           </v-btn>
           <div class="speech-bubble">
           표시된 부분에 유의해서<br />발음해보세요 :)
->>>>>>> 5e15a1c01086209153e345f1e5cff531257c7a8e
           </div>
           <h2>
             감사합니다 여러분
