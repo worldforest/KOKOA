@@ -37,6 +37,7 @@ export default {
     return {
       groupid: this.$route.query.groupid,
       team: '',
+      title: '',
       teams: channelList,
       stars: memberList,
       members: [],
@@ -45,18 +46,18 @@ export default {
     };
   },
   created() {
-    if (this.groupid > 6) {
-      this.groupid -= 1;
-    }
     this.team = this.teams[this.groupid - 1].groupname;
+    this.title = this.teams[this.groupid - 1].title;
     this.filters = this.team;
     this.members = [];
-    this.members.push({ name: this.team });
+    this.members.push({ name: this.title });
     for (let i = 0; i < this.stars.length; i += 1) {
-      // console.log(this.stars[i].groupid, this.groupid);
       if (String(this.stars[i].groupid) === this.groupid) {
         this.members.push(this.stars[i]);
       }
+    }
+    if (this.members.length === 2) {
+      this.members.pop();
     }
   },
   methods: {
