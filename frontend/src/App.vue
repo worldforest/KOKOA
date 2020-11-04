@@ -39,9 +39,9 @@ export default {
       drawer: false,
       // circular menu settings
       count: 4,
-      icons: ['fa fa-check-double', 'fa fa-comment', 'fa fa-code', 'fa fa-envelope'],
+      icons: ['fas fa-book', 'fas fa-history', 'fas fa-book-reader', 'fas fa-sign-out-alt'],
       list: [
-        { isLink: false },
+        { isLink: true, url: '/doo' },
         { isLink: true, url: '/doo' },
         { isLink: true, url: '/foo' },
         { isLink: false },

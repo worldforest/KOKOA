@@ -10,7 +10,7 @@
     <!-- 멤버 -->
     <v-row justify="space-around" class="member">
       <div class="list" v-for="(member,index) in members" :key="index">
-        <img :class="{active: isActive==index}"
+        <img :class="{selected: isActive==index}"
           :src="require(`@/assets/img/${team}/${member.name}.jpg`)"
           alt=""
           @click="changeSelected(index)"
@@ -104,7 +104,7 @@ export default {
   width: 100px;
   height: 100px;
 }
-.active {
+.selected {
   border: 10px solid #0F0;
 }
 
