@@ -27,6 +27,7 @@
 import Popular from './list/Popular.vue';
 import channelList from './core/channelList.json';
 import memberList from './core/memberList.json';
+// import http from '../util/http-common';
 
 export default {
   name: 'Artist',
