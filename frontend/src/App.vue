@@ -41,8 +41,8 @@ export default {
       count: 4,
       icons: ['fas fa-book', 'fas fa-history', 'fas fa-book-reader', 'fas fa-sign-out-alt'],
       list: [
-        { isLink: true, url: '/doo' },
-        { isLink: true, url: '/doo' },
+        { isLink: true, url: '/note' },
+        { isLink: true, url: '/review' },
         { isLink: true, url: '/foo' },
         { isLink: false },
       ],
