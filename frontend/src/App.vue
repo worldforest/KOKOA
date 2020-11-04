@@ -119,7 +119,7 @@ export default {
   } */
 
   #create {
-    background-color: rgb(29, 25, 29)
+    /* background-color: rgb(29, 25, 29) */
   }
 
   #logo {

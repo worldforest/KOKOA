@@ -61,24 +61,10 @@
           <div>
           <Record @child-event="receiveText"/>
         </div>
+        <!-- 나의 발음 -->
         <h2>
-          테스트 : {{speechText}}
+          {{speechText}}
         </h2>
-        <div class="d-flex justify-space-around">
-          <v-btn
-            class="ma-2"
-            text
-            icon
-            color="purple lighten-2">
-            <v-icon>mdi-clipboard-edit-outline</v-icon>
-            오답노트
-          </v-btn>
-          <div class="speech-bubble">
-          표시된 부분에 유의해서<br />발음해보세요 :)
-          </div>
-          <h2>
-            감사합니다 여러분
-          </h2>
           <div class="d-flex justify-space-around">
             <v-btn
               class="ma-2"
@@ -91,13 +77,13 @@
             <div class="speech-bubble">
             표시된 부분에 유의해서<br />발음해보세요 :)
             </div>
-          </div></div>
+          </div>
           <h4>
-            gamsahamnida yeoreobun
+            romaza baleum giho pyoshi
           </h4>
           <div
           style="background:purple">
-            //사전//
+            //사전 field//
           </div>
         </v-col>
       </v-row>
