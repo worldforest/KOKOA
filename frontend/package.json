@@ -8,7 +8,9 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "@codekraft-studio/vue-record": "0.0.3",
     "@mdi/font": "^3.6.95",
+    "axios": "^0.21.0",
     "bootstrap": "^4.5.3",
     "bootstrap-vue": "^2.17.3",
     "core-js": "^3.6.5",
@@ -19,7 +21,11 @@
     "vue-radial-menu": "^1.1.1",
     "vue-router": "^3.2.0",
     "vue-slick-carousel": "^1.0.6",
+<<<<<<< HEAD
     "vue-sweetalert2": "^4.1.1",
+=======
+    "vue-speech": "^0.1.0",
+>>>>>>> 5e15a1c01086209153e345f1e5cff531257c7a8e
     "vue-youtube": "^1.4.0",
     "vuedraggable": "^2.24.3",
     "vuetify": "^2.2.11",

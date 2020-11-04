@@ -53,6 +53,7 @@
     <div class="d-flex justify-center mt-3">
         {{video[replay].eng}}
     </div>
+<<<<<<< HEAD
     </v-col>
     <!-- right side -->
     <v-col class="testContainer" cols="12" lg="4">
@@ -60,6 +61,33 @@
         <v-col cols="12">
           <div>
             //음성녹음 컴포넌트//
+=======
+       </v-card>
+       <!-- right side -->
+       <v-card
+        class="pa-2"
+        outlined
+        tile
+      >
+        <div>
+          //음성녹음 컴포넌트//
+          <Record @child-event="receiveText"/>
+        </div>
+        <h2>
+          테스트 : {{speechText}}
+        </h2>
+        <div class="d-flex justify-space-around">
+          <v-btn
+            class="ma-2"
+            text
+            icon
+            color="purple lighten-2">
+            <v-icon>mdi-clipboard-edit-outline</v-icon>
+            오답노트
+          </v-btn>
+          <div class="speech-bubble">
+          표시된 부분에 유의해서<br />발음해보세요 :)
+>>>>>>> 5e15a1c01086209153e345f1e5cff531257c7a8e
           </div>
           <h2>
             감사합니다 여러분
@@ -90,8 +118,13 @@
   </v-row>
 </template>
 <script>
+import Record from './Record.vue';
+
 export default {
   name: 'Talk',
+  components: {
+    Record,
+  },
   props: {
     index: {
       type: String,
@@ -106,6 +139,7 @@ export default {
   },
   data() {
     return {
+      speechText: '',
       url: 'mLx7D98zP_A',
       replay: 0,
       video: [
@@ -173,6 +207,9 @@ export default {
     },
     like() {
       // like sentences list에 추가
+    },
+    receiveText(text) {
+      this.speechText = text;
     },
   },
 };
