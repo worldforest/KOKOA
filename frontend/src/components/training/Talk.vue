@@ -3,13 +3,13 @@
     <!-- left side -->
     <v-col class="youtubeContainer" cols="12" lg="8">
       <div class="d-flex justify-center mt-3">
-      <youtube
-        :video-id="url"
-        ref="youtube"
-        :player-vars="playerVars"
-        flex
-        @ended="onEnded"
-      ></youtube>
+        <youtube
+          :video-id="url"
+          ref="youtube"
+          :player-vars="playerVars"
+          flex
+          @ended="onEnded"
+        ></youtube>
       </div>
       <div class="d-flex justify-space-around my-5">
         <b-button class="mx-5" variant="success" @click="playVideo">play</b-button>
@@ -18,71 +18,52 @@
       <!-- 자막, 이전.다음, like -->
       <div class="d-flex justify-space-around mt-3">
         <div>
-        <v-btn
-        @click="goPrevious"
-        icon>
-          <v-icon
-          >
-            mdi-arrow-left
-          </v-icon>
-        </v-btn>
+          <v-btn @click="goPrevious" icon>
+            <v-icon>
+              mdi-arrow-left
+            </v-icon>
+          </v-btn>
+        </div>
+        <div>
+          {{ video[replay].kor }}
+          <v-btn class="ma-2" text icon color="purple lighten-2" @click="like">
+            <v-icon>mdi-thumb-up</v-icon>
+          </v-btn>
+        </div>
+        <div>
+          <v-btn @click="goNext" icon>
+            <v-icon>
+              mdi-arrow-right
+            </v-icon>
+          </v-btn>
+        </div>
       </div>
-      <div>
-        {{video[replay].kor}}
-        <v-btn
-        class="ma-2"
-        text
-        icon
-        color="purple lighten-2"
-        @click="like"
-        >
-          <v-icon>mdi-thumb-up</v-icon>
-        </v-btn>
+      <div class="d-flex justify-center mt-3">
+        {{ video[replay].eng }}
       </div>
-      <div>
-        <v-btn
-        @click="goNext"
-        icon>
-          <v-icon
-          >
-            mdi-arrow-right
-          </v-icon>
-        </v-btn>
-      </div>
-    </div>
-    <div class="d-flex justify-center mt-3">
-        {{video[replay].eng}}
-    </div>
     </v-col>
     <!-- right side -->
     <v-col class="testContainer" cols="12" lg="4">
       <v-row class="d-flex justify-center ma-5">
         <v-col cols="12">
           <div>
-          <Record @child-event="receiveText"/>
-        </div>
-        <!-- 나의 발음 -->
-        <h2>
-          {{speechText}}
-        </h2>
+            <Record @child-event="receiveText" />
+          </div>
+          <!-- 나의 발음 -->
+          <h2>
+            {{ speechText }}
+          </h2>
           <div class="d-flex justify-space-around">
-            <v-btn
-              class="ma-2"
-              text
-              icon
-              color="purple lighten-2">
+            <v-btn class="ma-2" text icon color="purple lighten-2">
               <v-icon>mdi-clipboard-edit-outline</v-icon>
               오답노트
             </v-btn>
-            <div class="speech-bubble">
-            표시된 부분에 유의해서<br />발음해보세요 :)
-            </div>
+            <div class="speech-bubble">표시된 부분에 유의해서<br />발음해보세요 :)</div>
           </div>
           <h4>
             romaza baleum giho pyoshi
           </h4>
-          <div
-          style="background:purple">
+          <div style="background:purple">
             //사전 field//
           </div>
         </v-col>
@@ -191,11 +172,11 @@ export default {
 .speech-bubble {
   position: relative;
   background: #cfcdce;
-  border-radius: .4em;
+  border-radius: 0.4em;
 }
 
 .speech-bubble:after {
-  content: '';
+  content: "";
   position: absolute;
   left: 0;
   top: 50%;
