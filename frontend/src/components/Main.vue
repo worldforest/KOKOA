@@ -8,9 +8,9 @@
 </template>
 
 <script>
-import Channels from './Channels.vue';
-import Popular from '@/components/list/popular.vue';
+import Popular from '@/components/list/Popular.vue';
 import Test from '@/components/list/test.vue';
+import Channels from './Channels.vue';
 
 export default {
   name: 'Main',
