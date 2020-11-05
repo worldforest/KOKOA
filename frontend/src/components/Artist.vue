@@ -19,7 +19,7 @@
       </div>
     </v-row>
     <!-- 영상 리스트 -->
-    <Videolist />
+    <Videolist :filters="filters"/>
   </div>
 </template>
 
