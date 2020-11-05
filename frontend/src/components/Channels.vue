@@ -8,7 +8,7 @@
           :key="index"
           :style="{ 'background-image': 'url(' + require(`@/assets${item.img}`) + ')' }"
         ></swiper-slide>
-        <div class="swiper-pagination" slot="pagination"></div>
+        <!-- <div class="swiper-pagination" slot="pagination"></div> -->
         <div class="swiper-button-prev" slot="button-prev"></div>
         <div class="swiper-button-next" slot="button-next"></div>
       </swiper>
@@ -40,24 +40,11 @@ export default {
   data() {
     return {
       items: channelList,
-      loader: null,
-      loading: false,
-      settings: {
-        arrows: true,
-        infinite: true,
-        speed: 3000,
-        slidesToShow: 1,
-        slidesToScroll: 1,
-        fade: true,
-        autoplay: true,
-        autoplaySpeed: 4000,
-        lazyLoad: 'ondemand',
-        // rows: 2,
-      },
       swiperOption: {
         effect: 'coverflow',
         spaceBetween: 30,
         grabCursor: true,
+        loop: true,
         centeredSlides: true,
         slidesPerView: 'auto',
         autoplay: {
@@ -70,10 +57,6 @@ export default {
           depth: 200,
           modifier: 3,
           slideShadows: true,
-        },
-        pagination: {
-          el: '.swiper-pagination',
-          clickable: true,
         },
         navigation: {
           nextEl: '.swiper-button-next',
@@ -133,10 +116,5 @@ export default {
     // color: $white;
   }
 
-  // .swiper-pagination {
-  //   /deep/ .swiper-pagination-bullet.swiper-pagination-bullet-active {
-  //     background-color: $white;
-  //   }
-  // }
 }
 </style>
