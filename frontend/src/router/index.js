@@ -11,7 +11,11 @@ import VueYoutube from 'vue-youtube';
 import VueSweetalert2 from 'vue-sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css';
 import ToggleButton from 'vue-js-toggle-button';
+import VueAwesomeSwiper from 'vue-awesome-swiper';
+// import 'swiper/swiper-bundle.css';
+import 'swiper/css/swiper.css';
 
+Vue.use(VueAwesomeSwiper);
 Vue.use(ToggleButton);
 Vue.use(VueYoutube);
 Vue.use(VueRouter);

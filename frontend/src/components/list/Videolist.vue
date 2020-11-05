@@ -14,7 +14,7 @@
             :width="100"
             :labels="{ checked: 'Speaking', unchecked: 'Dictation' }"
           />
-          <div class="upcoming-contens ma-5">
+          <div class="upcoming-contents ma-5">
             <VueSlickCarousel v-bind="settings" v-if='items.length'>
               <img
                 v-for="(item, index) in items"
@@ -117,10 +117,10 @@ export default {
       }
     },
     goWrite(index) {
-      this.$router.push({ name: 'Write', params: { index: String(index) } });
+      this.$router.push({ name: 'Write', query: { index: String(index) } });
     },
     goTalk(index) {
-      this.$router.push({ name: 'Talk', params: { index: String(index) } });
+      this.$router.push({ name: 'Talk', query: { index: String(index) } });
     },
     async getStart() {
       this.items = [];
