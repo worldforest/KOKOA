@@ -63,7 +63,7 @@ export default {
       correctAnswer: {
         title: 'Loading....',
         html: 'I will close in <b></b> milliseconds.',
-        timer: 500,
+        timer: 200,
         timerProgressBar: true,
         willOpen: () => {
           this.$swal.showLoading();
