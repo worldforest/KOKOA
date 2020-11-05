@@ -10,7 +10,9 @@ import Review from '@/components/user/Review.vue';
 import VueYoutube from 'vue-youtube';
 import VueSweetalert2 from 'vue-sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css';
+import ToggleButton from 'vue-js-toggle-button';
 
+Vue.use(ToggleButton);
 Vue.use(VueYoutube);
 Vue.use(VueRouter);
 Vue.use(VueSweetalert2);
