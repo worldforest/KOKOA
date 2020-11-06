@@ -19,33 +19,31 @@
 
         <template v-slot:default="{ items, isExpanded, expand }">
           <v-row>
-            <v-col v-for="item in items" :key="item.name" cols="12" sm="12" md="4" lg="3">
-              <v-card>
-                <v-card-title class="subheading font-weight-bold">
+            <v-col v-for="(item, index) in items" :key="index" cols="12" sm="12" md="4" lg="3">
+              <v-card
+              @click="setToTop(index)">
+                <v-card-title class="subheading font-weight-bold"
+               v-bind:id="'sentence'+index">
+                  {{ item.name }}
+                   <v-spacer></v-spacer>
                   <v-chip class="ma-2" color="red" text-color="white">
                     RED VELVET
                   </v-chip>
                   <v-chip class="ma-2" color="orange" text-color="white">
                     Yeri
                   </v-chip>
-                  {{ item.name }}
+                  <v-switch
+                    :input-value="isExpanded(item)"
+                    class="pl-4 mt-0"
+                    @change="v => expand(item, v)"
+                  ></v-switch>
+                  <!-- :label="isExpanded(item) ? 'Expanded' : 'Closed'" -->
                 </v-card-title>
-                <v-switch
-                  :input-value="isExpanded(item)"
-                  :label="isExpanded(item) ? 'Expanded' : 'Closed'"
-                  class="pl-4 mt-0"
-                  @change="v => expand(item, v)"
-                ></v-switch>
 
                 <v-divider></v-divider>
 
                 <v-list v-if="isExpanded(item)" dense>
-                  <!-- <v-list-item>
-                    <v-list-item-content>Calories:</v-list-item-content>
-                    <v-list-item-content class="align-end">
-                      {{ item.calories }}
-                    </v-list-item-content>
-                  </v-list-item> -->
+                  <Talk />
                 </v-list>
               </v-card>
             </v-col>
@@ -65,7 +63,13 @@
 </template>
 
 <script>
+import Talk from '../training/Talk.vue';
+
 export default {
+  name: 'Note',
+  components: {
+    Talk,
+  },
   data: () => ({
     singleExpand: true,
     itemsPerPage: 4,
@@ -84,6 +88,12 @@ export default {
       },
     ],
   }),
+  methods: {
+    setToTop(index) {
+      const elmnt = document.getElementById(`sentence${index}`);
+      elmnt.scrollIntoView();
+    },
+  },
 };
 </script>
 
