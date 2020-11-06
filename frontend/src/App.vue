@@ -3,11 +3,11 @@
     <!-- KOKOA LOGO -->
     <div id="logo" @click="goHome">
       KOKOA
-      <v-btn v-if="!isLogin" @click="getAuth()">
+    </div>
+    <v-btn v-show="!isLogin" @click="getAuth()">
         <img src="@/assets/google.png" alt="구글로그인버튼" style="width:30px" />
         login
       </v-btn>
-    </div>
     <!-- circular menu -->
     <quick-menu
       class="circular"
@@ -27,6 +27,7 @@
 
 <script>
 import quickMenu from 'vue-quick-menu';
+import { mapState, mapActions } from 'vuex';
 
 export default {
   name: 'App',
@@ -35,7 +36,7 @@ export default {
   },
   data() {
     return {
-      isLogin: false,
+      email: '',
       drawer: false,
       // circular menu settings
       count: 4,
@@ -52,23 +53,32 @@ export default {
       isOpenNewTab: false,
     };
   },
-
+  computed: {
+    ...mapState(['isLogin']),
+  },
+  watch: {
+    isLogin() {
+      console.log('Dfdf');
+    },
+  },
   methods: {
-    getAuth() {
-      this.$gAuth
-        .getAuthCode()
-        .then((authCode) => {
-          this.$store.dispatch('googleLogin', authCode);
-        })
-        .then((response) => {
-          console.log(response);
+    ...mapActions(['login']),
+    async getAuth() {
+      await this.$gAuth.signIn()
+        .then((data) => {
+          this.email = data.vt.bu; // 이메일
+          this.$store.dispatch('login', this.email);
         })
         .catch((error) => {
           console.log(error);
         });
     },
     goHome() {
-      this.$router.push('/');
+      this.$router.push('/').catch((error) => {
+        if (error.name !== 'NavigationDuplicated') {
+          throw error;
+        }
+      });
     },
     handleClick(item) {
       this.lastClicked = item;

@@ -3,7 +3,6 @@ import VueRouter from 'vue-router';
 import Write from '@/components/training/Write.vue';
 import Talk from '@/components/training/Talk.vue';
 import Home from '@/views/Home.vue';
-import Login from '@/components/user/Login.vue';
 import Artist from '@/components/Artist.vue';
 import Note from '@/components/user/Note.vue';
 import Review from '@/components/user/Review.vue';
@@ -12,9 +11,13 @@ import VueSweetalert2 from 'vue-sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css';
 import ToggleButton from 'vue-js-toggle-button';
 import VueAwesomeSwiper from 'vue-awesome-swiper';
-// import 'swiper/swiper-bundle.css';
 import 'swiper/css/swiper.css';
+import GAuth from 'vue-google-oauth2';
 
+Vue.use(GAuth, {
+  clientId: '925119046285-8pdsf0gb5d88g0t18ibhudioaodptq4h.apps.googleusercontent.com',
+  scope: 'profile email',
+});
 Vue.use(VueAwesomeSwiper);
 Vue.use(ToggleButton);
 Vue.use(VueYoutube);
@@ -25,11 +28,6 @@ const routes = [
     path: '/',
     name: 'Home',
     component: Home,
-  },
-  {
-    path: '/Login',
-    name: 'Login',
-    component: Login,
   },
   {
     path: '/Artist',
