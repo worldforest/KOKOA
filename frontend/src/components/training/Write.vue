@@ -54,19 +54,15 @@
 </template>
 <script>
 import draggable from 'vuedraggable';
+import http from '../../util/http-common';
 
 export default {
   name: 'Write',
   components: {
     draggable,
   },
-  props: {
-    index: {
-      type: String,
-      default: '',
-    },
-  },
   created() {
+    this.getData();
     this.answer = [];
     this.choicelist = [];
     const list = this.video[0].kor.split(' ');
@@ -80,6 +76,7 @@ export default {
   mounted() {},
   data() {
     return {
+      id: this.$route.query.index,
       url: 'mLx7D98zP_A',
       current: 0,
       video: [
@@ -239,6 +236,22 @@ export default {
       }
       this.choicelist = this.shuffle(this.choicelist);
       this.checklist = [];
+    },
+    async getData() {
+      // {
+      //     starttime: '00:00:00,001',
+      //     endtime: '00:00:01,831',
+      //     eng: '[National treasure zombie beast 2PM]',
+      //     kor: '[국보급 짐승 좀비 2PM]',
+      //   },
+      await http.get('/search/video/', { params: { id: this.id } })
+        .then((res) => {
+          console.log(res);
+          // for(let i=0; i<res.data)
+          // this.video.push({
+          //   starttime: res.data.English,
+          // });
+        });
     },
   },
 };

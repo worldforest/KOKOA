@@ -20,7 +20,7 @@
                 v-for="(item, index) in items"
                 :src="'http://img.youtube.com/vi/' + item.url + '/0.jpg'"
                 :key="index"
-                @click="goTraining(index)"
+                @click="goTraining(item)"
                 class="pa-1"
               />
             </VueSlickCarousel>
@@ -50,6 +50,8 @@ export default {
       team: '',
       page: 0,
       settings: {
+        // lazyload: 'ondemand',
+        // fade: true,
         arrows: true,
         infinite: true,
         speed: 3000,
@@ -63,7 +65,7 @@ export default {
       correctAnswer: {
         title: 'Loading....',
         html: 'I will close in <b></b> milliseconds.',
-        timer: 200,
+        timer: 2000,
         timerProgressBar: true,
         willOpen: () => {
           this.$swal.showLoading();
@@ -103,17 +105,18 @@ export default {
         if (pages !== 0) {
           await this.getMember(pages, this.filters, this.items);
         } else {
-          this.getStart();
+          await this.getStart();
         }
       }
     },
   },
   methods: {
-    goTraining(index) {
+    goTraining(item) {
+      console.log(item.id);
       if (this.toggled) {
-        this.goTalk(index);
+        this.goTalk(item.id);
       } else {
-        this.goWrite(index);
+        this.goWrite(item.id);
       }
     },
     goWrite(index) {

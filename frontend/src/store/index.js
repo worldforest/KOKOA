@@ -22,8 +22,8 @@ export default new Vuex.Store({
   },
   actions: {
     // eslint-disable-next-line no-unused-vars
-    login({ commit }, email) {
-      http
+    async login({ commit }, email) {
+      await http
         .get('/user/join/', { params: { email } })
         .then(() => {
           localStorage.setItem('email', email);

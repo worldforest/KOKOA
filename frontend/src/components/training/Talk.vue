@@ -79,13 +79,10 @@ export default {
   components: {
     Record,
   },
-  props: {
-    index: {
-      type: String,
-      default: '',
-    },
+  created() {
+    console.log('Dfdfdf');
+    console.log(this.$route.query.index);
   },
-  mounted() {},
   computed: {
     player() {
       return this.$refs.youtube.player;
@@ -93,6 +90,7 @@ export default {
   },
   data() {
     return {
+      id: this.$route.query.index,
       speechText: '',
       url: 'mLx7D98zP_A',
       replay: 0,
