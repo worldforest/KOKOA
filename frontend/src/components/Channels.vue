@@ -7,6 +7,7 @@
           v-for="(item, index) in items"
           :key="index"
           :style="{ 'background-image': 'url(' + require(`@/assets${item.img}`) + ')' }"
+
         ></swiper-slide>
         <!-- <div class="swiper-pagination" slot="pagination"></div> -->
         <div class="swiper-button-prev" slot="button-prev"></div>
@@ -16,7 +17,7 @@
     <v-flex d-flex>
       <v-layout wrap>
         <v-flex xs12 sm6 md4 lg3 xl2 v-for="(data, index) in items" :key="index">
-          <v-card class="ma-3 " @click="enter(data.id)">
+          <v-card class="ma-3" @click="enter(data.id)">
             <v-img class="scale" aspect-ratio="1" :src="require(`@/assets` + data.img)" />
             <v-card-title class="justify-center">{{ data.title }}</v-card-title>
           </v-card>
@@ -41,21 +42,22 @@ export default {
     return {
       items: channelList,
       swiperOption: {
+        autoHeight: true,
         effect: 'coverflow',
         spaceBetween: 30,
-        grabCursor: true,
+        // grabCursor: true,
         loop: true,
         centeredSlides: true,
-        slidesPerView: 'auto',
-        autoplay: {
-          delay: 2500,
-          disableOnInteraction: false,
-        },
+        slidesPerView: 2,
+        // autoplay: {
+        //   delay: 2500,
+        //   disableOnInteraction: false,
+        // },
         coverflowEffect: {
-          rotate: 90,
-          stretch: 0,
+          rotate: 60,
+          stretch: 2,
           depth: 200,
-          modifier: 3,
+          modifier: 2,
           slideShadows: true,
         },
         navigation: {
@@ -92,21 +94,20 @@ export default {
 }
 .example-3d {
   width: 100%;
-  height: 400px;
-  padding-top: 50px;
-  padding-bottom: 50px;
+  height: 50vh;
+  margin: 50px 0;
 }
 
 .swiper {
-  height: 100%;
-  width: 100%;
+  height: auto;
+  width: auto;
 
   .swiper-slide {
     display: flex;
     justify-content: center;
     align-items: center;
     width: 300px;
-    height: 300px;
+    height: 50vh;
     text-align: center;
     font-weight: bold;
     // font-size: $font-size-huge * 2;
