@@ -1,9 +1,9 @@
 <template>
   <div>
     <span @click="clickRCBtn(audioFlag)" style="width:64px; height:64px;">
-      <vue-record-audio @result="onResult" mode="press" />
+      <vue-record-audio  @result="onResult" mode="press" />
     </span>
-    <audio :src="audioSrc" controls="controls"></audio>
+    <audio style="width:70%; margin-left:7%;" :src="audioSrc" controls="controls"></audio>
     <!-- <p v-for="word in transcription">{{ word }}</p> -->
     <!-- <h1>발음 : {{ finalTranscript }}</h1> -->
   </div>
