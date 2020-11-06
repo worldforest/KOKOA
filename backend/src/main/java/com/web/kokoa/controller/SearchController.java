@@ -5,6 +5,7 @@ import com.web.kokoa.model.subtitles;
 import com.web.kokoa.model.video;
 import com.web.kokoa.repository.CategoryRepo;
 import com.web.kokoa.repository.MemberRepo;
+import com.web.kokoa.repository.VideoRepo;
 import com.web.kokoa.service.SearchService;
 import com.web.kokoa.service.TranslateService;
 import io.swagger.annotations.ApiOperation;
@@ -44,6 +45,9 @@ public class SearchController {
 
     @Autowired
     private TranslateService translateService;
+    
+    @Autowired
+    private VideoRepo videoRepo;
 
 
     @GetMapping("/idol/{page}")
@@ -70,7 +74,7 @@ public class SearchController {
         List<subtitles> list = searchService.getSubtitles(videoid);
         List<subtitles> korean = new ArrayList<>();
         List<subtitles> english = new ArrayList<>();
-
+        String url = videoRepo.findById(Integer.parseInt(id)).getUrl();
         for (subtitles s : list) {
             if (s.getType() == 0)
                 korean.add(s);
@@ -79,10 +83,11 @@ public class SearchController {
             }
         }
 
-        HashMap<String, List<subtitles>> map = new HashMap<>();
+        HashMap<String, Object> map = new HashMap<>();
         map.put("Korean",korean);
         map.put("English", english);
+        map.put("url",url);
 
-        return new ResponseEntity<HashMap<String, List<subtitles>>>(map, HttpStatus.OK);
+        return new ResponseEntity<HashMap<String,Object>>(map, HttpStatus.OK);
     }
 }
