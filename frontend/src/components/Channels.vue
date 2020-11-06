@@ -1,15 +1,14 @@
 <template>
   <div>
     <h2>Choose Your Star(가제)</h2>
-    <div class="example-3d">
-      <swiper class="swiper" :options="swiperOption">
+    <div class="example-3d" @mouseenter="hover = true" @mouseleave="hover = false">
+      <swiper class="swiper" :options="swiperOption" ref="swiperRef">
         <swiper-slide
           v-for="(item, index) in items"
           :key="index"
           :style="{ 'background-image': 'url(' + require(`@/assets${item.img}`) + ')' }"
-
+          @click.native="enter(item.id)"
         ></swiper-slide>
-        <!-- <div class="swiper-pagination" slot="pagination"></div> -->
         <div class="swiper-button-prev" slot="button-prev"></div>
         <div class="swiper-button-next" slot="button-next"></div>
       </swiper>
@@ -40,19 +39,20 @@ export default {
   },
   data() {
     return {
+      hover: false,
+      swiperRef: '',
       items: channelList,
       swiperOption: {
         autoHeight: true,
         effect: 'coverflow',
         spaceBetween: 30,
-        // grabCursor: true,
         loop: true,
         centeredSlides: true,
         slidesPerView: 2,
-        // autoplay: {
-        //   delay: 2500,
-        //   disableOnInteraction: false,
-        // },
+        autoplay: {
+          delay: 2500,
+          disableOnInteraction: true,
+        },
         coverflowEffect: {
           rotate: 60,
           stretch: 2,
@@ -70,6 +70,15 @@ export default {
   methods: {
     enter(id) {
       this.$router.push({ name: 'Artist', query: { groupid: String(id) } });
+    },
+  },
+  watch: {
+    hover() {
+      if (this.hover === true) {
+        this.$refs.swiperRef.swiperInstance.autoplay.stop();
+      } else {
+        this.$refs.swiperRef.swiperInstance.autoplay.start();
+      }
     },
   },
 };
@@ -116,6 +125,5 @@ export default {
     background-size: cover;
     // color: $white;
   }
-
 }
 </style>

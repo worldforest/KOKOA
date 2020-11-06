@@ -66,7 +66,6 @@ export default {
     async getAuth() {
       await this.$gAuth.signIn()
         .then((data) => {
-          console.log(data);
           this.email = data.vt.bu; // 이메일
           this.$store.dispatch('login', this.email);
         })
