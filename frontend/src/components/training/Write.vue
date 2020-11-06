@@ -61,8 +61,9 @@ export default {
   components: {
     draggable,
   },
-  created() {
-    this.getData();
+  async created() {
+    await this.getData();
+    console.log(this.video);
     this.answer = [];
     this.choicelist = [];
     const list = this.video[0].kor.split(' ');
@@ -73,32 +74,12 @@ export default {
     this.choicelist = this.shuffle(this.choicelist);
     this.checklist = [];
   },
-  mounted() {},
   data() {
     return {
       id: this.$route.query.index,
-      url: 'mLx7D98zP_A',
+      url: '',
       current: 0,
-      video: [
-        {
-          starttime: '00:00:00,001',
-          endtime: '00:00:01,831',
-          eng: '[National treasure zombie beast 2PM]',
-          kor: '[국보급 짐승 좀비 2PM]',
-        },
-        {
-          starttime: '00:00:01,832',
-          endtime: '00:00:04,034',
-          eng: '"Chansung lifts people up"',
-          kor: '"찬성은 사람을 들어"',
-        },
-        {
-          starttime: '00:00:04,035',
-          endtime: '00:00:06,406',
-          eng: '"Taecyeon is mad"',
-          kor: '"화가 잔뜩 난 택연"',
-        },
-      ],
+      video: [],
       playerVars: {
         modestbranding: 1,
         controls: 0,
@@ -195,10 +176,13 @@ export default {
       this.play();
     },
     timer(input) {
-      const hms = input;
+      const hms = input.replace(/'/g, '');
       const a = hms.split(':');
       const s = a[2].split(',');
-      const ms = Number(a[0] * 60 * 60) + Number(a[1] * 60) + Number(s[0]) + Number(s[1] / 1000);
+      let ms = Number(a[0] * 60 * 60) + Number(a[1] * 60) + Number(s[0]) + Number(s[1] / 1000);
+      if (ms === 0) {
+        ms += 0.001;
+      }
       return ms;
     },
     shuffle(array) {
@@ -238,19 +222,18 @@ export default {
       this.checklist = [];
     },
     async getData() {
-      // {
-      //     starttime: '00:00:00,001',
-      //     endtime: '00:00:01,831',
-      //     eng: '[National treasure zombie beast 2PM]',
-      //     kor: '[국보급 짐승 좀비 2PM]',
-      //   },
+      this.video = [];
       await http.get('/search/video/', { params: { id: this.id } })
         .then((res) => {
-          console.log(res);
-          // for(let i=0; i<res.data)
-          // this.video.push({
-          //   starttime: res.data.English,
-          // });
+          this.url = res.data.url;
+          for (let i = 0; i < res.data.Korean.length; i += 1) {
+            this.video.push({
+              starttime: res.data.Korean[i].starttime,
+              endtime: res.data.Korean[i].endtime,
+              eng: res.data.English[i].content,
+              kor: res.data.Korean[i].content,
+            });
+          }
         });
     },
   },
