@@ -1,6 +1,9 @@
 <template>
   <div>
-    <h2>Choose Your Star(가제)</h2>
+    <h2 style="color:#fff;
+  font-size:5vw;
+  display: flex;
+  justify-content: center;">Choose Your Artist</h2>
     <div class="example-3d" @mouseenter="hover = true" @mouseleave="hover = false">
       <swiper class="swiper" :options="swiperOption" ref="swiperRef">
         <swiper-slide
@@ -16,9 +19,9 @@
     <v-flex d-flex>
       <v-layout wrap>
         <v-flex xs12 sm6 md4 lg3 xl2 v-for="(data, index) in items" :key="index">
-          <v-card class="ma-3" @click="enter(data.id)">
-            <v-img class="scale" aspect-ratio="1" :src="require(`@/assets` + data.img)" />
-            <v-card-title class="justify-center">{{ data.title }}</v-card-title>
+          <v-card class="scale ma-3" @click="enter(data.id)">
+            <v-img aspect-ratio="1" :src="require(`@/assets` + data.img)" />
+            <v-card-title class="temp justify-center">{{ data.title }}</v-card-title>
           </v-card>
         </v-flex>
       </v-layout>
@@ -85,21 +88,22 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+* {
+  font-family: 'Merriweather', serif;
+}
 .scale {
   transform: scale(1);
-  /* -webkit-transform: scale(1);
-  -moz-transform: scale(1);
-  -ms-transform: scale(1);
-  -o-transform: scale(1); */
   transition: all 0.3s ease-in-out;
 }
+.temp{
+  background-color: rgba(0, 0, 0, 0.89);
+  padding: 1;
+  color: white;
+}
+
 .scale:hover {
   transform: scale(1.1);
   z-index: 1;
-  /* -webkit-transform: scale(1.2);
-  -moz-transform: scale(1.2);
-  -ms-transform: scale(1.2);
-  -o-transform: scale(1.2); */
 }
 .example-3d {
   width: 100%;
@@ -110,7 +114,7 @@ export default {
 .swiper {
   height: auto;
   width: auto;
-
+  --swiper-theme-color: #FDB165;
   .swiper-slide {
     display: flex;
     justify-content: center;
@@ -119,11 +123,9 @@ export default {
     height: 50vh;
     text-align: center;
     font-weight: bold;
-    // font-size: $font-size-huge * 2;
-    background-color: #2c8dfb;
+    background-color: #FDB165;
     background-position: center;
     background-size: cover;
-    // color: $white;
   }
 }
 </style>

@@ -39,15 +39,14 @@ export default {
       email: '',
       drawer: false,
       // circular menu settings
-      count: 4,
-      icons: ['fas fa-book', 'fas fa-history', 'fas fa-book-reader', 'fas fa-sign-out-alt'],
+      count: 3,
+      icons: ['fas fa-book', 'fas fa-history', 'fas fa-sign-out-alt'],
       list: [
         { isLink: true, url: '/note' },
         { isLink: true, url: '/review' },
-        { isLink: true, url: '/foo' },
         { isLink: false },
       ],
-      backgroundColor: 'rgb(180, 91, 180)',
+      backgroundColor: 'rgb(255, 127, 0)',
       color: '#ffffff',
       position: 'top-right',
       isOpenNewTab: false,
@@ -87,6 +86,9 @@ export default {
 };
 </script>
 <style>
+#create{
+  background-color: rgba(0, 0, 0, 0.89);
+}
 .circular {
   position: fixed;
   z-index: 999;
@@ -95,6 +97,6 @@ export default {
 #logo {
   position: fixed;
   z-index: 999;
-  color: rgb(180, 91, 180);
+  color: rgb(255, 127, 0);
 }
 </style>

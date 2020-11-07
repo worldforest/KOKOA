@@ -5,7 +5,7 @@
       class="header mr-auto"
       :style="{ 'background-image': 'url(' + require(`@/assets/img/${team}/${team}.jpg`) + ')' }"
     >
-      <div>{{ team }}</div>
+      <div class="group">{{ team }}</div>
     </div>
     <!-- 멤버 -->
     <v-row justify="space-around" class="member">
@@ -15,7 +15,7 @@
           alt=""
           @click="changeSelected(index)"
         />
-        <div>{{ member.name }}</div>
+        <div class="member">{{ member.name }}</div>
       </div>
     </v-row>
     <!-- 영상 리스트 -->
@@ -79,24 +79,38 @@ export default {
 }
 
 .header {
-  background-color: #e7d0e2; /* Grey background */
-  /* padding: 50px; */
-  margin-bottom: 30px;
-  height: 500px;
+  height: 300px;
   /* background-size: 80% 80%; */
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
-  border: 2px solid;
-  color: rgb(180, 91, 180);
   resize: both;
-  text-align: center;
-  font-size: 60px;
-  font-weight: bold;
+  position: relative;
+  display: flex;
+  align-content: center;
+  justify-content: center;
+
+}
+
+.group{
+  font-size: 7vw;
+  font-family: 'Bangers', cursive;
+  color: rgb(255, 127, 0);
+  /* margin-bottom: 0; */
+  position: absolute;
+  bottom: 0px;
+  /* padding-top: 25vh; */
 }
 
 .member {
+  margin-top: 20px;
+  margin-bottom: 0.4vw;
+  justify-content: center;
+  font-family: 'Bangers', cursive;
   text-align: center;
+  font-size: 2vw;
+  justify-items: center;
+  color: white;
 }
 
 .member img {
@@ -105,7 +119,7 @@ export default {
   height: 100px;
 }
 .selected {
-  border: 10px solid #0F0;
+  border: 3px solid rgb(255, 127, 0);
 }
 
 </style>
