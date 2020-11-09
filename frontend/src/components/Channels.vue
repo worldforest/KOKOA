@@ -100,7 +100,6 @@ export default {
   padding: 1;
   color: white;
 }
-
 .scale:hover {
   transform: scale(1.1);
   z-index: 1;

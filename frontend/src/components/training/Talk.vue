@@ -19,7 +19,7 @@
       <div class="d-flex justify-space-around mt-3">
         <div>
           <v-btn @click="goPrevious" icon>
-            <v-icon>
+            <v-icon class="temp">
               mdi-arrow-left
             </v-icon>
           </v-btn>
@@ -167,6 +167,7 @@ export default {
 };
 </script>
 <style>
+
 .speech-bubble {
   position: relative;
   background: #cfcdce;

@@ -93,10 +93,17 @@ export default {
   position: fixed;
   z-index: 999;
 }
-
+.myTitle{
+  /* background-color: rgba(0, 0, 0, 0.89); */
+  padding: 1;
+  color: white;
+}
 #logo {
   position: fixed;
   z-index: 999;
   color: rgb(255, 127, 0);
+}
+* {
+  font-family: 'Merriweather', serif;
 }
 </style>

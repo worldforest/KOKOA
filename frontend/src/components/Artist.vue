@@ -15,7 +15,7 @@
           alt=""
           @click="changeSelected(index)"
         />
-        <div class="member">{{ member.name }}</div>
+        <div class="myTitle member">{{ member.name }}</div>
       </div>
     </v-row>
     <!-- 영상 리스트 -->

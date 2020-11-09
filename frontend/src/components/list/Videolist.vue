@@ -4,18 +4,19 @@
       <b-row>
         <b-col sm="12" class="overflow-hidden">
           <div class="d-flex align-items-center justify-content-between">
-            <h4 class="main-title">{{ toggled === true ? "Speaking" : "Dictation" }}</h4>
-            <h4>{{filters}}</h4>
+            <h4 class="myTitle">{{ filters }}</h4>
           </div>
-          <toggle-button
-            :color="{ checked: '#00FF00', unchecked: '#FF0000', disabled: '#CCCCCC' }"
-            :switch-color="{ checked: '#25EF02', unchecked: 'linear-gradient(red, yellow)' }"
-             @change="toggled = $event.value"
-            :width="100"
-            :labels="{ checked: 'Speaking', unchecked: 'Dictation' }"
-          />
+          <div class="toggle-btn">
+            <form class="tabber">
+              <label for="t1">Speaking</label>
+              <input id="t1" name="food" type="radio" checked />
+              <label for="t2">Dictation</label>
+              <input id="t2" name="food" type="radio" />
+              <div class="blob"></div>
+            </form>
+          </div>
           <div class="upcoming-contents ma-5">
-            <VueSlickCarousel v-bind="settings" v-if='items.length'>
+            <VueSlickCarousel v-bind="settings" v-if="items.length">
               <img
                 v-for="(item, index) in items"
                 :src="'http://img.youtube.com/vi/' + item.url + '/0.jpg'"
@@ -139,10 +140,9 @@ export default {
     },
     getMemberPages(data) {
       return new Promise((resolve) => {
-        http.get(`/search/member/0?membername=${data}`)
-          .then((res) => {
-            resolve(res.data.totalPages);
-          });
+        http.get(`/search/member/0?membername=${data}`).then((res) => {
+          resolve(res.data.totalPages);
+        });
         // .catch(() => {
         //   resolve(-1);
         // });
@@ -167,7 +167,7 @@ export default {
   },
 };
 </script>
-<style>
+<style lang="scss">
 .slick-prev:before {
   color: red !important;
   background-color: #eee;
@@ -178,5 +178,141 @@ export default {
 }
 .choice img {
   height: 100%;
+}
+.toggle-btn {
+  height: 15vh;
+  min-height: 5vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Concert One", cursive;
+  font-size: 1.5rem;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+svg {
+  display: none;
+}
+.tabber {
+  width: 50%;
+  height: 80%;
+  position: relative;
+  display: flex;
+  align-items: stretch;
+  justify-content: stretch;
+  label {
+    width: 50%;
+    user-select: none;
+    padding: 2rem;
+    text-align: center;
+    cursor: pointer;
+    will-change: transform;
+    transform: translateZ(0px);
+    z-index: 1;
+    transition: transform 125ms ease-in-out, filter 125ms ease-in-out;
+    // filter: blur(.25rem);
+    &:hover {
+      transform: scale(1.15);
+      // filter: blur(0px);
+    }
+  }
+  input[type="radio"] {
+    display: none;
+    // static
+    &#t1 ~ .blob {
+      transform-origin: right center;
+    }
+    &#t2 ~ .blob {
+      transform-origin: left center;
+    }
+    // animated
+    &#t1:checked {
+      ~ .blob {
+        background: cornflowerblue;
+        animation-name: stretchyRev;
+      }
+    }
+    &#t2:checked {
+      ~ .blob {
+        background-color: skyblue;
+        animation-name: stretchy;
+      }
+    }
+  }
+
+  .blob {
+    top: 0;
+    left: 0;
+    width: 50%;
+    height: 100%;
+    position: absolute;
+    z-index: 0;
+    border-radius: 4rem;
+    animation-duration: 0.5s;
+    animation-direction: forwards;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+    transition: transform 150ms ease, background 150ms ease;
+    filter: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" version="1.1"><defs><filter id="goo"><feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur" /><feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 19 -9" result="goo" /><feComposite in="SourceGraphic" in2="goo" operator="atop"/></filter></defs></svg>#goo');
+    &:before,
+    &:after {
+      display: block;
+      content: "";
+      position: absolute;
+      top: 0;
+      background-color: inherit;
+      height: 100%;
+      width: 50%;
+      border-radius: 100%;
+      transform: scale(1.15);
+      transition: transform 150ms ease;
+      animation-name: pulse;
+      animation-duration: 0.5s;
+      animation-iteration-count: infinite;
+      animation-direction: alternate;
+    }
+    &:before {
+      left: 0;
+      animation-delay: 0.15s;
+    }
+    &:after {
+      right: 0;
+    }
+  }
+}
+
+@keyframes stretchy {
+  0% {
+    transform: translateX(0) scaleX(1);
+  }
+  50% {
+    transform: translateX(0) scaleX(2);
+  }
+  100% {
+    transform: translateX(100%) scaleX(1);
+  }
+}
+
+@keyframes stretchyRev {
+  0% {
+    transform: translateX(100%) scaleX(1);
+  }
+  50% {
+    transform: translateX(0) scaleX(2);
+  }
+  100% {
+    transform: translateX(0) scaleX(1);
+  }
+}
+
+@keyframes pulse {
+  0%,
+  50% {
+    transform: scaleX(1);
+  }
+  25%,
+  75% {
+    transform: scaleX(1.5);
+  }
 }
 </style>

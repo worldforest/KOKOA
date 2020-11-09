@@ -6,13 +6,13 @@
       </div>
       <div class="d-flex justify-space-around my-5">
         <v-btn @click="previous" icon>
-          <v-icon>
+          <v-icon color="white">
             mdi-arrow-left
           </v-icon>
         </v-btn>
         <b-button class="mx-5" variant="success" @click="playVideo">play</b-button>
         <v-btn @click="next" icon>
-          <v-icon>
+          <v-icon color="white">
             mdi-arrow-right
           </v-icon>
         </v-btn>
@@ -22,7 +22,7 @@
       <v-row class="d-flex justify-center ma-5">
         <v-col cols="12">
           <div class="answerDiv">
-            <h3 class="d-flex justify-center">Answer</h3>
+            <h3 class="myTitle d-flex justify-center">Answer</h3>
             <b-button class="mr-10" @click="reset">Reset</b-button>
           </div>
           <draggable
@@ -37,7 +37,7 @@
         </v-col>
 
         <v-col cols="12">
-          <h3 class="d-flex justify-center">Choice</h3>
+          <h3 class="myTitle d-flex justify-center">Choice</h3>
           <draggable
             class="row wrap fill-height align-center justify-center sortable-list"
             :list="choicelist"
@@ -63,7 +63,6 @@ export default {
   },
   async created() {
     await this.getData();
-    console.log(this.video);
     this.answer = [];
     this.choicelist = [];
     const list = this.video[0].kor.split(' ');
@@ -144,7 +143,6 @@ export default {
         this.$swal.fire(n.correctAnswer).then(() => {
           this.current += 1;
         });
-        // this.current += 1;
       }
     },
     current() {
