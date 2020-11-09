@@ -28,7 +28,7 @@ Vue.use(VueSweetalert2);
 
 const onlyAuthUser = (to, from, next) => {
   // 로그인 된 유저만 접속 가능
-  if (store.state.isLogin === true || localStorage.getItem('token') !== null) {
+  if (store.state.isLogin === true || localStorage.getItem('email') !== null) {
     next();
   } else {
     alert('Login please!!');

@@ -9,9 +9,9 @@
           <div class="toggle-btn">
             <form class="tabber">
               <label for="t1">Speaking</label>
-              <input id="t1" name="food" type="radio" checked />
+              <input id="t1" name="food" type="radio" value="Speaking" v-model="choice"/>
               <label for="t2">Dictation</label>
-              <input id="t2" name="food" type="radio" />
+              <input id="t2" name="food" type="radio" value="Dictation" v-model="choice"/>
               <div class="blob"></div>
             </form>
           </div>
@@ -46,6 +46,7 @@ export default {
   data() {
     return {
       items: [],
+      choice: 'Speaking',
       groupid: this.$route.query.groupid,
       teams: channelList,
       team: '',
@@ -61,7 +62,6 @@ export default {
         // rows: 2,
       },
       modalShow: false,
-      toggled: false,
       timerInterval: '',
       correctAnswer: {
         title: 'Loading....',
@@ -110,11 +110,12 @@ export default {
         }
       }
     },
+
   },
   methods: {
     goTraining(item) {
       console.log(item.id);
-      if (this.toggled) {
+      if (this.choice === 'Speaking') {
         this.goTalk(item.id);
       } else {
         this.goWrite(item.id);
