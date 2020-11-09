@@ -1,45 +1,45 @@
 <template>
   <div>
-    <full-page :options='options' id='fullpage' ref='fullpage'>
-      <div class='section s0'>
+    <full-page :options="options" id="fullpage" ref="fullpage">
+      <div class="section s0">
         <h3>Learn Korean</h3>
         <h3>with K-pop Artist</h3>
       </div>
-      <div class='section s1'>
+      <div class="section s1">
         <h3>select your Artist</h3>
       </div>
-      <div class='section s2'>
-        <div class='slide'>
+      <div class="section s2">
+        <div class="slide">
           <h3>Speaking</h3>
         </div>
-        <div class='slide'>
+        <div class="slide">
           <h3>Check your pronunciation</h3>
         </div>
       </div>
-      <div class='section s3'>
-        <div class='slide'>
+      <div class="section s3">
+        <div class="slide">
           <h3>Listening</h3>
           <h3>&</h3>
           <h3>Writing</h3>
         </div>
-        <div class='slide'>
+        <div class="slide">
           <h3>Matching Sentences</h3>
         </div>
       </div>
-      <div class='section'>
+      <div class="section">
         <h3>Let's go to learn</h3>
         <h3>with K-pop Artist</h3>
         <v-btn @click="getAuth()">
-        <img src="@/assets/google.png" alt="구글로그인버튼" style="width:30px" />
-        login
-      </v-btn>
+          <img src="@/assets/google.png" alt="구글로그인버튼" style="width:30px" />
+          login
+        </v-btn>
       </div>
     </full-page>
 
-    <ul class='actions'>
+    <ul class="actions">
       <!-- <li @click='$refs.fullpage.api.moveSectionDown()' class='actions-button'>Down</li>
       <li @click='$refs.fullpage.api.moveSectionUp()' class='actions-button'>Up</li> -->
-      <li @click='$refs.fullpage.api.silentMoveTo(5, 5)' class='actions-button'>go to learn 📚</li>
+      <li @click="$refs.fullpage.api.silentMoveTo(5, 5)" class="actions-button">go to learn 📚</li>
     </ul>
   </div>
 </template>
@@ -75,11 +75,11 @@ export default {
     };
   },
   methods: {
-    afterLoad(origin, destination, direction) {
-      console.log('After load....');
-      console.log(destination);
-      console.log(direction);
-    },
+    // afterLoad(origin, destination, direction) {
+    //   console.log('After load....');
+    //   console.log(destination);
+    //   console.log(direction);
+    // },
     addSection() {
       const newSectionNumber = document.querySelectorAll('.fp-section').length + 1;
 
@@ -120,7 +120,6 @@ export default {
     },
     ...mapActions(['login']),
     async getAuth() {
-      console.log('dfdf');
       await this.$gAuth
         .signIn()
         .then((data) => {
@@ -211,11 +210,11 @@ h6 {
   margin: 0;
   padding: 0;
   /* font-family: 'Space Grotesk', sans-serif; */
-  font-family: 'Merriweather', serif;
+  font-family: "Merriweather", serif;
 }
 q:before,
 q:after {
-  content: '';
+  content: "";
 }
 abbr,
 acronym {
@@ -237,70 +236,70 @@ body {
   text-align: center;
 }
 .s0 {
-    background: url(https://www.c-mw.net/wp-content/uploads/2017/06/Seoul-City-Landscape-CNEW-1600x1000.jpeg);
-    /* background: url(https://s3-eu-west-1.amazonaws.com/eflanguagesblog/wp-content/uploads/2018/12/05222611/Why-is-the-world-obsessed-with-all-things-Korean.jpg); */
-    /* background-image: url('../assets/korea1.jpg'); */
-    background-size: cover;
-    position: relative;
+  background: url(https://www.c-mw.net/wp-content/uploads/2017/06/Seoul-City-Landscape-CNEW-1600x1000.jpeg);
+  /* background: url(https://s3-eu-west-1.amazonaws.com/eflanguagesblog/wp-content/uploads/2018/12/05222611/Why-is-the-world-obsessed-with-all-things-Korean.jpg); */
+  /* background-image: url('../assets/korea1.jpg'); */
+  background-size: cover;
+  position: relative;
 }
-.s0::before{
-    content: "";
-    opacity: 0.5;
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    right: 0px;
-    bottom: 0px;
-    background-color: #000;
+.s0::before {
+  content: "";
+  opacity: 0.5;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  background-color: #000;
 }
-.section h3{
-    position: relative;
-    font-size: 6rem;
+.section h3 {
+  position: relative;
+  font-size: 6rem;
 }
 .s1 {
-    background: url(https://static-assets.hallyulife.com/kpop-girl-group-reputation-may-2020.jpg);
-    background-size: cover;
-    position: relative;
+  background: url(https://static-assets.hallyulife.com/kpop-girl-group-reputation-may-2020.jpg);
+  background-size: cover;
+  position: relative;
 }
-.s1::before{
-    content: "";
-    opacity: 0.5;
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    right: 0px;
-    bottom: 0px;
-    background-color: #000;
+.s1::before {
+  content: "";
+  opacity: 0.5;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  background-color: #000;
 }
 .s2 {
-    background: url(https://ieltsprofi.com/blog/wp-content/uploads/2020/08/speaking_part1-scaled-6.jpg);
-    background-size: cover;
-    position: relative;
+  background: url(https://ieltsprofi.com/blog/wp-content/uploads/2020/08/speaking_part1-scaled-6.jpg);
+  background-size: cover;
+  position: relative;
 }
-.s2::before{
-    content: "";
-    opacity: 0.5;
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    right: 0px;
-    bottom: 0px;
-    background-color: #000;
+.s2::before {
+  content: "";
+  opacity: 0.5;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  background-color: #000;
 }
 .s3 {
-    background: url(https://d2wldp4wpenmih.cloudfront.net/wp-content/uploads/2018/11/effective-listening-skills.jpg);
-    background-size: cover;
-    position: relative;
+  background: url(https://d2wldp4wpenmih.cloudfront.net/wp-content/uploads/2018/11/effective-listening-skills.jpg);
+  background-size: cover;
+  position: relative;
 }
-.s3::before{
-    content: "";
-    opacity: 0.5;
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    right: 0px;
-    bottom: 0px;
-    background-color: #000;
+.s3::before {
+  content: "";
+  opacity: 0.5;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  background-color: #000;
 }
 #section-1 h2 {
   color: #fff;
@@ -377,7 +376,7 @@ h3 {
   padding: 0 1.1em 1.1em 1.1em;
 }
 #menu li.active a:after {
-  content: '';
+  content: "";
   margin: 0 1.1em 0 1.1em;
   height: 2px;
   background: #fff;
@@ -404,7 +403,7 @@ h3 {
   display: inline-block;
   margin: 0.1em 0.1em;
   font-size: 2.5em;
-  font-family: 'Lobster', cursive;
+  font-family: "Lobster", cursive;
 }
 .actions-button {
   padding: 0.23em 1.07em;

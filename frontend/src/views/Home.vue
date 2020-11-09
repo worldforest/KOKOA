@@ -17,16 +17,8 @@ export default {
     Main,
     Intro,
   },
-  created() {
-    console.log(this.isLogin);
-  },
   computed: {
     ...mapState(['isLogin']),
-  },
-  watch: {
-    isLogin() {
-      console.log('Dfdf');
-    },
   },
 };
 </script>

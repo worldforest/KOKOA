@@ -13,6 +13,8 @@ import ToggleButton from 'vue-js-toggle-button';
 import VueAwesomeSwiper from 'vue-awesome-swiper';
 import 'swiper/css/swiper.css';
 import GAuth from 'vue-google-oauth2';
+// eslint-disable-next-line import/extensions
+import store from '@/store/index.js';
 
 Vue.use(GAuth, {
   clientId: '925119046285-8pdsf0gb5d88g0t18ibhudioaodptq4h.apps.googleusercontent.com',
@@ -23,6 +25,16 @@ Vue.use(ToggleButton);
 Vue.use(VueYoutube);
 Vue.use(VueRouter);
 Vue.use(VueSweetalert2);
+
+const onlyAuthUser = (to, from, next) => {
+  // 로그인 된 유저만 접속 가능
+  if (store.state.isLogin === true || localStorage.getItem('token') !== null) {
+    next();
+  } else {
+    alert('Login please!!');
+    next('/');
+  }
+};
 const routes = [
   {
     path: '/',
@@ -33,30 +45,50 @@ const routes = [
     path: '/Artist',
     name: 'Artist',
     component: Artist,
+    beforeEnter: onlyAuthUser,
   },
   {
     path: '/write',
     component: Write,
     name: 'Write',
     props: true,
+    beforeEnter: onlyAuthUser,
   },
   {
     path: '/talk',
     component: Talk,
     name: 'Talk',
     props: true,
+    beforeEnter: onlyAuthUser,
   },
   {
     path: '/note',
     component: Note,
     name: 'Note',
     props: true,
+    beforeEnter: onlyAuthUser,
   },
   {
     path: '/review',
     component: Review,
     name: 'Review',
     props: true,
+    beforeEnter: onlyAuthUser,
+  },
+  {
+    path: '/logout',
+    beforeEnter: () => {
+      store.state.email = null;
+      store.state.isLogin = false;
+      localStorage.clear();
+    },
+  },
+  {
+    path: '*',
+    beforeEnter: (to, from, next) => {
+      alert('Not exist Page');
+      next('/');
+    },
   },
 ];
 

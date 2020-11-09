@@ -28,7 +28,6 @@ export default new Vuex.Store({
         .then(() => {
           localStorage.setItem('email', email);
           this.commit('setLogIn', email);
-          console.log('로그인 성공');
         })
         .catch((err) => {
           console.log(err);
@@ -39,11 +38,12 @@ export default new Vuex.Store({
       const email = localStorage.getItem('email');
       if (email !== null) {
         commit('setLogIn', email);
-        console.log('리로드 성공');
       } else {
         commit('setLogOut');
-        console.log('리로드실패');
       }
+    },
+    logout({ commit }) {
+      commit('setLogout');
     },
   },
   modules: {},
