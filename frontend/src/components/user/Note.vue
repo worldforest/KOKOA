@@ -1,72 +1,48 @@
 <template>
-  <div>
-    <h2>Note</h2>
-    <h3>Review your incorrect sentences.</h3>
-    <!-- 문장 목록 -->
-    <v-container fluid>
-      <v-data-iterator
-        :items="items"
-        item-key="name"
-        :items-per-page.sync="itemsPerPage"
-        :single-expand="singleExpand"
-        hide-default-footer
-      >
-        <template v-slot:header>
-          <v-toolbar class="mb-2" color="indigo darken-5" dark flat>
-            <v-toolbar-title>This is a header</v-toolbar-title>
-          </v-toolbar>
-        </template>
-
-        <template v-slot:default="{ items, isExpanded, expand }">
-          <v-row>
-            <v-col v-for="(item, index) in items" :key="index" cols="12" sm="12" md="4" lg="3">
-              <v-card
-              @click="setToTop(index)">
-                <v-card-title class="subheading font-weight-bold"
-               v-bind:id="'sentence'+index">
-                  {{ item.name }}
-                   <v-spacer></v-spacer>
-                  <v-chip class="ma-2" color="red" text-color="white">
-                    RED VELVET
-                  </v-chip>
-                  <v-chip class="ma-2" color="orange" text-color="white">
-                    Yeri
-                  </v-chip>
-                  <v-switch
-                    :input-value="isExpanded(item)"
-                    class="pl-4 mt-0"
-                    @change="v => expand(item, v)"
-                  ></v-switch>
-                  <!-- :label="isExpanded(item) ? 'Expanded' : 'Closed'" -->
-                </v-card-title>
-
-                <v-divider></v-divider>
-
-                <v-list v-if="isExpanded(item)" dense>
-                  <Talk />
-                </v-list>
-              </v-card>
-            </v-col>
-          </v-row>
-        </template>
-
-        <template v-slot:footer>
-          <v-toolbar class="mt-2" color="indigo" dark flat>
-            <v-toolbar-title class="subheading">
-              This is a footer
-            </v-toolbar-title>
-          </v-toolbar>
-        </template>
-      </v-data-iterator>
-    </v-container>
+  <div class="paper">
+    <div class="lines">
+      <div class="text">
+      <!-- contenteditable spellcheck="false"-->
+        <h2>Note - Review your incorrect sentences.</h2><br />
+        <!-- 문장 목록 -->
+        <div>
+          <h3>[Speaking]</h3>
+          <div v-for="(item, index) in items" :key="index">
+            <div @click="expanded === index ?
+            expanded = -1 : setToTop(index)" :id="'sentence'+index">
+            {{index}} : {{item.name}}
+            <v-space />
+            <v-chip
+              class="ma-2"
+              color="pink"
+            >
+              팀명
+            </v-chip>
+             <v-chip
+              class="ma-2"
+              color="orange"
+            >
+              멤버명
+            </v-chip>
+            </div>
+            <div v-if="expanded === index">
+              <Talk style="background: lightgoldenrodyellow"/>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="holes hole-top"></div>
+  <div class="holes hole-middle"></div>
+  <div class="holes hole-bottom"></div>
   </div>
 </template>
 
 <script>
-import Talk from '../training/Talk.vue';
+import Talk from "../training/Talk.vue";
 
 export default {
-  name: 'Note',
+  name: "Note",
   components: {
     Talk,
   },
@@ -75,26 +51,94 @@ export default {
     itemsPerPage: 4,
     items: [
       {
-        name: '찬성은 사람을 들어',
+        name: "찬성은 사람을 들어",
       },
       {
-        name: 'Ice cream sandwich',
+        name: "Ice cream sandwich",
       },
       {
-        name: 'Eclair',
+        name: "Eclair",
       },
       {
-        name: 'Cupcake',
+        name: "Cupcake",
       },
     ],
+    expanded: -1,
   }),
   methods: {
     setToTop(index) {
       const elmnt = document.getElementById(`sentence${index}`);
       elmnt.scrollIntoView();
+      this.expanded = index;
     },
   },
 };
 </script>
 
-<style></style>
+<style>
+@import url(https://fonts.googleapis.com/css?family=Indie+Flower);
+/* body {
+  margin: 0;
+  padding: 0;
+  background: lightgoldenrodyellow;
+} */
+.paper {
+  position: absolute;
+  /* height: 550px;
+  width: 450px; */
+  width: 90%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.9);
+  margin: -350px -25% 30px;
+  left: 30%;
+  top: 50%;
+  box-shadow: 0px 0px 5px 0px #888;
+}
+.paper::before {
+  content: "";
+  position: absolute;
+  left: 45px;
+  height: 100%;
+  width: 2px;
+  background: rgba(255, 0, 0, 0.4);
+}
+.lines {
+  margin-top: 40px;
+  height: calc(100% - 40px);
+  width: 100%;
+  background-image: repeating-linear-gradient(
+    white 0px,
+    white 24px,
+    steelblue 25px
+  );
+}
+.text {
+  position: absolute;
+  top: 65px;
+  left: 55px;
+  bottom: 10px;
+  right: 10px;
+  line-height: 25px;
+  font-family: "Indie Flower";
+  overflow: auto;
+  outline: none;
+}
+.holes {
+  position: absolute;
+  left: 10px;
+  height: 25px;
+  width: 25px;
+  background: lightgoldenrodyellow;
+  border-radius: 50%;
+  box-shadow: inset 0px 0px 2px 0px #888;
+}
+.hole-top {
+  top: 10%;
+}
+.hole-middle {
+  top: 50%;
+}
+.hole-bottom {
+  bottom: 10%;
+}
+</style>
