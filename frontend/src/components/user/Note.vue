@@ -26,7 +26,7 @@
             </v-chip>
             </div>
             <div v-if="expanded === index">
-              <Talk style="background: lightgoldenrodyellow"/>
+              <Talk style="background: white; z-index:2"/>
             </div>
           </div>
         </div>
@@ -88,7 +88,7 @@ export default {
   width: 450px; */
   width: 90%;
   height: 100%;
-  background: rgba(255, 255, 255, 0.9);
+  background: lightgoldenrodyellow;
   margin: -350px -25% 30px;
   left: 30%;
   top: 50%;
@@ -107,8 +107,8 @@ export default {
   height: calc(100% - 40px);
   width: 100%;
   background-image: repeating-linear-gradient(
-    white 0px,
-    white 24px,
+    lightgoldenrodyellow 0px,
+    lightgoldenrodyellow 24px,
     steelblue 25px
   );
 }
