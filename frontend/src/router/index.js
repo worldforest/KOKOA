@@ -85,6 +85,10 @@ const routes = [
     },
   },
   {
+    path: '/api',
+   
+    },
+  {
     path: '*',
     beforeEnter: (to, from, next) => {
       alert('Not exist Page');
