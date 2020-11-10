@@ -1,115 +1,74 @@
 <template>
-  <div>
-     <div class="d-flex justify-center"
-     style="min-width: 100px; max-width: 100%;">
-       <!-- left side -->
-       <v-card
-        class="pa-2"
-        outlined
-        tile
-      >
-      <youtube
-        :video-id="url"
-        ref="youtube"
-        :player-vars="playerVars"
-        flex
-        @ended="onEnded"
-      ></youtube>
- <div class="d-flex justify-space-around my-5">
-      <b-button class="mx-5" variant="success" @click="playVideo">play</b-button>
-      <b-button variant="danger" @click="stopVideo">stop</b-button>
-    </div>
-    <div class="d-flex justify-space-around mt-3">
-      <div>
-      <v-btn
-      @click="goPrevious"
-      icon>
-        <v-icon
-        >
-          mdi-arrow-left
-        </v-icon>
-      </v-btn>
+  <v-row>
+    <!-- left side -->
+    <v-col class="youtubeContainer" cols="12" lg="8">
+      <div class="d-flex justify-center mt-3">
+        <youtube
+          :video-id="url"
+          ref="youtube"
+          :player-vars="playerVars"
+          flex
+        ></youtube>
       </div>
-      <div>
-        {{video[replay].kor}}
-        <v-btn
-        class="ma-2"
-        text
-        icon
-        color="purple lighten-2"
-        @click="like"
-        >
-          <v-icon>mdi-thumb-up</v-icon>
+     <div class="d-flex justify-space-around my-5">
+        <v-btn @click="previous" icon>
+          <v-icon color="white">
+            mdi-arrow-left
+          </v-icon>
         </v-btn>
-      </div>
-      <div>
-        <v-btn
-        @click="goNext"
-        icon>
-          <v-icon
-          >
+        <b-button class="mx-5" variant="success" @click="playVideo">play</b-button>
+        <v-btn @click="next" icon>
+          <v-icon color="white">
             mdi-arrow-right
           </v-icon>
         </v-btn>
       </div>
-   </div>
-    <div class="d-flex justify-center mt-3">
-        {{video[replay].eng}}
-    </div>
-       </v-card>
-       <!-- right side -->
-       <v-card
-        class="pa-2"
-        outlined
-        tile
-      >
-        <div>
-          //음성녹음 컴포넌트//
-          <Record @child-event="receiveText"/>
-        </div>
-        <h2>
-          테스트 : {{speechText}}
-        </h2>
-        <div class="d-flex justify-space-around">
-          <v-btn
-            class="ma-2"
-            text
-            icon
-            color="purple lighten-2">
-            <v-icon>mdi-clipboard-edit-outline</v-icon>
-            오답노트
-          </v-btn>
-          <div class="speech-bubble">
-          표시된 부분에 유의해서<br />발음해보세요 :)
+      <div class="myTitle d-flex justify-space-around my-5">
+        {{answer}}
+      </div>
+    </v-col>
+    <!-- right side -->
+    <v-col class="testContainer" cols="12" lg="4">
+      <v-row class="d-flex justify-center ma-5">
+        <v-col cols="12">
+          <div>
+            <Record @child-event="receiveText" />
           </div>
-        </div>
-        <h4>
-          gamsahamnida yeoreobun
-        </h4>
-        <div
-        style="background:purple">
-          //사전//
-        </div>
-      </v-card>
-    </div>
-
-  </div>
+          <!-- 나의 발음 -->
+          <h2 class="myTitle d-flex justify-space-around my-5">
+            {{ speechText }}
+          </h2>
+          <div class="d-flex justify-space-around">
+            <v-btn class="ma-2" text icon color="purple lighten-2">
+              <v-icon>mdi-clipboard-edit-outline</v-icon>
+              오답노트
+            </v-btn>
+            <div class="speech-bubble">표시된 부분에 유의해서<br />발음해보세요 :)</div>
+          </div>
+          <h4 class="myTitle d-flex justify-space-around">
+            {{romaza}}
+          </h4>
+          <div style="background:purple" v-for="(item,index) in dict" :key="index">
+            {{item.kor + " " + item.eng + " " + item.dfn}}
+          </div>
+        </v-col>
+      </v-row>
+    </v-col>
+  </v-row>
 </template>
 <script>
 import Record from './Record.vue';
+import http from '../../util/http-common';
 
 export default {
   name: 'Talk',
   components: {
     Record,
   },
-  props: {
-    index: {
-      type: String,
-      default: '',
-    },
+  async created() {
+    await this.getData();
+    this.answer = this.video[0].kor.replace(/[&/\\#,+()$~%.'":*?!<>{}]/g, ' ');
   },
-  mounted() {},
   computed: {
     player() {
       return this.$refs.youtube.player;
@@ -117,90 +76,109 @@ export default {
   },
   data() {
     return {
+      id: this.$route.query.index,
       speechText: '',
-      url: 'mLx7D98zP_A',
+      url: '',
       replay: 0,
-      video: [
-        {
-          starttime: '00:00:00,001',
-          endtime: '00:00:01,831',
-          eng: '[National treasure zombie beast 2PM]',
-          kor: '[국보급 짐승 좀비 2PM]',
-        },
-        {
-          starttime: '00:00:01,832',
-          endtime: '00:00:04,034',
-          eng: '"Chansung lifts people up"',
-          kor: '"찬성은 사람을 들어"',
-        },
-        {
-          starttime: '00:00:04,035',
-          endtime: '00:00:06,406',
-          eng: '"Taecyeon is mad"',
-          kor: '"화가 잔뜩 난 택연"',
-        },
-      ],
+      video: [],
+      playerVars: {
+        modestbranding: 1,
+        controls: 0,
+        loop: 1,
+        fs: 0,
+        rel: 1,
+        showinfo: 0,
+        playlist: '',
+      },
+      answer: '',
+      romaza: '',
+      dict: [],
     };
   },
   methods: {
     play() {
-      console.log(this.replay);
       const start = this.timer(this.video[this.replay].starttime);
       const end = this.timer(this.video[this.replay].endtime);
-      console.log(start, end);
       this.player.loadVideoById({
         videoId: this.url,
         startSeconds: start,
         endSeconds: end,
         suggestedQuality: 'default',
       });
-      console.log(this.fail);
-      // if (this.fail === true) {
-      //   this.replay += 1;
-      //   this.fail = false;
-      //   this.choicelist = [];
-      // }
     },
     playVideo() {
       this.play();
     },
-    async stopVideo() {
-      await this.player.pauseVideo();
-    },
     timer(input) {
-      const hms = input;
+      const hms = input.replace(/'/g, '');
       const a = hms.split(':');
       const s = a[2].split(',');
-      const ms = Number(a[0] * 60 * 60) + Number(a[1] * 60) + Number(s[0]) + Number(s[1] / 1000);
+      let ms = Number(a[0] * 60 * 60) + Number(a[1] * 60) + Number(s[0]) + Number(s[1] / 1000);
+      if (ms === 0) {
+        ms += 0.001;
+      }
       return ms;
     },
-    onEnded() {
+    previous() {
+      if (this.replay > 0) {
+        this.replay -= 1;
+      }
+    },
+    next() {
+      if (this.replay < this.video.length - 1) {
+        this.replay += 1;
+      }
+    },
+    async receiveText(text) {
+      this.speechText = text.replace(/[&/\\#,+()$~%.'":*?!<>{}]/g, ' ');
+      const { subtitleid } = this.video[this.replay];
+      await http.get('/subtitle/dict', { params: { subtitleid } })
+        .then((res) => {
+          for (let i = 0; i < res.data.length; i += 1) {
+            this.dict.push(res.data[i]);
+          }
+        });
+      await http.get('/subtitle/roma', { params: { word: this.answer } })
+        .then((res) => {
+          this.romaza = res.data;
+        });
+    },
+    async getData() {
+      this.video = [];
+      await http.get('/search/video/', { params: { id: this.id } })
+        .then((res) => {
+          this.url = res.data.url;
+          for (let i = 0; i < res.data.Korean.length; i += 1) {
+            this.video.push({
+              starttime: res.data.Korean[i].starttime,
+              endtime: res.data.Korean[i].endtime,
+              eng: res.data.English[i].content,
+              kor: res.data.Korean[i].content,
+              subtitleid: res.data.Korean[i].id,
+            });
+          }
+        });
+    },
+  },
+  watch: {
+    replay() {
+      this.answer = '';
+      this.answer = this.video[this.replay].kor.replace(/[&/\\#,+()$~%.'":*?!<>{}]/g, '');
       this.play();
-    },
-    goPrevious() {
-      this.replay -= 1;
-    },
-    goNext() {
-      this.replay += 1;
-    },
-    like() {
-      // like sentences list에 추가
-    },
-    receiveText(text) {
-      this.speechText = text;
     },
   },
 };
 </script>
 <style>
+
 .speech-bubble {
   position: relative;
   background: #cfcdce;
-  border-radius: .4em;
+  border-radius: 0.4em;
 }
 
 .speech-bubble:after {
-  content: '';
+  content: "";
   position: absolute;
   left: 0;
   top: 50%;
