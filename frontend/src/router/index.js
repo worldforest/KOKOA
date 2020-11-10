@@ -83,8 +83,7 @@ const routes = [
       localStorage.clear();
       next('/');
     },
-  }
-  
+  },
 ];
 
 const router = new VueRouter({
