@@ -2,47 +2,44 @@
   <div class="paper">
     <div class="lines">
       <div class="text">
-      <!-- contenteditable spellcheck="false"-->
-        <h2>Note - Review your incorrect sentences.</h2><br />
+        <!-- contenteditable spellcheck="false"-->
+        <h2>Note - Review your incorrect sentences.</h2>
+        <br />
         <!-- 문장 목록 -->
         <div>
           <h3>[Speaking]</h3>
           <div v-for="(item, index) in items" :key="index">
-            <div @click="expanded === index ?
-            expanded = -1 : setToTop(index)" :id="'sentence'+index">
-            {{index}} : {{item.name}}
-            <v-space />
-            <v-chip
-              class="ma-2"
-              color="pink"
+            <div
+              @click="expanded === index ? (expanded = -1) : setToTop(index)"
+              :id="'sentence' + index"
             >
-              팀명
-            </v-chip>
-             <v-chip
-              class="ma-2"
-              color="orange"
-            >
-              멤버명
-            </v-chip>
+              {{ index }} : {{ item.name }}
+              <v-space />
+              <v-chip class="ma-2" color="pink">
+                팀명
+              </v-chip>
+              <v-chip class="ma-2" color="orange">
+                멤버명
+              </v-chip>
             </div>
             <div v-if="expanded === index">
-              <Talk style="background: lightgoldenrodyellow"/>
+              <Talk style="background: lightgoldenrodyellow" />
             </div>
           </div>
         </div>
       </div>
     </div>
     <div class="holes hole-top"></div>
-  <div class="holes hole-middle"></div>
-  <div class="holes hole-bottom"></div>
+    <div class="holes hole-middle"></div>
+    <div class="holes hole-bottom"></div>
   </div>
 </template>
 
 <script>
-import Talk from "../training/Talk.vue";
+import Talk from '../training/Talk.vue';
 
 export default {
-  name: "Note",
+  name: 'Note',
   components: {
     Talk,
   },
@@ -51,16 +48,16 @@ export default {
     itemsPerPage: 4,
     items: [
       {
-        name: "찬성은 사람을 들어",
+        name: '찬성은 사람을 들어',
       },
       {
-        name: "Ice cream sandwich",
+        name: 'Ice cream sandwich',
       },
       {
-        name: "Eclair",
+        name: 'Eclair',
       },
       {
-        name: "Cupcake",
+        name: 'Cupcake',
       },
     ],
     expanded: -1,
@@ -106,11 +103,7 @@ export default {
   margin-top: 40px;
   height: calc(100% - 40px);
   width: 100%;
-  background-image: repeating-linear-gradient(
-    white 0px,
-    white 24px,
-    steelblue 25px
-  );
+  background-image: repeating-linear-gradient(white 0px, white 24px, steelblue 25px);
 }
 .text {
   position: absolute;
