@@ -64,7 +64,7 @@ public class LogController {
         return new ResponseEntity<HashMap<String, List<Object>>>(result, HttpStatus.OK);
     }
 
-    @PostMapping("/insert")
+    @GetMapping("/insert")
     public ResponseEntity<String> saveToLog(@RequestParam int videoid, @RequestParam String email, @RequestParam int groupid){
         log logs = new log();
         logs.setUserid(userRepo.findUserByEmail(email).getId());
