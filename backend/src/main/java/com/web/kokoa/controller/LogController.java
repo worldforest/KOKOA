@@ -1,7 +1,6 @@
 package com.web.kokoa.controller;
 
 
-import com.web.kokoa.model.category;
 import com.web.kokoa.model.log;
 import com.web.kokoa.model.video;
 import com.web.kokoa.repository.CategoryRepo;
@@ -14,11 +13,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 @ApiResponses(value = {
@@ -46,18 +48,15 @@ public class LogController {
     public ResponseEntity<HashMap<String, List<Object>>> loadToLog(@RequestParam String email){
         HashMap<String, List<Object>> result = new HashMap<>();
         List<log> logList = logRepo.findByUserid(userRepo.findUserByEmail(email).getId());
-        List<video> videoList = new ArrayList<>();
-        List<String> categoryList = new ArrayList<>();
+        HashSet<video> videoList = new HashSet<>();
+        HashSet<String> categoryList = new HashSet<>();
 
         for (log l: logList) {
             video temp = videoRepo.findById(l.getVideoid());
             String groupName = categoryRepo.findGroupnameById(l.getGroupid());
-            if(!videoList.contains(temp))
-                videoList.add(temp);
-            if(!categoryList.contains(groupName))
-                categoryList.add(groupName);
+            videoList.add(temp);
+            categoryList.add(groupName);
         }
-        result.put("log", Collections.singletonList(logList));
         result.put("video", Collections.singletonList(videoList));
         result.put("group", Collections.singletonList(categoryList));
 

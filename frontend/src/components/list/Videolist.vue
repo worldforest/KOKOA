@@ -34,11 +34,12 @@
 import VueSlickCarousel from 'vue-slick-carousel';
 import 'vue-slick-carousel/dist/vue-slick-carousel.css';
 import 'vue-slick-carousel/dist/vue-slick-carousel-theme.css';
+import { mapGetters } from 'vuex';
 import http from '../../util/http-common';
 import channelList from '../core/channelList.json';
 
 export default {
-  name: 'Popular',
+  name: 'Videolist',
   components: { VueSlickCarousel },
   props: ['filters'],
   data() {
@@ -58,6 +59,23 @@ export default {
         slidesToShow: 3,
         slidesToScroll: 3,
         // rows: 2,
+        responsive: [
+          {
+            breakpoint: 1440,
+            settings: {
+              slidesToShow: 2,
+              slidesToScroll: 2,
+              initialSlide: 2,
+            },
+          },
+          {
+            breakpoint: 960,
+            settings: {
+              slidesToShow: 1,
+              slidesToScroll: 1,
+            },
+          },
+        ],
       },
       modalShow: false,
       timerInterval: '',
@@ -83,6 +101,9 @@ export default {
         },
       },
     };
+  },
+  computed: {
+    ...mapGetters(['email']),
   },
   async created() {
     this.team = this.teams[this.groupid - 1].title;
@@ -111,7 +132,8 @@ export default {
 
   },
   methods: {
-    goTraining(item) {
+    async goTraining(item) {
+      await http.get('/log/insert', { params: { videoid: Number(item.id), email: this.email, groupid: Number(this.groupid) } });
       if (this.choice === 'Speaking') {
         this.goTalk(item.id);
       } else {
