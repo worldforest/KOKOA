@@ -65,9 +65,9 @@ public class LogController {
     }
 
     @PostMapping("/insert")
-    public ResponseEntity<String> saveToLog(@RequestParam int videoid, @RequestParam int userid, @RequestParam int groupid){
+    public ResponseEntity<String> saveToLog(@RequestParam int videoid, @RequestParam String email, @RequestParam int groupid){
         log logs = new log();
-        logs.setUserid(userid);
+        logs.setUserid(userRepo.findUserByEmail(email).getId());
         logs.setVideoid(videoid);
         logs.setGroupid(groupid);
         String result = "";
