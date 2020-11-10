@@ -114,7 +114,6 @@ export default {
   },
   methods: {
     goTraining(item) {
-      console.log(item.id);
       if (this.choice === 'Speaking') {
         this.goTalk(item.id);
       } else {
@@ -144,9 +143,6 @@ export default {
         http.get(`/search/member/0?membername=${data}`).then((res) => {
           resolve(res.data.totalPages);
         });
-        // .catch(() => {
-        //   resolve(-1);
-        // });
       });
     },
     async getTotal(page, team, items) {
