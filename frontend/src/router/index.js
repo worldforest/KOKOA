@@ -83,18 +83,8 @@ const routes = [
       localStorage.clear();
       next('/');
     },
-  },
-  {
-    path: '/api',
-   
-    },
-  {
-    path: '*',
-    beforeEnter: (to, from, next) => {
-      alert('Not exist Page');
-      next('/');
-    },
-  },
+  }
+  
 ];
 
 const router = new VueRouter({
