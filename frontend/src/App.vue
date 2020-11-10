@@ -74,7 +74,7 @@ export default {
 </script>
 <style>
 #create{
-  background-color: rgba(255, 255, 255, 0.89);
+  background-color: rgba(0, 0, 0, 0.89);
 }
 .circular {
   position: fixed;
