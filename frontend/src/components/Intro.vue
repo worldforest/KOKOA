@@ -75,11 +75,11 @@ export default {
     };
   },
   methods: {
-    // afterLoad(origin, destination, direction) {
-    //   console.log('After load....');
-    //   console.log(destination);
-    //   console.log(direction);
-    // },
+    afterLoad(origin, destination, direction) {
+      console.log('After load....');
+      console.log(destination);
+      console.log(direction);
+    },
     addSection() {
       const newSectionNumber = document.querySelectorAll('.fp-section').length + 1;
 
@@ -134,7 +134,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
 @charset 'ISO-8859-1';
 /* Reset CSS
  * --------------------------------------- */
