@@ -16,7 +16,8 @@
 import VueSlickCarousel from 'vue-slick-carousel';
 import 'vue-slick-carousel/dist/vue-slick-carousel.css';
 import 'vue-slick-carousel/dist/vue-slick-carousel-theme.css';
-// import http from '../../util/http-common';
+import { mapGetters } from 'vuex';
+import http from '../../util/http-common';
 
 export default {
   name: 'Review',
@@ -26,9 +27,16 @@ export default {
       items: [],
     };
   },
-  // async created() {
-  //   this.items = await http.get('/');
-  // },
+  computed: {
+    ...mapGetters(['email']),
+  },
+  async created() {
+    this.items = [];
+    await http.get('/log/load', { params: { email: this.email } })
+      .then((res) => {
+        console.log(res);
+      });
+  },
 };
 </script>
 
