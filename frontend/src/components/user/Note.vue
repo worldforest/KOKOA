@@ -39,10 +39,10 @@
 </template>
 
 <script>
-import Talk from "../training/Talk.vue";
+import Talk from '../training/Talk.vue';
 
 export default {
-  name: "Note",
+  name: 'Note',
   components: {
     Talk,
   },
@@ -51,16 +51,16 @@ export default {
     itemsPerPage: 4,
     items: [
       {
-        name: "찬성은 사람을 들어",
+        name: '찬성은 사람을 들어',
       },
       {
-        name: "Ice cream sandwich",
+        name: 'Ice cream sandwich',
       },
       {
-        name: "Eclair",
+        name: 'Eclair',
       },
       {
-        name: "Cupcake",
+        name: 'Cupcake',
       },
     ],
     expanded: -1,
