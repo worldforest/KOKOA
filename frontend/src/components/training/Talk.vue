@@ -48,7 +48,7 @@
           <h4 class="myTitle d-flex justify-space-around">
             {{romaza}}
           </h4>
-          <div style="background:purple" v-for="(item,index) in dict" :key="index">
+          <div class="py-5" style="background:purple" v-for="(item,index) in dict" :key="index">
             {{item.kor + " " + item.eng + " " + item.dfn}}
           </div>
         </v-col>
