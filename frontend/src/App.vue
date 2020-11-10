@@ -3,7 +3,7 @@
     <div id="logo" @click="goHome" v-if="isLogin">
       <img src="@/assets/kokoa1.png">
     </div>
-    <quick-menu v-if="isLogin"
+    <quick-menu v-show="isLogin"
       class="circular"
       :menu-count="count"
       :icon-class="icons"
@@ -26,6 +26,15 @@ export default {
   name: 'App',
   components: {
     quickMenu,
+  },
+  mounted() {
+    const SUBTAGS = document.querySelectorAll('a[target=_self]');
+    const QUICKMENU = document.querySelector('.quick-menu');
+    for (let i = 0; i < SUBTAGS.length; i += 1) {
+      SUBTAGS[i].onclick = function () {
+        QUICKMENU.classList.remove('active');
+      };
+    }
   },
   data() {
     return {

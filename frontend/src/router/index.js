@@ -77,10 +77,11 @@ const routes = [
   },
   {
     path: '/logout',
-    beforeEnter: () => {
+    beforeEnter: (to, from, next) => {
       store.state.email = null;
       store.state.isLogin = false;
       localStorage.clear();
+      next('/');
     },
   },
   {
