@@ -3,15 +3,12 @@
     <b-container fluid>
       <b-row>
         <b-col sm="12" class="overflow-hidden">
-          <div class="d-flex align-items-center justify-content-between">
-            <h4 class="myTitle">{{ filters }}</h4>
-          </div>
           <div class="toggle-btn">
             <form class="tabber">
               <label for="t1">Speaking</label>
-              <input id="t1" name="food" type="radio" value="Speaking" v-model="choice"/>
+              <input id="t1" type="radio" value="Speaking" v-model="choice"/>
               <label for="t2">Dictation</label>
-              <input id="t2" name="food" type="radio" value="Dictation" v-model="choice"/>
+              <input id="t2" type="radio" value="Dictation" v-model="choice"/>
               <div class="blob"></div>
             </form>
           </div>
@@ -23,6 +20,7 @@
                 :key="index"
                 @click="goTraining(item)"
                 class="pa-1"
+                :label=item.id
               />
             </VueSlickCarousel>
           </div>
@@ -66,7 +64,7 @@ export default {
       correctAnswer: {
         title: 'Loading....',
         html: 'I will close in <b></b> milliseconds.',
-        timer: 2000,
+        timer: 500,
         timerProgressBar: true,
         willOpen: () => {
           this.$swal.showLoading();
@@ -166,24 +164,22 @@ export default {
 </script>
 <style lang="scss">
 .slick-prev:before {
-  color: red !important;
-  background-color: #eee;
+  color: #FDB165;
 }
 .slick-next:before {
-  color: red !important;
-  background-color: #eee;
+  color: #FDB165;
 }
 .choice img {
   height: 100%;
 }
 .toggle-btn {
-  height: 15vh;
-  min-height: 5vh;
+  left: 40%;
+  margin-top: calc(10px + .5vw);
   display: flex;
   align-items: center;
   justify-content: center;
   font-family: "Concert One", cursive;
-  font-size: 1.5rem;
+  font-size: calc(20px + 0.8vw);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
@@ -191,26 +187,27 @@ svg {
   display: none;
 }
 .tabber {
-  width: 50%;
-  height: 80%;
+  color: white;
+  width: 500px;
+  // height: 80%;
   position: relative;
   display: flex;
-  align-items: stretch;
-  justify-content: stretch;
+  align-items: center;
+  justify-content: center;
   label {
     width: 50%;
     user-select: none;
-    padding: 2rem;
+    padding: 0.2rem;
     text-align: center;
     cursor: pointer;
     will-change: transform;
-    transform: translateZ(0px);
+    transform: translateZ(0.5px);
     z-index: 1;
-    transition: transform 125ms ease-in-out, filter 125ms ease-in-out;
+    transition: transform 90ms ease-in-out, filter 90ms ease-in-out;
     // filter: blur(.25rem);
     &:hover {
       transform: scale(1.15);
-      // filter: blur(0px);
+      filter: blur(0px);
     }
   }
   input[type="radio"] {
@@ -225,13 +222,13 @@ svg {
     // animated
     &#t1:checked {
       ~ .blob {
-        background: cornflowerblue;
+        background: rgb(233, 103, 131);
         animation-name: stretchyRev;
       }
     }
     &#t2:checked {
       ~ .blob {
-        background-color: skyblue;
+        background-color: rgb(73, 178, 134);
         animation-name: stretchy;
       }
     }
@@ -244,12 +241,12 @@ svg {
     height: 100%;
     position: absolute;
     z-index: 0;
-    border-radius: 4rem;
-    animation-duration: 0.5s;
+    border-radius: 2rem;
+    animation-duration: 0.2s;
     animation-direction: forwards;
     animation-iteration-count: 1;
     animation-fill-mode: forwards;
-    transition: transform 150ms ease, background 150ms ease;
+    transition: transform 300ms ease, background 300ms ease;
     filter: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" version="1.1"><defs><filter id="goo"><feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur" /><feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 19 -9" result="goo" /><feComposite in="SourceGraphic" in2="goo" operator="atop"/></filter></defs></svg>#goo');
     &:before,
     &:after {
@@ -262,15 +259,15 @@ svg {
       width: 50%;
       border-radius: 100%;
       transform: scale(1.15);
-      transition: transform 150ms ease;
+      transition: transform 1s;
       animation-name: pulse;
-      animation-duration: 0.5s;
+      animation-duration: 1.1s;
       animation-iteration-count: infinite;
       animation-direction: alternate;
     }
     &:before {
       left: 0;
-      animation-delay: 0.15s;
+      animation-delay:2s;
     }
     &:after {
       right: 0;
@@ -280,7 +277,7 @@ svg {
 
 @keyframes stretchy {
   0% {
-    transform: translateX(0) scaleX(1);
+    transform: translateX(0) scaleX(1.5);
   }
   50% {
     transform: translateX(0) scaleX(2);
@@ -305,11 +302,11 @@ svg {
 @keyframes pulse {
   0%,
   50% {
-    transform: scaleX(1);
+    transform: scaleX(0.5);
   }
   25%,
   75% {
-    transform: scaleX(1.5);
+    transform: scaleX(0.2);
   }
 }
 </style>

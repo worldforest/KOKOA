@@ -1,8 +1,7 @@
 <template>
   <v-app id="create">
-    <!-- KOKOA LOGO -->
     <div id="logo" @click="goHome" v-if="isLogin">
-      KOKOA
+      <img src="@/assets/kokoa1.png">
     </div>
     <quick-menu v-if="isLogin"
       class="circular"
@@ -68,18 +67,21 @@ export default {
   background-color: rgba(0, 0, 0, 0.89);
 }
 .circular {
+  height: 10px;
+  width: 10px;
   position: fixed;
   z-index: 999;
 }
-.myTitle{
-  /* background-color: rgba(0, 0, 0, 0.89); */
-  padding: 1;
-  color: white;
-}
-#logo {
+#logo{
   position: fixed;
   z-index: 999;
-  color: rgb(255, 127, 0);
+}
+#logo img{
+  /* position: absolute; */
+  z-index: 999;
+  margin: 8px 0 0 15px;
+  height: calc(40px + 1vw);;
+  width: auto;
 }
 * {
   font-family: 'Merriweather', serif;
