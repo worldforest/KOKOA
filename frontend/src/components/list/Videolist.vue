@@ -61,6 +61,23 @@ export default {
         slidesToShow: 3,
         slidesToScroll: 3,
         // rows: 2,
+        responsive: [
+          {
+            breakpoint: 1440,
+            settings: {
+              slidesToShow: 2,
+              slidesToScroll: 2,
+              initialSlide: 2,
+            },
+          },
+          {
+            breakpoint: 960,
+            settings: {
+              slidesToShow: 1,
+              slidesToScroll: 1,
+            },
+          },
+        ],
       },
       modalShow: false,
       timerInterval: '',
