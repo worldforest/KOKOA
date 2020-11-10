@@ -29,10 +29,10 @@
       <div class="section">
         <h3>Let's go to learn</h3>
         <h3>with K-pop Artist</h3>
-        <v-btn @click="getAuth()">
+        <button @click="getAuth()">
           <img src="@/assets/google.png" alt="구글로그인버튼" style="width:30px" />
           login
-        </v-btn>
+        </button>
       </div>
     </full-page>
 
@@ -75,11 +75,11 @@ export default {
     };
   },
   methods: {
-    afterLoad(origin, destination, direction) {
-      console.log('After load....');
-      console.log(destination);
-      console.log(direction);
-    },
+    // afterLoad(origin, destination, direction) {
+    //   console.log('After load....');
+    //   console.log(destination);
+    //   console.log(direction);
+    // },
     addSection() {
       const newSectionNumber = document.querySelectorAll('.fp-section').length + 1;
 
@@ -134,7 +134,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 @charset 'ISO-8859-1';
 /* Reset CSS
  * --------------------------------------- */
