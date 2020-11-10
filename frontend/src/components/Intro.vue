@@ -29,10 +29,10 @@
       <div class="section">
         <h3>Let's go to learn</h3>
         <h3>with K-pop Artist</h3>
-        <v-btn @click="getAuth()">
+        <button @click="getAuth()">
           <img src="@/assets/google.png" alt="구글로그인버튼" style="width:30px" />
           login
-        </v-btn>
+        </button>
       </div>
     </full-page>
 
