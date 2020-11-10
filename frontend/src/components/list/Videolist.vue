@@ -118,7 +118,7 @@ export default {
   },
   methods: {
     async goTraining(item) {
-      await http.post('/log/insert', { params: { groupid: this.groupid, email: this.email, videoid: item.id } });
+      await http.get('/log/insert', { params: { videoid: Number(item.id), email: this.email, groupid: Number(this.groupid) } });
       if (this.choice === 'Speaking') {
         this.goTalk(item.id);
       } else {
