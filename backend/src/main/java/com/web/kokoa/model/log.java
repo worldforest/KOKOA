@@ -15,4 +15,5 @@ public class log {
     private int id;
     private int userid;
     private int videoid;
+    private int groupid;
 }

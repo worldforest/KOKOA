@@ -198,8 +198,8 @@ public class TranslateService {
                     }
                 }
                 if (dict.getEng() == null || dict.getDfn() == null) {
-                    dict.setEng("영어단어를 찾지 못했습니다.");
-                    dict.setDfn("뜻을 찾지 못했습니다.");
+                    dict.setEng("Cannot find the word");
+                    dict.setDfn("Cannot find the meaning");
                 }
                 list.add(dict);
             } catch (Exception e) {
