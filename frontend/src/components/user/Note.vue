@@ -1,7 +1,9 @@
 <template>
   <div>
-    <div class="bookmarks bookmark-top">Speaking</div>
-    <div class="bookmarks bookmark-bottom">Writing</div>
+    <div class="bookmarks bookmark-top"
+    @click="eq = !eq" :class="{expandbmk : eq, basic : !eq}">Speaking</div>
+    <div class="bookmarks bookmark-bottom"
+     @click="eq = !eq" :class="{expandbmk : !eq, basic : eq}">Writing</div>
     <div class="paper">
       <div class="lines">
         <div class="text">
@@ -57,6 +59,7 @@ export default {
       },
     ],
     expanded: -1,
+    eq: false,
   }),
   methods: {
     setToTop(index) {
@@ -70,15 +73,8 @@ export default {
 
 <style>
 @import url(https://fonts.googleapis.com/css?family=Indie+Flower);
-/* template {
-  margin: 0;
-  padding: 0;
-  background: lightgoldenrodyellow;
-} */
 .paper {
   position: absolute;
-  /* height: 550px;
-  width: 450px; */
   width: 90%;
   height: 90%;
   background: lightgoldenrodyellow;
@@ -142,15 +138,11 @@ export default {
 }
 .bookmarks {
   position: absolute;
-  left: 2%;
-  height: 120px;
-  width: 3vw;
+  height: 128px;
   box-shadow: inset 0px 0px 2px 0px #888;
   cursor: pointer;
   writing-mode: vertical-lr;
   text-align: center;
-  padding-left: 0.3vw;
-  font-size: 1.6vw;
 }
 .bookmark-top {
   top: 7%;
@@ -159,5 +151,19 @@ export default {
 .bookmark-bottom {
   top: 25%;
   background: rgb(85, 219, 163);
+}
+.expandbmk {
+  width: 7vw;
+  left: 1%;
+  font-size: 2vw;
+  padding-left: 0.5vw;
+
+}
+.basic {
+  width: 3vw;
+  left: 2%;
+  font-size: 1.6vw;
+  padding-left: 0.3vw;
+
 }
 </style>
