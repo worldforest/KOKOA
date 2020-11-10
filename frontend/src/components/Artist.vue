@@ -77,7 +77,6 @@ export default {
   background-size: cover;
   position: relative;
   background-color: rgba(0, 0, 0, 0.333);
-
 }
 .artist::before{
   content: "";
