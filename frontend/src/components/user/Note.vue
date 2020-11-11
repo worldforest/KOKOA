@@ -1,9 +1,25 @@
 <template>
   <div>
-    <div class="bookmarks bookmark-top"
-    @click="eq = !eq" :class="{expandbmk : eq, basic : !eq}">Speaking</div>
-    <div class="bookmarks bookmark-bottom"
-     @click="eq = !eq" :class="{expandbmk : !eq, basic : eq}">Writing</div>
+    <div
+      class="bookmarks bookmark-top"
+      @click="
+        eq = !eq;
+        type === 0 ? (type = 0) : (type = 1);
+      "
+      :class="{ expandbmk: eq, basic: !eq }"
+    >
+      Speaking
+    </div>
+    <div
+      class="bookmarks bookmark-bottom"
+      @click="
+        eq = !eq;
+        type === 1 ? (type = 0) : (type = 1);
+      "
+      :class="{ expandbmk: !eq, basic: eq }"
+    >
+      Writing
+    </div>
     <div class="paper">
       <div class="lines">
         <div class="text">
@@ -11,17 +27,35 @@
           <h2>Note - Review your incorrect sentences.</h2>
           <br />
           <!-- 문장 목록 -->
-          <h3>[Speaking]</h3>
-          <div v-for="(item, index) in items" :key="index" style="">
-            <div
-              class="sentences"
-              @click="expanded === index ? (expanded = -1) : setToTop(index)"
-              :id="'sentence' + index"
-            >
-              {{ index }} : {{ item.name }}
+          <div v-if="type === 0">
+            <h3>[Speaking]</h3>
+            <div v-for="(item, index) in speechnote" :key="index" style="">
+              <div
+                class="sentences"
+                @click="expanded === index ? (expanded = -1) : setToTop(index)"
+                :id="'sentence' + index"
+              >
+                {{ index }} : {{ item.subtitleid }}
+              </div>
+              <div v-if="expanded === index">
+                <Talk style="background: lightgoldenrodyellow; z-index:2" />
+              </div>
             </div>
-            <div v-if="expanded === index">
-              <Talk style="background: lightgoldenrodyellow; z-index:2" />
+          </div>
+          <!-- 문장 목록 -->
+          <div v-else>
+            <h3>[Writing]</h3>
+            <div v-for="(item, index) in speechnote" :key="index" style="">
+              <div
+                class="sentences"
+                @click="expanded === index ? (expanded = -1) : setToTop(index)"
+                :id="'sentence' + index"
+              >
+                {{ index }} : {{ item.subtitleid }}
+              </div>
+              <div v-if="expanded === index">
+                <Talk style="background: lightgoldenrodyellow; z-index:2" />
+              </div>
             </div>
           </div>
         </div>
@@ -34,6 +68,7 @@
 </template>
 
 <script>
+import http from '../../util/http-common';
 import Talk from '../training/Talk.vue';
 
 export default {
@@ -42,30 +77,49 @@ export default {
     Talk,
   },
   data: () => ({
+    email: '',
     singleExpand: true,
     itemsPerPage: 4,
-    items: [
-      {
-        name: '찬성은 사람을 들어',
-      },
-      {
-        name: 'Ice cream sandwich',
-      },
-      {
-        name: 'Eclair',
-      },
-      {
-        name: 'Cupcake',
-      },
-    ],
+    speechnote: [],
+    writenote: [],
     expanded: -1,
     eq: false,
+    type: 0,
   }),
+  async created() {
+    this.email = this.$store.state.email;
+    console.log(`created - ${this.email}`);
+    await this.getData();
+    // this.answer = this.video[0].kor.replace(/[&/\\#,+()$~%.'":*?!<>{}]/g, ' ');
+  },
   methods: {
     setToTop(index) {
       const elmnt = document.getElementById(`sentence${index}`);
       elmnt.scrollIntoView(true);
       this.expanded = index;
+    },
+    async getData() {
+      this.speechnote = [];
+      this.writenote = [];
+      await http.get('/note/load/', { params: { email: 'seul6854ki@gmail.com' } }).then((res) => {
+        console.log(res);
+
+        for (let i = 0; i < res.data.speechnote.length; i += 1) {
+          this.speechnote.push({
+            id: res.data.speechnote[i].id,
+            subtitleid: res.data.speechnote[i].subtitleid,
+            videoid: res.data.speechnote[i].videoid,
+          });
+        }
+
+        for (let i = 0; i < res.data.writenote.length; i += 1) {
+          this.writenote.push({
+            id: res.data.writenote[i].id,
+            subtitleid: res.data.writenote[i].subtitleid,
+            videoid: res.data.writenote[i].videoid,
+          });
+        }
+      });
     },
   },
 };
@@ -157,13 +211,11 @@ export default {
   left: 1%;
   font-size: 2vw;
   padding-left: 0.5vw;
-
 }
 .basic {
   width: 3vw;
   left: 2%;
   font-size: 1.6vw;
   padding-left: 0.3vw;
-
 }
 </style>

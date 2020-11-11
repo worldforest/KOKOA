@@ -3,14 +3,9 @@
     <!-- left side -->
     <v-col class="youtubeContainer" cols="12" lg="8">
       <div class="d-flex justify-center mt-3">
-        <youtube
-          :video-id="url"
-          ref="youtube"
-          :player-vars="playerVars"
-          flex
-        ></youtube>
+        <youtube :video-id="url" ref="youtube" :player-vars="playerVars" flex></youtube>
       </div>
-     <div class="d-flex justify-space-around my-5">
+      <div class="d-flex justify-space-around my-5">
         <v-btn @click="previous" icon>
           <v-icon color="white">
             mdi-arrow-left
@@ -24,7 +19,7 @@
         </v-btn>
       </div>
       <div class="myTitle d-flex justify-space-around my-5">
-        {{answer}}
+        {{ answer }}
       </div>
     </v-col>
     <!-- right side -->
@@ -39,17 +34,17 @@
             {{ speechText }}
           </h2>
           <div class="d-flex justify-space-around">
-            <v-btn class="ma-2" text icon color="purple lighten-2">
+            <v-btn class="ma-2" text icon color="purple lighten-2" @click="insertNote">
               <v-icon>mdi-clipboard-edit-outline</v-icon>
               오답노트
             </v-btn>
             <div class="speech-bubble">표시된 부분에 유의해서<br />발음해보세요 :)</div>
           </div>
           <h4 class="myTitle d-flex justify-space-around">
-            {{romaza}}
+            {{ romaza }}
           </h4>
-          <div class="py-5" style="background:purple" v-for="(item,index) in dict" :key="index">
-            {{item.kor + " " + item.eng + " " + item.dfn}}
+          <div class="py-5" style="background:purple" v-for="(item, index) in dict" :key="index">
+            {{ item.kor + " " + item.eng + " " + item.dfn }}
           </div>
         </v-col>
       </v-row>
@@ -132,31 +127,42 @@ export default {
     async receiveText(text) {
       this.speechText = text.replace(/[&/\\#,+()$~%.'":*?!<>{}]/g, ' ');
       const { subtitleid } = this.video[this.replay];
-      await http.get('/subtitle/dict', { params: { subtitleid } })
-        .then((res) => {
-          for (let i = 0; i < res.data.length; i += 1) {
-            this.dict.push(res.data[i]);
-          }
-        });
-      await http.get('/subtitle/roma', { params: { word: this.answer } })
-        .then((res) => {
-          this.romaza = res.data;
-        });
+      await http.get('/subtitle/dict', { params: { subtitleid } }).then((res) => {
+        for (let i = 0; i < res.data.length; i += 1) {
+          this.dict.push(res.data[i]);
+        }
+      });
+      await http.get('/subtitle/roma', { params: { word: this.answer } }).then((res) => {
+        this.romaza = res.data;
+      });
     },
     async getData() {
       this.video = [];
-      await http.get('/search/video/', { params: { id: this.id } })
+      await http.get('/search/video/', { params: { id: this.id } }).then((res) => {
+        this.url = res.data.url;
+        for (let i = 0; i < res.data.Korean.length; i += 1) {
+          this.video.push({
+            starttime: res.data.Korean[i].starttime,
+            endtime: res.data.Korean[i].endtime,
+            eng: res.data.English[i].content,
+            kor: res.data.Korean[i].content,
+            subtitleid: res.data.Korean[i].id,
+          });
+        }
+      });
+    },
+    insertNote() {
+      http
+        .post('/note/insert/', {
+          params: {
+            email: this.$store.state.email,
+            subtitleid: this.video[this.replay].subtitleid,
+            type: 0,
+            videoid: this.id,
+          },
+        })
         .then((res) => {
-          this.url = res.data.url;
-          for (let i = 0; i < res.data.Korean.length; i += 1) {
-            this.video.push({
-              starttime: res.data.Korean[i].starttime,
-              endtime: res.data.Korean[i].endtime,
-              eng: res.data.English[i].content,
-              kor: res.data.Korean[i].content,
-              subtitleid: res.data.Korean[i].id,
-            });
-          }
+          console.log(res);
         });
     },
   },
@@ -170,7 +176,6 @@ export default {
 };
 </script>
 <style>
-
 .speech-bubble {
   position: relative;
   background: #cfcdce;
