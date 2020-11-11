@@ -78,10 +78,24 @@ const routes = [
   {
     path: '/logout',
     beforeEnter: (to, from, next) => {
-      store.state.email = null;
-      store.state.isLogin = false;
-      localStorage.clear();
-      next('/');
+      Vue.swal({
+        icon: 'warning',
+        title: 'Are You Sure?',
+        showConfirmButton: true,
+        showCancelButton: true,
+      }).then((res) => {
+        if (res.isConfirmed) {
+          setTimeout(() => {
+            store.state.email = null;
+            store.state.isLogin = false;
+            localStorage.clear();
+            next('/');
+          },
+          1500);
+        } else {
+          next(from);
+        }
+      });
     },
   },
 ];

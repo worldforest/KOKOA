@@ -254,4 +254,7 @@ iframe {
   top: 0;
   right: 0;
 }
+.myTitle{
+  color: white;
+}
 </style>

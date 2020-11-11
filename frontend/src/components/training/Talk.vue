@@ -30,8 +30,8 @@
             <Record @child-event="receiveText" />
           </div>
           <!-- 나의 발음 -->
-          <h2 class="myTitle d-flex justify-space-around my-5" :class="{ note: type === 'note' }">
-            {{ speechText }}
+          <h2 class="myTitle my-5" id="result" :class="{ note: type === 'note' }">
+            <!-- {{ speechText }} -->
           </h2>
           <div class="d-flex justify-space-around">
             <v-btn class="ma-2" text icon color="purple lighten-2" @click="insertNote">
@@ -143,6 +143,7 @@ export default {
       }
     },
     async receiveText(text) {
+      this.dict = [];
       this.speechText = text.replace(/[&/\\#,+()$~%.'":*?!<>{}]/g, ' ');
       const { subtitleid } = this.video[this.replay];
       await http.get('/subtitle/dict', { params: { subtitleid } }).then((res) => {
@@ -190,10 +191,59 @@ export default {
       this.answer = this.video[this.replay].kor.replace(/[&/\\#,+()$~%.'":*?!<>{}]/g, '');
       this.play();
     },
+    speechText() {
+      const answerTrim = this.answer.replaceAll(' ', '');
+      const speechTextTrim = this.speechText.replaceAll(' ', '');
+      const pos = document.getElementById('result');
+      pos.innerHTML = '';
+      let text;
+      let container;
+      let i;
+      for (i = 0; i < answerTrim.length; i += 1) {
+        container = document.createElement('font');
+        if (speechTextTrim.length > i) {
+          if (speechTextTrim.charAt(i) === answerTrim.charAt(i)) {
+            text = document.createTextNode(speechTextTrim.charAt(i));
+            container.style.color = 'blue';
+          } else {
+            text = document.createTextNode(speechTextTrim.charAt(i));
+            container.style.color = 'red';
+          }
+        } else {
+          text = document.createTextNode(speechTextTrim.charAt(i));
+          container.style.color = 'red';
+          container.appendChild(text);
+          pos.appendChild(container);
+          break;
+        }
+        container.appendChild(text);
+        pos.appendChild(container);
+      }
+      const left = speechTextTrim.substr(i);
+      for (i = 0; i < left.length; i += 1) {
+        container = document.createElement('font');
+        text = document.createTextNode(left.charAt(i));
+        container.style.color = 'red';
+        container.appendChild(text);
+        pos.appendChild(container);
+      }
+    },
   },
 };
 </script>
 <style>
+font{
+  padding:0;
+}
+.myTitle{
+  color: white;
+  font-family: 'Do Hyeon', sans-serif;
+  font-size: 1.5em;
+}
+.myTitle *{
+  font-family: 'Do Hyeon', sans-serif;
+  font-size: 1.5em;
+}
 .speech-bubble {
   position: relative;
   background: #cfcdce;

@@ -20,6 +20,11 @@ export default new Vuex.Store({
       state.email = data;
     },
   },
+  getters: {
+    email(state) {
+      return state.email;
+    },
+  },
   actions: {
     // eslint-disable-next-line no-unused-vars
     async login({ commit }, email) {
