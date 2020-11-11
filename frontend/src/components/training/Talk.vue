@@ -91,6 +91,7 @@ export default {
         playlist: '',
       },
       answer: '',
+      answerTrim: '',
       romaza: '',
       dict: [],
     };
@@ -139,8 +140,9 @@ export default {
             this.dict.push(res.data[i]);
           }
         });
-      const answerTrim = this.answer.replace(/[&/\\#,+()$~%.'":*?!<>{}]/g, ' ');
-      await http.get('/subtitle/roma', { params: { word: answerTrim } })
+      this.answerTrim = this.answer.replace(/[&/\\#,+()$~%.'":*?!<>{}]/g, ' ');
+      console.log(this.answerTrim);
+      await http.get('/subtitle/roma', { params: { word: this.answerTrim } })
         .then((res) => {
           this.romaza = res.data;
         });
