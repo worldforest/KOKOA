@@ -22,7 +22,7 @@
       <v-row class="d-flex justify-center ma-5">
         <v-col cols="12">
           <div class="answerDiv">
-            <h3 class="myTitle d-flex justify-center">Answer</h3>
+            <h3 class="d-flex justify-center">Answer</h3>
             <b-button class="mr-10" @click="reset">Reset</b-button>
           </div>
           <draggable
@@ -30,20 +30,20 @@
             :list="checklist"
             group="people"
           >
-            <div class="list-group-item" v-for="element in checklist" :key="element.name">
+            <div class="list-group-item myTitle" v-for="element in checklist" :key="element.name">
               {{ element.name }}
             </div>
           </draggable>
         </v-col>
 
         <v-col cols="12">
-          <h3 class="myTitle d-flex justify-center">Choice</h3>
+          <h3 class="d-flex justify-center">Choice</h3>
           <draggable
             class="row wrap fill-height align-center justify-center sortable-list"
             :list="choicelist"
             group="people"
           >
-            <div class="list-group-item" v-for="element in choicelist" :key="element.name">
+            <div class="list-group-item myTitle" v-for="element in choicelist" :key="element.name">
               {{ element.name }}
             </div>
           </draggable>
@@ -237,7 +237,7 @@ export default {
   },
 };
 </script>
-<style>
+<style scoped>
 iframe {
   width: 90%;
   height: 50vh;
@@ -256,5 +256,11 @@ iframe {
 }
 .myTitle{
   color: white;
+  font-family: 'Do Hyeon', sans-serif;
+  font-size: 1.5em;
+}
+.myTitle *{
+  font-family: 'Do Hyeon', sans-serif;
+  font-size: 1.5em;
 }
 </style>
