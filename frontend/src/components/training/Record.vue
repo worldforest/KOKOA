@@ -70,11 +70,11 @@ export default {
     recognition.onresult = function (event) {
       // console.log('onresult', event);
       // const interimTranscript = '';
-      if (typeof event.results === 'undefined') {
-        recognition.onend = null;
-        recognition.stop();
-        return;
-      }
+      // if (typeof event.results === 'undefined') {
+      //   recognition.onend = null;
+      //   recognition.stop();
+      //   return;
+      // }
 
       for (let i = event.resultIndex; i < event.results.length; i += 1) {
         let transcript = '';
