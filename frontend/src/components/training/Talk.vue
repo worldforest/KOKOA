@@ -132,6 +132,12 @@ export default {
     },
     async receiveText(text) {
       this.dict = [];
+      const tmp = this.answer;
+      this.answerTrim = tmp.replace(/[&/\\#,+()$~%@.'":*?!<>{}[]]/g, ' ').replace('[', '').replace(']', '');
+      await http.get('/subtitle/roma', { params: { word: this.answerTrim } })
+        .then((res) => {
+          this.romaza = res.data;
+        });
       this.speechText = text.replace(/[&/\\#,+()$~%.'":*?!<>{}]/g, ' ');
       const { subtitleid } = this.video[this.replay];
       await http.get('/subtitle/dict', { params: { subtitleid } })
@@ -139,12 +145,6 @@ export default {
           for (let i = 0; i < res.data.length; i += 1) {
             this.dict.push(res.data[i]);
           }
-        });
-      this.answerTrim = this.answer.replace(/[&/\\#,+()$~%.'":*?!<>{}]/g, ' ');
-      console.log(this.answerTrim);
-      await http.get('/subtitle/roma', { params: { word: this.answerTrim } })
-        .then((res) => {
-          this.romaza = res.data;
         });
     },
     async getData() {
@@ -171,17 +171,17 @@ export default {
       this.play();
     },
     speechText() {
-      const answerTrim = this.answer.replaceAll(' ', '');
+      const answerTrimTrim = this.answerTrim.replaceAll(' ', '');
       const speechTextTrim = this.speechText.replaceAll(' ', '');
       const pos = document.getElementById('result');
       pos.innerHTML = '';
       let text;
       let container;
       let i;
-      for (i = 0; i < answerTrim.length; i += 1) {
+      for (i = 0; i < answerTrimTrim.length; i += 1) {
         container = document.createElement('font');
         if (speechTextTrim.length > i) {
-          if (speechTextTrim.charAt(i) === answerTrim.charAt(i)) {
+          if (speechTextTrim.charAt(i) === answerTrimTrim.charAt(i)) {
             text = document.createTextNode(speechTextTrim.charAt(i));
             container.style.color = 'blue';
           } else {
