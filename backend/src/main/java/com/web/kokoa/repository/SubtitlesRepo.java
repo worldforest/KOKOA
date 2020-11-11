@@ -14,4 +14,8 @@ public interface SubtitlesRepo extends JpaRepository<subtitles,String> {
     List<subtitles> getAllByVideoid(int videoid);
     @Query(value = "select content from subtitles where id =:subtitleid",nativeQuery = true)
     String getContentById(int subtitleid);
+
+    @Query(value = "select id, videoid, starttime, endtime, content, type from subtitles where id =:subtitleid",nativeQuery = true)
+    subtitles getAllById(int subtitleid);
+
 }
