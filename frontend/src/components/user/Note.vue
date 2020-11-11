@@ -53,6 +53,8 @@
               </div>
               <div v-if="expanded === index">
                 <Write
+                :type="'note'"
+                :noteitem="item"
                 style="background: lightgoldenrodyellow; z-index:2" />
               </div>
             </div>
