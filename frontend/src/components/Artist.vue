@@ -1,23 +1,23 @@
 <template>
-  <div class="artist">
+  <div class="artist"
+  :style="{ 'background-image': 'url(' + require(`@/assets/img/${team}/${team}.jpg`) + ')' }">
     <!-- header -->
-    <div
-      class="header mr-auto"
-      :style="{ 'background-image': 'url(' + require(`@/assets/img/${team}/${team}.jpg`) + ')' }"
-    >
+    <div class="header">
       <div class="group">{{ team }}</div>
     </div>
     <!-- 멤버 -->
-    <v-row justify="space-around" class="member">
-      <div class="list" v-for="(member,index) in members" :key="index">
-        <img :class="{selected: isActive==index}"
-          :src="require(`@/assets/img/${team}/${member.name}.jpg`)"
-          alt=""
-          @click="changeSelected(index)"
-        />
-        <div class="myTitle member">{{ member.name }}</div>
-      </div>
-    </v-row>
+    <div class="member">
+      <v-row justify="space-around" class="member">
+        <div class="list" v-for="(member,index) in members" :key="index">
+          <img :class="{selected: isActive==index}"
+            :src="require(`@/assets/img/${team}/${member.name}.jpg`)"
+            alt=""
+            @click="changeSelected(index)"
+          />
+          <div class="">{{ member.name }}</div>
+        </div>
+      </v-row>
+    </div>
     <!-- 영상 리스트 -->
     <Videolist :filters="filters"/>
   </div>
@@ -73,50 +73,58 @@ export default {
 </script>
 
 <style>
-.teamImg {
-  height: 350px;
-  width: auto;
+.artist {
+  background-size: cover;
+  position: relative;
+  background-color: rgba(0, 0, 0, 0.333);
 }
-
+.artist::before{
+  content: "";
+  opacity: 0.7;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  background-color: #000;
+}
 .header {
-  height: 300px;
-  /* background-size: 80% 80%; */
-  background-size: contain;
-  background-position: center;
-  background-repeat: no-repeat;
+  height: 250px;
   resize: both;
+  /* font setting */
   position: relative;
   display: flex;
   align-content: center;
   justify-content: center;
-
 }
 
 .group{
-  font-size: 7vw;
+  font-size: calc(60px + 5vw);
   font-family: 'Bangers', cursive;
   color: rgb(255, 127, 0);
-  /* margin-bottom: 0; */
   position: absolute;
   bottom: 0px;
-  /* padding-top: 25vh; */
+  font-family: 'Lobster', cursive;
 }
 
 .member {
-  margin-top: 20px;
+  position: relative;
+  margin-top: 2vw;
   margin-bottom: 0.4vw;
   justify-content: center;
-  font-family: 'Bangers', cursive;
   text-align: center;
-  font-size: 2vw;
+  font-size: 1.5vw;
   justify-items: center;
   color: white;
 }
 
 .member img {
+  justify-content: center;
+  margin: 0;
+  padding: 0;
   border-radius: 50%;
-  width: 100px;
-  height: 100px;
+  width: calc(60px + 1.5vw);
+  height: calc(60px + 1.5vw);
 }
 .selected {
   border: 3px solid rgb(255, 127, 0);

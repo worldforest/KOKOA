@@ -1,9 +1,10 @@
 <template>
   <div>
     <h2 style="color:#fff;
-  font-size:5vw;
-  display: flex;
-  justify-content: center;">Choose Your Artist</h2>
+      font-size: calc(40px + 2.5vw);
+      display: flex;
+      justify-content: center;">Choose Your Artist</h2>
+  <span class="blinking">
     <div class="example-3d" @mouseenter="hover = true" @mouseleave="hover = false">
       <swiper class="swiper" :options="swiperOption" ref="swiperRef">
         <swiper-slide
@@ -16,6 +17,7 @@
         <div class="swiper-button-next" slot="button-next"></div>
       </swiper>
     </div>
+  </span>
     <v-flex d-flex>
       <v-layout wrap>
         <v-flex xs12 sm6 md4 lg3 xl2 v-for="(data, index) in items" :key="index">
@@ -57,7 +59,7 @@ export default {
           disableOnInteraction: true,
         },
         coverflowEffect: {
-          rotate: 60,
+          rotate: -20,
           stretch: 2,
           depth: 200,
           modifier: 2,
@@ -101,8 +103,9 @@ export default {
   color: white;
 }
 .scale:hover {
-  transform: scale(1.1);
+  transform: scale(1.02);
   z-index: 1;
+  animation: blinking 2s alternate infinite;
 }
 .example-3d {
   width: 100%;
@@ -132,5 +135,19 @@ export default {
 }
 .swiper-button-next{
  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+}
+.blink{
+  animation: blinking 2s alternate infinite;
+}
+@keyframes blinking {
+  from{
+    box-shadow:  0 0 5px 5px rgb(250, 222, 166);
+  }
+  50%{
+    box-shadow: 0 0 5px 5px #FDB165;
+  }
+  to{
+    box-shadow: 0 0 5px 5px rgb(245, 236, 218);
+  }
 }
 </style>

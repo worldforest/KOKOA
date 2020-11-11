@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container style="margin-top:40px;">
     <Channels />
   </v-container>
 </template>
