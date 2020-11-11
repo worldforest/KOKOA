@@ -139,7 +139,8 @@ export default {
             this.dict.push(res.data[i]);
           }
         });
-      await http.get('/subtitle/roma', { params: { word: this.answer } })
+      const answerTrim = this.answer.replace(/[&/\\#,+()$~%.'":*?!<>{}]/g, ' ');
+      await http.get('/subtitle/roma', { params: { word: answerTrim } })
         .then((res) => {
           this.romaza = res.data;
         });
