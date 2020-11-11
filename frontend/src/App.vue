@@ -95,8 +95,8 @@ export default {
 #logo img{
   /* position: absolute; */
   z-index: 999;
-  margin: 8px 0 0 15px;
-  height: calc(40px + 1vw);;
+  margin: 20px 0 0 30px;
+  height: calc(50px + 1vw);;
   width: auto;
 }
 </style>

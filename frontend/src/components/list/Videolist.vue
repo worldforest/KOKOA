@@ -185,11 +185,9 @@ export default {
 };
 </script>
 <style lang="scss">
-.slick-prev:before {
+.upcoming-contents::after{
   color: #FDB165;
-}
-.slick-next:before {
-  color: #FDB165;
+  // background-color: #FDB165;
 }
 .choice img {
   height: 100%;

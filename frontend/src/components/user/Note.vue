@@ -1,8 +1,8 @@
 <template>
-  <div>
-    <div class="bookmarks bookmark-top"
+  <div style="margin-top: 100px;">
+    <div class="eng bookmarks bookmark-top" style="color: black;"
     @click="eq = !eq" :class="{expandbmk : eq, basic : !eq}">Speaking</div>
-    <div class="bookmarks bookmark-bottom"
+    <div class="eng bookmarks bookmark-bottom" style="color: black;"
      @click="eq = !eq" :class="{expandbmk : !eq, basic : eq}">Writing</div>
     <div class="paper">
       <div class="lines">
@@ -155,9 +155,8 @@ export default {
 .expandbmk {
   width: 7vw;
   left: 1%;
-  font-size: 2vw;
-  padding-left: 0.5vw;
-
+  font-size: 1.6vw;
+  padding-left: .7vw;
 }
 .basic {
   width: 3vw;
