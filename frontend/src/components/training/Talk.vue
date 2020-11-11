@@ -38,7 +38,7 @@
           <h2 class="myTitle d-flex justify-space-around my-5" id="result">
             <!-- {{ speechText }} -->
           </h2>
-          <div class="d-flex justify-space-around">
+          <div class="d-flex">
             <v-btn class="ma-2" text icon color="purple lighten-2">
               <v-icon>mdi-clipboard-edit-outline</v-icon>
               오답노트
@@ -176,7 +176,7 @@ export default {
       let container;
       let i;
       for (i = 0; i < answerTrim.length; i += 1) {
-        container = document.createElement('p');
+        container = document.createElement('font');
         if (speechTextTrim.length > i) {
           if (speechTextTrim.charAt(i) === answerTrim.charAt(i)) {
             text = document.createTextNode(speechTextTrim.charAt(i));
@@ -195,7 +195,7 @@ export default {
         container.appendChild(text);
         pos.appendChild(container);
       }
-      container = document.createElement('p');
+      container = document.createElement('font');
       text = document.createTextNode(speechTextTrim.substr(i));
       container.style.color = 'red';
       container.appendChild(text);
@@ -205,6 +205,9 @@ export default {
 };
 </script>
 <style>
+font{
+  padding:0;
+}
 .myTitle{
   color: white;
   font-family: 'Do Hyeon', sans-serif;
