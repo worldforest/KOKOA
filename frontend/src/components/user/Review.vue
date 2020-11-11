@@ -74,6 +74,7 @@ export default {
   async created() {
     this.items = [];
     await http.get('/log/load', { params: { email: this.email } }).then((res) => {
+      console.log(res);
       for (let i = 0; i < res.data.video[0].length; i += 1) {
         this.items.push(res.data.video[0][i]);
       }
