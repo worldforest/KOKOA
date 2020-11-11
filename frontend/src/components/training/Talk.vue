@@ -18,7 +18,7 @@
           </v-icon>
         </v-btn>
       </div>
-      <div class="myTitle d-flex justify-space-around my-5">
+      <div class="myTitle d-flex justify-space-around my-5" :class="{ note: type === 'note' }">
         {{ answer }}
       </div>
     </v-col>
@@ -30,17 +30,19 @@
             <Record @child-event="receiveText" />
           </div>
           <!-- 나의 발음 -->
-          <h2 class="myTitle d-flex justify-space-around my-5">
+          <h2 class="myTitle d-flex justify-space-around my-5" :class="{ note: type === 'note' }">
             {{ speechText }}
           </h2>
           <div class="d-flex justify-space-around">
             <v-btn class="ma-2" text icon color="purple lighten-2" @click="insertNote">
               <v-icon>mdi-clipboard-edit-outline</v-icon>
-              오답노트
+              Add to<br />Note
             </v-btn>
-            <div class="speech-bubble">표시된 부분에 유의해서<br />발음해보세요 :)</div>
+            <div class="speech-bubble">
+              Focus on the marked area<br />and try to pronounce it :)
+            </div>
           </div>
-          <h4 class="myTitle d-flex justify-space-around">
+          <h4 class="myTitle d-flex justify-space-around" :class="{ note: type === 'note' }">
             {{ romaza }}
           </h4>
           <div class="py-5" style="background:purple" v-for="(item, index) in dict" :key="index">
@@ -60,9 +62,25 @@ export default {
   components: {
     Record,
   },
+  props: ['type', 'noteitem'],
   async created() {
-    await this.getData();
-    this.answer = this.video[0].kor.replace(/[&/\\#,+()$~%.'":*?!<>{}]/g, ' ');
+    if (this.type !== 'note') {
+      await this.getData();
+      this.answer = this.video[0].kor.replace(/[&/\\#,+()$~%.'":*?!<>{}]/g, ' ');
+    } else {
+      this.id = this.noteitem.videoid;
+      await http.get('/search/video/', { params: { id: this.id } }).then((res) => {
+        this.url = res.data.url;
+      });
+      // await this.getData();
+      this.video.push({
+        starttime: this.noteitem.starttime,
+        endtime: this.noteitem.endtime,
+        kor: this.noteitem.content,
+        subtitleid: this.noteitem.subtitleid,
+      });
+      this.answer = this.video[0].kor.replace(/[&/\\#,+()$~%.'":*?!<>{}]/g, ' ');
+    }
   },
   computed: {
     player() {
@@ -194,5 +212,9 @@ export default {
   border-left: 0;
   margin-top: -10px;
   margin-left: -10px;
+}
+
+.note {
+  color: black;
 }
 </style>

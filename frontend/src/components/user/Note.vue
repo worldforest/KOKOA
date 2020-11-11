@@ -2,21 +2,16 @@
   <div>
     <div
       class="bookmarks bookmark-top"
-      @click="
-        eq = !eq;
-        type === 0 ? (type = 0) : (type = 1);
-      "
-      :class="{ expandbmk: eq, basic: !eq }"
+      @click="type = 0;"
+      :class="{ expandbmk: type === 0, basic: type !== 0 }"
     >
       Speaking
     </div>
     <div
       class="bookmarks bookmark-bottom"
-      @click="
-        eq = !eq;
-        type === 1 ? (type = 0) : (type = 1);
+      @click="type = 1;
       "
-      :class="{ expandbmk: !eq, basic: eq }"
+      :class="{ expandbmk: type === 1, basic: type !== 1 }"
     >
       Writing
     </div>
@@ -35,26 +30,30 @@
                 @click="expanded === index ? (expanded = -1) : setToTop(index)"
                 :id="'sentence' + index"
               >
-                {{ index }} : {{ item.subtitleid }}
+                ({{ index + 1 }}) {{ item.content }}
               </div>
               <div v-if="expanded === index">
-                <Talk style="background: lightgoldenrodyellow; z-index:2" />
+                <Talk
+                :type="'note'"
+                :noteitem="item"
+                style="background: lightgoldenrodyellow; z-index:2" />
               </div>
             </div>
           </div>
-          <!-- 문장 목록 -->
+          <!-- writing 문장 목록 -->
           <div v-else>
             <h3>[Writing]</h3>
-            <div v-for="(item, index) in speechnote" :key="index" style="">
+            <div v-for="(item, index) in writenote" :key="index" style="">
               <div
                 class="sentences"
                 @click="expanded === index ? (expanded = -1) : setToTop(index)"
                 :id="'sentence' + index"
               >
-                {{ index }} : {{ item.subtitleid }}
+                ({{ index + 1 }}) {{ item.content }}
               </div>
               <div v-if="expanded === index">
-                <Talk style="background: lightgoldenrodyellow; z-index:2" />
+                <Write
+                style="background: lightgoldenrodyellow; z-index:2" />
               </div>
             </div>
           </div>
@@ -70,11 +69,13 @@
 <script>
 import http from '../../util/http-common';
 import Talk from '../training/Talk.vue';
+import Write from '../training/Write.vue';
 
 export default {
   name: 'Note',
   components: {
     Talk,
+    Write,
   },
   data: () => ({
     email: '',
@@ -83,12 +84,10 @@ export default {
     speechnote: [],
     writenote: [],
     expanded: -1,
-    eq: false,
     type: 0,
   }),
   async created() {
     this.email = this.$store.state.email;
-    console.log(`created - ${this.email}`);
     await this.getData();
     // this.answer = this.video[0].kor.replace(/[&/\\#,+()$~%.'":*?!<>{}]/g, ' ');
   },
@@ -101,22 +100,26 @@ export default {
     async getData() {
       this.speechnote = [];
       this.writenote = [];
-      await http.get('/note/load/', { params: { email: 'seul6854ki@gmail.com' } }).then((res) => {
-        console.log(res);
-
-        for (let i = 0; i < res.data.speechnote.length; i += 1) {
+      await http.get('/note/load/', { params: { email: this.email } }).then((res) => {
+        for (let i = 0; i < res.data.speechnote[0].length; i += 1) {
           this.speechnote.push({
-            id: res.data.speechnote[i].id,
-            subtitleid: res.data.speechnote[i].subtitleid,
-            videoid: res.data.speechnote[i].videoid,
+            id: res.data.speechnote[0][i].id,
+            subtitleid: res.data.speechnote[0][i].subtitleid,
+            videoid: res.data.speechnote[0][i].videoid,
+            content: res.data.speechnote_sub[0][i].content,
+            starttime: res.data.speechnote_sub[0][i].starttime,
+            endtime: res.data.speechnote_sub[0][i].endtime,
           });
         }
 
-        for (let i = 0; i < res.data.writenote.length; i += 1) {
+        for (let i = 0; i < res.data.writenote[0].length; i += 1) {
           this.writenote.push({
-            id: res.data.writenote[i].id,
-            subtitleid: res.data.writenote[i].subtitleid,
-            videoid: res.data.writenote[i].videoid,
+            id: res.data.writenote[0][i].id,
+            subtitleid: res.data.writenote[0][i].subtitleid,
+            videoid: res.data.writenote[0][i].videoid,
+            content: res.data.writenote_sub[0][i].content,
+            starttime: res.data.writenote_sub[0][i].starttime,
+            endtime: res.data.writenote_sub[0][i].endtime,
           });
         }
       });
