@@ -1,5 +1,5 @@
 <template>
-  <v-row>
+  <v-row style="margin-top:80px;">
     <v-col class="youtubeContainer" cols="12" lg="8">
       <div class="d-flex justify-center mt-3">
         <youtube :video-id="url" ref="youtube" :player-vars="playerVars" flex></youtube>
@@ -20,30 +20,34 @@
     </v-col>
     <v-col class="testContainer" cols="12" lg="4">
       <v-row class="d-flex justify-center ma-5">
-        <v-col cols="12">
-          <div class="answerDiv">
-            <h3 class="myTitle d-flex justify-center">Answer</h3>
-            <b-button class="mr-10" @click="reset">Reset</b-button>
+        <v-col cols="12" style="height: 10vw;">
+          <div class="answerDiv myTitle">
+            <h3 class="eng d-flex justify-center">Answer</h3>
+            <v-btn icon color="rgb(73, 178, 134)"
+            class="mr-10"
+            style="font-size: 30px;"
+            @click="reset"><v-icon class="restart">mdi-restart</v-icon></v-btn>
           </div>
           <draggable
             class="row wrap fill-height align-center justify-center sortable-list"
             :list="checklist"
             group="people"
           >
-            <div class="list-group-item" v-for="element in checklist" :key="element.name">
+            <div
+            class="kor wordblock" v-for="element in checklist" :key="element.name">
               {{ element.name }}
             </div>
           </draggable>
         </v-col>
 
-        <v-col cols="12">
-          <h3 class="myTitle d-flex justify-center">Choice</h3>
+        <v-col cols="12" style="height: 10vw;">
+            <h3 class="eng d-flex justify-center">Choice</h3>
           <draggable
             class="row wrap fill-height align-center justify-center sortable-list"
             :list="choicelist"
             group="people"
           >
-            <div class="list-group-item" v-for="element in choicelist" :key="element.name">
+            <div class="kor wordblock" v-for="element in choicelist" :key="element.name">
               {{ element.name }}
             </div>
           </draggable>
@@ -256,5 +260,18 @@ iframe {
 }
 .myTitle{
   color: white;
+  font-size: clac(60px + 6vw);
+}
+.restart{
+  height: 2vw;
+  width: auto;
+}
+.wordblock{
+  font-size: 1.5em;
+  background-color: rgb(73, 178, 134);
+  padding: 15px;
+  border: 45%;
+  margin: 0.5vw;
+  border-radius: 30px;
 }
 </style>

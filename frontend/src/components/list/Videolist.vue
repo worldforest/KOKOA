@@ -3,7 +3,7 @@
     <b-container fluid>
       <b-row>
         <b-col sm="12" class="overflow-hidden">
-          <div class="toggle-btn">
+          <div class="eng toggle-btn">
             <form class="tabber">
               <label for="t1">Speaking</label>
               <input id="t1" type="radio" value="Speaking" v-model="choice"/>
@@ -200,7 +200,6 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: "Concert One", cursive;
   font-size: calc(20px + 0.8vw);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;

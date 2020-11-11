@@ -72,6 +72,13 @@ export default {
 };
 </script>
 <style>
+.kor{
+  font-family: 'Do Hyeon', sans-serif;
+}
+.eng{
+  font-family: 'Merriweather', serif;
+  color: white;
+}
 #create{
   background-color: rgba(0, 0, 0, 0.89);
 }
@@ -91,8 +98,5 @@ export default {
   margin: 8px 0 0 15px;
   height: calc(40px + 1vw);;
   width: auto;
-}
-* {
-  font-family: 'Merriweather', serif;
 }
 </style>
