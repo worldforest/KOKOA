@@ -72,7 +72,6 @@ export default {
       await http.get('/search/video/', { params: { id: this.id } }).then((res) => {
         this.url = res.data.url;
       });
-      // await this.getData();
       this.video.push({
         starttime: this.noteitem.starttime,
         endtime: this.noteitem.endtime,
