@@ -96,23 +96,8 @@ const routes = [
           next(from);
         }
       });
-
-      // Swal.fire({
-      //   position: 'top-end',
-      //   icon: 'success',
-      //   title: 'Your work has been saved',
-      //   showConfirmButton: false,
-      //   timer: 1500
-      // })
     },
   },
-  // {
-  //   path: '*',
-  //   beforeEnter: (to, from, next) => {
-  //     alert('Not exist Page');
-  //     next('/');
-  //   },
-  // },
 ];
 
 const router = new VueRouter({
