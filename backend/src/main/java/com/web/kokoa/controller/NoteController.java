@@ -2,6 +2,8 @@ package com.web.kokoa.controller;
 
 
 import com.web.kokoa.model.speechnote;
+import com.web.kokoa.model.subtitles;
+import com.web.kokoa.model.user;
 import com.web.kokoa.model.writenote;
 import com.web.kokoa.repository.*;
 import io.swagger.annotations.ApiOperation;
@@ -13,9 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 @ApiResponses(value = {
         @ApiResponse(code = 401, message = "Unauthorized"),
@@ -44,6 +44,7 @@ public class NoteController {
     @Autowired
     WriteNoteRepo writeNoteRepo;
 
+
     @PostMapping("/insert")
     @ApiOperation(value = "오답노트 추가", notes = "user num에 맞는 video, subtitle 오답노트 추가.")
     public ResponseEntity<String> addtoNote(@RequestParam String email, @RequestParam int videoid, @RequestParam int subtitleid, @RequestParam int type){
@@ -70,15 +71,25 @@ public class NoteController {
     @GetMapping("/load")
     @ApiOperation(value = "오답노트 조회", notes = "user num에 맞는 video, subtitle 오답노트 조회.")
     public ResponseEntity<HashMap<String, List<Object>>> loadUserNote(@RequestParam String email){
-
-        int userid = userRepo.findUserByEmail("email").getId();
+        System.out.println(email);
+        user user = userRepo.findUserByEmail(email);
+        int userid = user.getId();
         List<writenote> writenotes = writeNoteRepo.findAllByUserid(userid);
         List<speechnote> speechnotes = speechNoteRepo.findAllByUserid(userid);
 
         HashMap<String,List<Object>> result = new HashMap<>();
-
+        List<subtitles> write = new ArrayList<>();
+        List<subtitles> speech = new ArrayList<>();
+        for (writenote w: writenotes) {
+            write.add(subtitlesRepo.getAllById(w.getSubtitleid()));
+        }
+        for (speechnote s: speechnotes) {
+            speech.add(subtitlesRepo.getAllById(s.getSubtitleid()));
+        }
         result.put("writenote", Collections.singletonList(writenotes));
+        result.put("writenote_sub", Collections.singletonList(write));
         result.put("speechnote", Collections.singletonList(speechnotes));
+        result.put("speechnote_sub", Collections.singletonList(speech));
 
         return new ResponseEntity<HashMap<String, List<Object>>>(result,HttpStatus.OK);
     }

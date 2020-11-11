@@ -14,7 +14,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableSwagger2
 public class SwaggerConfig {
     private ApiInfo apiInfo() {
-        return new ApiInfoBuilder().title("KoKoaAPI").description("api example").build();
+        return new ApiInfoBuilder().title("KoKoaAPI").description("KoKoA REST api example").build();
     }
     @Bean
     public Docket api(){
