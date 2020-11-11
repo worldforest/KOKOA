@@ -40,7 +40,7 @@ export default {
     * 음성 인식 시작 처리
     */
     recognition.onstart = function () {
-      console.log('onstart');
+      // console.log('onstart');
       this.isRecognizing = true;
       // $btnMic.className = 'on';
     };
@@ -49,7 +49,7 @@ export default {
     * 음성 인식 종료 처리
     */
     recognition.onend = function () {
-      console.log('onend');
+      // console.log('onend');
       this.isRecognizing = false;
 
       if (this.ignoreEndProcess) {
@@ -102,7 +102,7 @@ export default {
      * 음성 인식 에러 처리
      */
     recognition.onerror = function (event) {
-      console.log('onerror', event);
+      // console.log('onerror', event);
 
       if (event.error.match(/no-speech|audio-capture|not-allowed/)) {
         this.ignoreEndProcess = true;
