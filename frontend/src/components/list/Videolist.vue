@@ -170,6 +170,7 @@ export default {
         // eslint-disable-next-line no-await-in-loop
         await http.get(`/search/idol/${i}?groupname=${team}`).then((res) => res.data.content.forEach((element) => {
           items.push(element);
+          console.log(items);
         }));
       }
     },
