@@ -70,6 +70,9 @@
               {{ element.name }}
             </div>
           </draggable>
+          <div class="d-flex justify-space-around my-5 eng">
+          {{ answerEng }}
+          </div>
         </v-col>
       </v-row>
     </v-col>
@@ -88,6 +91,7 @@ export default {
   async created() {
     this.answer = [];
     this.choicelist = [];
+    this.answerEng = '';
 
     if (this.type !== 'note') {
       await this.getData();
@@ -101,7 +105,9 @@ export default {
         starttime: this.noteitem.starttime,
         endtime: this.noteitem.endtime,
         kor: this.noteitem.content,
-        // subtitleid: this.noteitem.subtitleid,
+        eng: this.noteitem.engcontent,
+        subtitleid: this.noteitem.subtitleid,
+        engsubtitleid: this.noteitem.engsubtitleid,
       });
     }
     const list = this.video[0].kor.replace(/[&/\\#,+()$~%.'":*?!<>{}]/g, '').split(' ');
@@ -111,6 +117,7 @@ export default {
     }
     this.choicelist = this.shuffle(this.choicelist);
     this.checklist = [];
+    this.answerEng = this.video[0].eng.replace(/[&/\\#,+()$~%.'":*?!<>{}]/g, '');
   },
   data() {
     return {
@@ -152,6 +159,7 @@ export default {
           this.timerInterval = setInterval(() => {}, 100);
         },
       },
+      answerEng: '',
     };
   },
   computed: {
@@ -172,7 +180,7 @@ export default {
           tmp = false;
           this.$swal.fire(n.wrongAnswer).then((result) => {
             if (result.isDenied) {
-              this.$swal.fire('Answer is', n.video[i].kor, 'error');
+              this.$swal.fire('Answer is', n.video[this.current].kor, 'error');
               this.insertNote();
             }
           });
@@ -187,6 +195,7 @@ export default {
       }
     },
     current() {
+      this.answerEng = this.video[this.current].eng;
       this.fail = false;
       this.answer = [];
       this.choicelist = [];
@@ -270,9 +279,10 @@ export default {
           this.video.push({
             starttime: res.data.Korean[i].starttime,
             endtime: res.data.Korean[i].endtime,
-            eng: res.data.English[i].content,
+            eng: res.data.English[i].content.replace(/[&/\\#,+()$~%.'":*?!<>{}]/g, ''),
             kor: res.data.Korean[i].content.replace(/[&/\\#,+()$~%.'":*?!<>{}]/g, ''),
             subtitleid: res.data.Korean[i].id,
+            engsubtitleid: res.data.English[i].id,
           });
         }
       });
@@ -281,6 +291,7 @@ export default {
       const fd = new FormData();
       fd.append('email', this.$store.state.email);
       fd.append('subtitleid', this.video[this.current].subtitleid);
+      fd.append('engsubtitleid', this.video[this.current].engsubtitleid);
       fd.append('type', 1);
       fd.append('videoid', this.id);
 

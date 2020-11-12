@@ -95,12 +95,15 @@ export default {
       this.speechnote = [];
       this.writenote = [];
       await http.get('/note/load/', { params: { email: this.email } }).then((res) => {
+        console.log(res);
         for (let i = 0; i < res.data.speechnote[0].length; i += 1) {
           this.speechnote.push({
             id: res.data.speechnote[0][i].id,
             subtitleid: res.data.speechnote[0][i].subtitleid,
+            engsubtitleid: res.data.speechnote[0][i].engsubtitleid,
             videoid: res.data.speechnote[0][i].videoid,
-            content: res.data.speechnote_sub[0][i].content,
+            content: res.data.speechnote_sub[0][2 * i].content,
+            engcontent: res.data.speechnote_sub[0][2 * i + 1].content,
             starttime: res.data.speechnote_sub[0][i].starttime,
             endtime: res.data.speechnote_sub[0][i].endtime,
           });
@@ -110,8 +113,10 @@ export default {
           this.writenote.push({
             id: res.data.writenote[0][i].id,
             subtitleid: res.data.writenote[0][i].subtitleid,
+            engsubtitleid: res.data.speechnote[0][i].engsubtitleid,
             videoid: res.data.writenote[0][i].videoid,
-            content: res.data.writenote_sub[0][i].content,
+            content: res.data.writenote_sub[0][2 * i].content,
+            engcontent: res.data.writenote_sub[0][2 * i + 1].content,
             starttime: res.data.writenote_sub[0][i].starttime,
             endtime: res.data.writenote_sub[0][i].endtime,
           });

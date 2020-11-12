@@ -17,5 +17,6 @@ public class writenote {
     private int id;
     private int userid;
     private int subtitleid;
+    private int engsubtitleid;
     private int videoid;
 }

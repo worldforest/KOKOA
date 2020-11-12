@@ -21,6 +21,9 @@
       <div class="myTitle d-flex justify-space-around my-5" :class="{ note: type === 'note' }">
         {{ answer }}
       </div>
+      <div class="myTitle d-flex justify-space-around my-5" :class="{ note: type === 'note' }">
+        {{ answerEng }}
+      </div>
     </v-col>
     <!-- right side -->
     <v-col class="testContainer" cols="12" lg="4">
@@ -67,6 +70,7 @@ export default {
     if (this.type !== 'note') {
       await this.getData();
       this.answer = this.video[0].kor.replace(/[&/\\#,+\-()$~%.'":*?!<>{}]/g, ' ');
+      this.answerEng = this.video[0].eng.replace(/[&/\\#,+\-()$~%.'":*?!<>{}]/g, ' ');
     } else {
       this.id = this.noteitem.videoid;
       await http.get('/search/video/', { params: { id: this.id } }).then((res) => {
@@ -76,9 +80,12 @@ export default {
         starttime: this.noteitem.starttime,
         endtime: this.noteitem.endtime,
         kor: this.noteitem.content,
+        eng: this.noteitem.engcontent,
         subtitleid: this.noteitem.subtitleid,
+        engsubtitleid: this.noteitem.engsubtitleid,
       });
       this.answer = this.video[0].kor.replace(/[&/\\#,+\-()$~%.'":*?!<>{}]/g, ' ');
+      this.answerEng = this.video[0].eng.replace(/[&/\\#,+\-()$~%.'":*?!<>{}]/g, ' ');
     }
 
     const start = this.timer(this.video[0].starttime);
@@ -113,6 +120,7 @@ export default {
         cc_load_policy: 0,
       },
       answer: '',
+      answerEng: '',
       answerTrim: '',
       romaza: '',
       dict: [],
@@ -173,6 +181,7 @@ export default {
     async getData() {
       this.video = [];
       await http.get('/search/video/', { params: { id: this.id } }).then((res) => {
+        console.log(res);
         this.url = res.data.url;
         for (let i = 0; i < res.data.Korean.length; i += 1) {
           this.video.push({
@@ -181,6 +190,7 @@ export default {
             eng: res.data.English[i].content,
             kor: res.data.Korean[i].content,
             subtitleid: res.data.Korean[i].id,
+            engsubtitleid: res.data.English[i].id,
           });
         }
       });
@@ -189,6 +199,7 @@ export default {
       const fd = new FormData();
       fd.append('email', this.$store.state.email);
       fd.append('subtitleid', this.video[this.replay].subtitleid);
+      fd.append('engsubtitleid', this.video[this.replay].engsubtitleid);
       fd.append('type', 0);
       fd.append('videoid', this.id);
 
@@ -202,7 +213,8 @@ export default {
   watch: {
     replay() {
       this.answer = '';
-      this.answer = this.video[this.replay].kor.replace(/[&/\\#,+\-()$~%.'":*?!<>{}]/g, '');
+      this.answer = this.video[this.replay].kor.replace(/[&/\\#,+\-()$~%.'":*?!<>{}]/g, ' ');
+      this.answerEng = this.video[this.replay].eng.replace(/[&/\\#,+\-()$~%.'":*?!<>{}]/g, ' ');
       this.play();
     },
     speechText() {
