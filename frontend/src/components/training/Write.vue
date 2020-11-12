@@ -27,27 +27,33 @@
       <v-row class="d-flex justify-center ma-5">
         <v-col cols="12" style="height: 18vw;">
           <div class="answerDiv">
-            <h3 class="eng writeTitle" :class="{ note: type === 'note' }" style="margin-bottom: 1vw;">Answer</h3>
-            <v-btn icon color="rgb(73, 178, 134)"
-            class="mr-10"
-            style="font-size: 30px;"
-            @click="reset"><v-icon class="restart"
-            style="font-size: 30px;">mdi-replay</v-icon></v-btn>
+            <h3
+              class="eng writeTitle"
+              :class="{ note: type === 'note' }"
+              style="margin-bottom: 1vw;"
+            >
+              Answer
+            </h3>
+            <v-btn
+              icon
+              color="rgb(73, 178, 134)"
+              class="mr-10"
+              style="font-size: 30px;"
+              @click="reset"
+              ><v-icon class="restart" style="font-size: 30px;">mdi-replay</v-icon></v-btn
+            >
           </div>
-          <draggable
-            class="row wrap justify-center sortable-list"
-            :list="checklist"
-            group="people"
-          >
-            <div
-            class="kor wordblock" v-for="element in checklist" :key="element.name">
+          <draggable class="row wrap justify-center sortable-list" :list="checklist" group="people">
+            <div class="kor wordblock" v-for="element in checklist" :key="element.name">
               {{ element.name }}
             </div>
           </draggable>
         </v-col>
 
         <v-col cols="12" style="height: 15vw;">
-            <h3 class="eng writeTitle" :class="{ note: type === 'note' }" style="margin-bottom: 1vw;">Choice</h3>
+          <h3 class="eng writeTitle" :class="{ note: type === 'note' }" style="margin-bottom: 1vw;">
+            Choice
+          </h3>
           <draggable
             class="row wrap align-center justify-center sortable-list"
             :list="choicelist"
@@ -81,10 +87,9 @@ export default {
     } else {
       this.id = this.noteitem.videoid;
       this.video = [];
-      await http.get('/search/video/', { params: { id: this.id } })
-        .then((res) => {
-          this.url = res.data.url;
-        });
+      await http.get('/search/video/', { params: { id: this.id } }).then((res) => {
+        this.url = res.data.url;
+      });
       this.video.push({
         starttime: this.noteitem.starttime,
         endtime: this.noteitem.endtime,
@@ -111,7 +116,7 @@ export default {
         controls: 0,
         loop: 1,
         fs: 0,
-        rel: 0,
+        rel: 1,
         showinfo: 0,
         playlist: '',
         cc_load_policy: 0,
@@ -240,7 +245,9 @@ export default {
       this.fail = false;
       this.answer = [];
       this.choicelist = [];
-      const list = this.video[this.current].kor.replace(/[&/\\#,+()$~%.'":*?!<>{}]/g, '').split(' ');
+      const list = this.video[this.current].kor
+        .replace(/[&/\\#,+()$~%.'":*?!<>{}]/g, '')
+        .split(' ');
       for (let i = 0; i < list.length; i += 1) {
         this.answer.push({ name: list[i], id: i });
         this.choicelist.push({ name: list[i], id: i });
@@ -250,19 +257,18 @@ export default {
     },
     async getData() {
       this.video = [];
-      await http.get('/search/video/', { params: { id: this.id } })
-        .then((res) => {
-          this.url = res.data.url;
-          for (let i = 0; i < res.data.Korean.length; i += 1) {
-            this.video.push({
-              starttime: res.data.Korean[i].starttime,
-              endtime: res.data.Korean[i].endtime,
-              eng: res.data.English[i].content,
-              kor: res.data.Korean[i].content.replace(/[&/\\#,+()$~%.'":*?!<>{}]/g, ''),
-              subtitleid: res.data.Korean[i].id,
-            });
-          }
-        });
+      await http.get('/search/video/', { params: { id: this.id } }).then((res) => {
+        this.url = res.data.url;
+        for (let i = 0; i < res.data.Korean.length; i += 1) {
+          this.video.push({
+            starttime: res.data.Korean[i].starttime,
+            endtime: res.data.Korean[i].endtime,
+            eng: res.data.English[i].content,
+            kor: res.data.Korean[i].content.replace(/[&/\\#,+()$~%.'":*?!<>{}]/g, ''),
+            subtitleid: res.data.Korean[i].id,
+          });
+        }
+      });
     },
     insertNote() {
       http
@@ -298,18 +304,18 @@ iframe {
   top: 0;
   right: 0;
 }
-.writeTitle{
+.writeTitle {
   color: white;
   display: flex;
   align-content: center;
   justify-items: center;
   font-size: 4.5vw;
 }
-.restart{
+.restart {
   height: 2vw;
   width: auto;
 }
-.wordblock{
+.wordblock {
   font-size: 2.2vw;
   background-color: rgb(73, 178, 134);
   padding: 1vw;
@@ -317,7 +323,7 @@ iframe {
   margin: 0.5vw;
   border-radius: 30px;
 }
-.note{
+.note {
   color: black;
 }
 </style>

@@ -80,6 +80,15 @@ export default {
       });
       this.answer = this.video[0].kor.replace(/[&/\\#,+()$~%.'":*?!<>{}]/g, ' ');
     }
+
+    const start = this.timer(this.video[0].starttime);
+    const end = this.timer(this.video[0].endtime);
+    this.player.loadVideoById({
+      videoId: this.url,
+      startSeconds: start,
+      endSeconds: end,
+      suggestedQuality: 'default',
+    });
   },
   computed: {
     player() {
@@ -101,6 +110,7 @@ export default {
         rel: 1,
         showinfo: 0,
         playlist: '',
+        cc_load_policy: 0,
       },
       answer: '',
       answerTrim: '',
@@ -145,19 +155,20 @@ export default {
     async receiveText(text) {
       this.dict = [];
       const tmp = this.answer;
-      this.answerTrim = tmp.replace(/[&/\\#,+()$~%@.'":*?!<>{}[]]/g, ' ').replace('[', '').replace(']', '');
-      await http.get('/subtitle/roma', { params: { word: this.answerTrim } })
-        .then((res) => {
-          this.romaza = res.data;
-        });
+      this.answerTrim = tmp
+        .replace(/[&/\\#,+()$~%@.'":*?!<>{}[]]/g, ' ')
+        .replace('[', '')
+        .replace(']', '');
+      await http.get('/subtitle/roma', { params: { word: this.answerTrim } }).then((res) => {
+        this.romaza = res.data;
+      });
       this.speechText = text.replace(/[&/\\#,+()$~%.'":*?!<>{}]/g, ' ');
       const { subtitleid } = this.video[this.replay];
-      await http.get('/subtitle/dict', { params: { subtitleid } })
-        .then((res) => {
-          for (let i = 0; i < res.data.length; i += 1) {
-            this.dict.push(res.data[i]);
-          }
-        });
+      await http.get('/subtitle/dict', { params: { subtitleid } }).then((res) => {
+        for (let i = 0; i < res.data.length; i += 1) {
+          this.dict.push(res.data[i]);
+        }
+      });
     },
     async getData() {
       this.video = [];
@@ -236,16 +247,16 @@ export default {
 };
 </script>
 <style scoped>
-font{
-  padding:0;
+font {
+  padding: 0;
 }
-.myTitle{
+.myTitle {
   color: white;
-  font-family: 'Do Hyeon', sans-serif;
+  font-family: "Do Hyeon", sans-serif;
   font-size: 1.5em;
 }
-.myTitle *{
-  font-family: 'Do Hyeon', sans-serif;
+.myTitle * {
+  font-family: "Do Hyeon", sans-serif;
   font-size: 1.5em;
 }
 .speech-bubble {
