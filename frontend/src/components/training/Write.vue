@@ -173,7 +173,7 @@ export default {
           this.$swal.fire(n.wrongAnswer).then((result) => {
             if (result.isDenied) {
               this.$swal.fire('Answer is', n.video[i].kor, 'error');
-              // this.insertNote();
+              this.insertNote();
             }
           });
           break;
@@ -278,15 +278,14 @@ export default {
       });
     },
     insertNote() {
+      const fd = new FormData();
+      fd.append('email', this.$store.state.email);
+      fd.append('subtitleid', this.video[this.current].subtitleid);
+      fd.append('type', 1);
+      fd.append('videoid', this.id);
+
       http
-        .post('/note/insert/', {
-          params: {
-            email: this.$store.state.email,
-            subtitleid: this.video[this.current].subtitleid,
-            type: 0,
-            videoid: this.id,
-          },
-        })
+        .post('/note/insert/', fd)
         .then((res) => {
           console.log(res);
         });

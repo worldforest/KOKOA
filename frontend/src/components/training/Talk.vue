@@ -186,15 +186,14 @@ export default {
       });
     },
     insertNote() {
+      const fd = new FormData();
+      fd.append('email', this.$store.state.email);
+      fd.append('subtitleid', this.video[this.replay].subtitleid);
+      fd.append('type', 0);
+      fd.append('videoid', this.id);
+
       http
-        .post('/note/insert/', {
-          params: {
-            email: this.$store.state.email,
-            subtitleid: this.video[this.replay].subtitleid,
-            type: 0,
-            videoid: this.id,
-          },
-        })
+        .post('/note/insert/', fd)
         .then((res) => {
           console.log(res);
         });
