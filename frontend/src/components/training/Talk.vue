@@ -3,14 +3,9 @@
     <!-- left side -->
     <v-col class="youtubeContainer" cols="12" lg="8">
       <div class="d-flex justify-center mt-3">
-        <youtube
-          :video-id="url"
-          ref="youtube"
-          :player-vars="playerVars"
-          flex
-        ></youtube>
+        <youtube :video-id="url" ref="youtube" :player-vars="playerVars" flex></youtube>
       </div>
-     <div class="d-flex justify-space-around my-5">
+      <div class="d-flex justify-space-around my-5">
         <v-btn @click="previous" icon>
           <v-icon color="white">
             mdi-arrow-left
@@ -23,8 +18,8 @@
           </v-icon>
         </v-btn>
       </div>
-      <div class="myTitle d-flex justify-space-around my-5">
-        {{answer}}
+      <div class="myTitle d-flex justify-space-around my-5" :class="{ note: type === 'note' }">
+        {{ answer }}
       </div>
     </v-col>
     <!-- right side -->
@@ -35,21 +30,23 @@
             <Record @child-event="receiveText" />
           </div>
           <!-- 나의 발음 -->
-          <h2 class="myTitle my-5" id="result">
+          <h2 class="myTitle my-5" id="result" :class="{ note: type === 'note' }">
             <!-- {{ speechText }} -->
           </h2>
           <div class="d-flex justify-space-around">
-            <v-btn class="ma-2" text icon color="purple lighten-2">
+            <v-btn class="ma-2" text icon color="purple lighten-2" @click="insertNote">
               <v-icon>mdi-clipboard-edit-outline</v-icon>
-              오답노트
+              Add to<br />Note
             </v-btn>
-            <div class="speech-bubble">표시된 부분에 유의해서<br />발음해보세요 :)</div>
+            <div class="speech-bubble">
+              Focus on the marked area<br />and try to pronounce it :)
+            </div>
           </div>
-          <h4 class="myTitle d-flex justify-space-around">
-            {{romaza}}
+          <h4 class="myTitle d-flex justify-space-around" :class="{ note: type === 'note' }">
+            {{ romaza }}
           </h4>
-          <div class="py-5" style="background:purple" v-for="(item,index) in dict" :key="index">
-            {{item.kor + " " + item.eng + " " + item.dfn}}
+          <div class="py-5" style="background:purple" v-for="(item, index) in dict" :key="index">
+            {{ item.kor + " " + item.eng + " " + item.dfn }}
           </div>
         </v-col>
       </v-row>
@@ -65,9 +62,24 @@ export default {
   components: {
     Record,
   },
+  props: ['type', 'noteitem'],
   async created() {
-    await this.getData();
-    this.answer = this.video[0].kor.replace(/[&/\\#,+()$~%.'":*?!<>{}]/g, ' ');
+    if (this.type !== 'note') {
+      await this.getData();
+      this.answer = this.video[0].kor.replace(/[&/\\#,+()$~%.'":*?!<>{}]/g, ' ');
+    } else {
+      this.id = this.noteitem.videoid;
+      await http.get('/search/video/', { params: { id: this.id } }).then((res) => {
+        this.url = res.data.url;
+      });
+      this.video.push({
+        starttime: this.noteitem.starttime,
+        endtime: this.noteitem.endtime,
+        kor: this.noteitem.content,
+        subtitleid: this.noteitem.subtitleid,
+      });
+      this.answer = this.video[0].kor.replace(/[&/\\#,+()$~%.'":*?!<>{}]/g, ' ');
+    }
   },
   computed: {
     player() {
@@ -149,18 +161,31 @@ export default {
     },
     async getData() {
       this.video = [];
-      await http.get('/search/video/', { params: { id: this.id } })
+      await http.get('/search/video/', { params: { id: this.id } }).then((res) => {
+        this.url = res.data.url;
+        for (let i = 0; i < res.data.Korean.length; i += 1) {
+          this.video.push({
+            starttime: res.data.Korean[i].starttime,
+            endtime: res.data.Korean[i].endtime,
+            eng: res.data.English[i].content,
+            kor: res.data.Korean[i].content,
+            subtitleid: res.data.Korean[i].id,
+          });
+        }
+      });
+    },
+    insertNote() {
+      http
+        .post('/note/insert/', {
+          params: {
+            email: this.$store.state.email,
+            subtitleid: this.video[this.replay].subtitleid,
+            type: 0,
+            videoid: this.id,
+          },
+        })
         .then((res) => {
-          this.url = res.data.url;
-          for (let i = 0; i < res.data.Korean.length; i += 1) {
-            this.video.push({
-              starttime: res.data.Korean[i].starttime,
-              endtime: res.data.Korean[i].endtime,
-              eng: res.data.English[i].content,
-              kor: res.data.Korean[i].content,
-              subtitleid: res.data.Korean[i].id,
-            });
-          }
+          console.log(res);
         });
     },
   },
@@ -241,5 +266,9 @@ font{
   border-left: 0;
   margin-top: -10px;
   margin-left: -10px;
+}
+
+.note {
+  color: black;
 }
 </style>

@@ -1,9 +1,12 @@
 <template>
   <div style="margin-top: 100px;">
     <div class="eng bookmarks bookmark-top" style="color: black;"
-    @click="eq = !eq" :class="{expandbmk : eq, basic : !eq}">Speaking</div>
+    @click="type = 0;"
+      :class="{ expandbmk: type === 0, basic: type !== 0 }">Speaking</div>
     <div class="eng bookmarks bookmark-bottom" style="color: black;"
-     @click="eq = !eq" :class="{expandbmk : !eq, basic : eq}">Writing</div>
+     @click="type = 1;
+      "
+      :class="{ expandbmk: type === 1, basic: type !== 1 }">Writing</div>
     <div class="paper">
       <div class="lines">
         <div class="text">
@@ -11,17 +14,41 @@
           <h2>Note - Review your incorrect sentences.</h2>
           <br />
           <!-- 문장 목록 -->
-          <h3>[Speaking]</h3>
-          <div v-for="(item, index) in items" :key="index" style="">
-            <div
-              class="sentences"
-              @click="expanded === index ? (expanded = -1) : setToTop(index)"
-              :id="'sentence' + index"
-            >
-              {{ index }} : {{ item.name }}
+          <div v-if="type === 0">
+            <h3>[Speaking]</h3>
+            <div v-for="(item, index) in speechnote" :key="index" style="">
+              <div
+                class="kor sentences"
+                @click="expanded === index ? (expanded = -1) : setToTop(index)"
+                :id="'sentence' + index"
+              >
+                ({{ index + 1 }}) {{ item.content }}
+              </div>
+              <div v-if="expanded === index">
+                <Talk
+                :type="'note'"
+                :noteitem="item"
+                style="background: lightgoldenrodyellow; z-index:2" />
+              </div>
             </div>
-            <div v-if="expanded === index">
-              <Talk style="background: lightgoldenrodyellow; z-index:2" />
+          </div>
+          <!-- writing 문장 목록 -->
+          <div v-else>
+            <h3>[Writing]</h3>
+            <div v-for="(item, index) in writenote" :key="index" style="">
+              <div
+                class="kor sentences"
+                @click="expanded === index ? (expanded = -1) : setToTop(index)"
+                :id="'sentence' + index"
+              >
+                ({{ index + 1 }}) {{ item.content }}
+              </div>
+              <div v-if="expanded === index">
+                <Write
+                :type="'note'"
+                :noteitem="item"
+                style="background: lightgoldenrodyellow; z-index:2" />
+              </div>
             </div>
           </div>
         </div>
@@ -34,45 +61,69 @@
 </template>
 
 <script>
+import http from '../../util/http-common';
 import Talk from '../training/Talk.vue';
+import Write from '../training/Write.vue';
 
 export default {
   name: 'Note',
   components: {
     Talk,
+    Write,
   },
   data: () => ({
+    email: '',
     singleExpand: true,
     itemsPerPage: 4,
-    items: [
-      {
-        name: '찬성은 사람을 들어',
-      },
-      {
-        name: 'Ice cream sandwich',
-      },
-      {
-        name: 'Eclair',
-      },
-      {
-        name: 'Cupcake',
-      },
-    ],
+    speechnote: [],
+    writenote: [],
     expanded: -1,
-    eq: false,
+    type: 0,
   }),
+  async created() {
+    this.email = this.$store.state.email;
+    await this.getData();
+    // this.answer = this.video[0].kor.replace(/[&/\\#,+()$~%.'":*?!<>{}]/g, ' ');
+  },
   methods: {
     setToTop(index) {
       const elmnt = document.getElementById(`sentence${index}`);
       elmnt.scrollIntoView(true);
       this.expanded = index;
     },
+    async getData() {
+      this.speechnote = [];
+      this.writenote = [];
+      await http.get('/note/load/', { params: { email: this.email } }).then((res) => {
+        for (let i = 0; i < res.data.speechnote[0].length; i += 1) {
+          this.speechnote.push({
+            id: res.data.speechnote[0][i].id,
+            subtitleid: res.data.speechnote[0][i].subtitleid,
+            videoid: res.data.speechnote[0][i].videoid,
+            content: res.data.speechnote_sub[0][i].content,
+            starttime: res.data.speechnote_sub[0][i].starttime,
+            endtime: res.data.speechnote_sub[0][i].endtime,
+          });
+        }
+
+        for (let i = 0; i < res.data.writenote[0].length; i += 1) {
+          this.writenote.push({
+            id: res.data.writenote[0][i].id,
+            subtitleid: res.data.writenote[0][i].subtitleid,
+            videoid: res.data.writenote[0][i].videoid,
+            content: res.data.writenote_sub[0][i].content,
+            starttime: res.data.writenote_sub[0][i].starttime,
+            endtime: res.data.writenote_sub[0][i].endtime,
+          });
+        }
+      });
+    },
   },
 };
 </script>
 
 <style>
-@import url(https://fonts.googleapis.com/css?family=Indie+Flower);
+/* @import url(https://fonts.googleapis.com/css?family=Indie+Flower); */
 .paper {
   position: absolute;
   width: 90%;
@@ -155,6 +206,8 @@ export default {
 .expandbmk {
   width: 7vw;
   left: 1%;
+  /* font-size: 2vw;
+  padding-left: 0.5vw; */
   font-size: 1.6vw;
   padding-left: .7vw;
 }
@@ -163,6 +216,5 @@ export default {
   left: 2%;
   font-size: 1.6vw;
   padding-left: 0.3vw;
-
 }
 </style>

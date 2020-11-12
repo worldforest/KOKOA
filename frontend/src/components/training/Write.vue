@@ -27,7 +27,7 @@
       <v-row class="d-flex justify-center ma-5">
         <v-col cols="12" style="height: 18vw;">
           <div class="answerDiv">
-            <h3 class="eng writeTitle" style="margin-bottom: 1vw;">Answer</h3>
+            <h3 class="eng writeTitle" :class="{ note: type === 'note' }" style="margin-bottom: 1vw;">Answer</h3>
             <v-btn icon color="rgb(73, 178, 134)"
             class="mr-10"
             style="font-size: 30px;"
@@ -47,7 +47,7 @@
         </v-col>
 
         <v-col cols="12" style="height: 15vw;">
-            <h3 class="eng writeTitle" style="margin-bottom: 1vw;">Choice</h3>
+            <h3 class="eng writeTitle" :class="{ note: type === 'note' }" style="margin-bottom: 1vw;">Choice</h3>
           <draggable
             class="row wrap align-center justify-center sortable-list"
             :list="choicelist"
@@ -71,11 +71,28 @@ export default {
   components: {
     draggable,
   },
+  props: ['type', 'noteitem'],
   async created() {
-    await this.getData();
     this.answer = [];
     this.choicelist = [];
-    const list = this.video[0].kor.split(' ');
+
+    if (this.type !== 'note') {
+      await this.getData();
+    } else {
+      this.id = this.noteitem.videoid;
+      this.video = [];
+      await http.get('/search/video/', { params: { id: this.id } })
+        .then((res) => {
+          this.url = res.data.url;
+        });
+      this.video.push({
+        starttime: this.noteitem.starttime,
+        endtime: this.noteitem.endtime,
+        kor: this.noteitem.content,
+        // subtitleid: this.noteitem.subtitleid,
+      });
+    }
+    const list = this.video[0].kor.replace(/[&/\\#,+()$~%.'":*?!<>{}]/g, '').split(' ');
     for (let i = 0; i < list.length; i += 1) {
       this.answer.push({ name: list[i], id: i });
       this.choicelist.push({ name: list[i], id: i });
@@ -142,7 +159,8 @@ export default {
           tmp = false;
           this.$swal.fire(n.wrongAnswer).then((result) => {
             if (result.isDenied) {
-              this.$swal.fire('Answer is', n.answer[0], 'error');
+              this.$swal.fire('Answer is', n.video[i].kor, 'error');
+              // this.insertNote();
             }
           });
           break;
@@ -221,7 +239,7 @@ export default {
       this.fail = false;
       this.answer = [];
       this.choicelist = [];
-      const list = this.video[this.current].kor.split(' ');
+      const list = this.video[this.current].kor.replace(/[&/\\#,+()$~%.'":*?!<>{}]/g, '').split(' ');
       for (let i = 0; i < list.length; i += 1) {
         this.answer.push({ name: list[i], id: i });
         this.choicelist.push({ name: list[i], id: i });
@@ -239,9 +257,24 @@ export default {
               starttime: res.data.Korean[i].starttime,
               endtime: res.data.Korean[i].endtime,
               eng: res.data.English[i].content,
-              kor: res.data.Korean[i].content,
+              kor: res.data.Korean[i].content.replace(/[&/\\#,+()$~%.'":*?!<>{}]/g, ''),
+              subtitleid: res.data.Korean[i].id,
             });
           }
+        });
+    },
+    insertNote() {
+      http
+        .post('/note/insert/', {
+          params: {
+            email: this.$store.state.email,
+            subtitleid: this.video[this.current].subtitleid,
+            type: 0,
+            videoid: this.id,
+          },
+        })
+        .then((res) => {
+          console.log(res);
         });
     },
   },
@@ -282,5 +315,8 @@ iframe {
   border: 50%;
   margin: 0.5vw;
   border-radius: 30px;
+}
+.note{
+  color: black;
 }
 </style>
