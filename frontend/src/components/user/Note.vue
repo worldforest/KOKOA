@@ -1,5 +1,5 @@
 <template>
-  <div style="margin-top: 100px;">
+  <div class="container">
     <div class="eng bookmarks bookmark-top" style="color: black;"
     @click="type = 0;"
       :class="{ expandbmk: type === 0, basic: type !== 0 }">Speaking</div>
@@ -95,7 +95,6 @@ export default {
       this.speechnote = [];
       this.writenote = [];
       await http.get('/note/load/', { params: { email: this.email } }).then((res) => {
-        console.log(res);
         for (let i = 0; i < res.data.speechnote[0].length; i += 1) {
           this.speechnote.push({
             id: res.data.speechnote[0][i].id,
@@ -104,8 +103,8 @@ export default {
             videoid: res.data.speechnote[0][i].videoid,
             content: res.data.speechnote_sub[0][2 * i].content,
             engcontent: res.data.speechnote_sub[0][2 * i + 1].content,
-            starttime: res.data.speechnote_sub[0][i].starttime,
-            endtime: res.data.speechnote_sub[0][i].endtime,
+            starttime: res.data.speechnote_sub[0][2 * i].starttime,
+            endtime: res.data.speechnote_sub[0][2 * i].endtime,
           });
         }
 
@@ -117,8 +116,8 @@ export default {
             videoid: res.data.writenote[0][i].videoid,
             content: res.data.writenote_sub[0][2 * i].content,
             engcontent: res.data.writenote_sub[0][2 * i + 1].content,
-            starttime: res.data.writenote_sub[0][i].starttime,
-            endtime: res.data.writenote_sub[0][i].endtime,
+            starttime: res.data.writenote_sub[0][2 * i].starttime,
+            endtime: res.data.writenote_sub[0][2 * i].endtime,
           });
         }
       });
@@ -127,19 +126,20 @@ export default {
 };
 </script>
 
-<style>
-/* @import url(https://fonts.googleapis.com/css?family=Indie+Flower); */
+<style lang="scss">
+$topval: 420px;
 .paper {
   position: absolute;
   width: 90%;
-  height: 90%;
+  height: 110%;
   background: lightgoldenrodyellow;
   margin: -350px -25% 30px;
   left: 30%;
-  top: 50%;
+  top: $topval;
   box-shadow: 0px 0px 5px 0px #888;
   overflow: hidden;
 }
+/* red line on left side of paper */
 .paper::before {
   content: "";
   position: absolute;
@@ -200,20 +200,20 @@ export default {
   writing-mode: vertical-lr;
   text-align: center;
 }
+
 .bookmark-top {
-  top: 7%;
+  // top: 15%;
+  top: $topval * 0.26;
   background: rgb(233, 103, 131);
 }
 .bookmark-bottom {
-  top: 25%;
+  top: $topval * 0.559;
   background: rgb(85, 219, 163);
 }
 .expandbmk {
   width: 7vw;
   left: 1%;
-  /* font-size: 2vw;
-  padding-left: 0.5vw; */
-  font-size: 1.6vw;
+  font-size: 2vw;
   padding-left: .7vw;
 }
 .basic {
