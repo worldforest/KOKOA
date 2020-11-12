@@ -1,5 +1,5 @@
 <template>
-  <v-row>
+  <v-row style="margin-top: 100px;">
     <!-- left side -->
     <v-col class="youtubeContainer" cols="12" lg="8">
       <div class="d-flex justify-center mt-3">

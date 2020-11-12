@@ -3,7 +3,7 @@
     <b-container fluid>
       <b-row>
         <b-col sm="12" class="overflow-hidden">
-          <div class="toggle-btn">
+          <div class="eng toggle-btn">
             <form class="tabber">
               <label for="t1">Speaking</label>
               <input id="t1" type="radio" value="Speaking" v-model="choice"/>
@@ -20,7 +20,7 @@
                 :key="index"
                 @click="goTraining(item)"
                 class="pa-1"
-                :label=item.id
+                :label=item.title
               />
             </VueSlickCarousel>
           </div>
@@ -185,11 +185,9 @@ export default {
 };
 </script>
 <style lang="scss">
-.slick-prev:before {
+.upcoming-contents::after{
   color: #FDB165;
-}
-.slick-next:before {
-  color: #FDB165;
+  // background-color: #FDB165;
 }
 .choice img {
   height: 100%;
@@ -200,7 +198,6 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: "Concert One", cursive;
   font-size: calc(20px + 0.8vw);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
