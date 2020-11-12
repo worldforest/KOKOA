@@ -54,7 +54,7 @@ export default {
       icons: ['fas fa-book', 'fas fa-history', 'fas fa-sign-out-alt'],
       list: [
         { isLink: true, url: '/note' },
-        { isLink: true, url: '/review' },
+        { isLink: true, url: '/history' },
         { isLink: true, url: '/logout' },
       ],
       backgroundColor: 'rgb(255, 127, 0)',
