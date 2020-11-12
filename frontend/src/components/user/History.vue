@@ -5,11 +5,20 @@
       <v-flex xs12 sm6 md4 lg3 xl2 v-for="(data, index) in groups" :key="index">
         <v-card class="scale ma-3" @click="enter(data.id)">
           <v-img aspect-ratio="1" :src="require(`@/assets` + data.img)" />
-          <v-card-title class="temp justify-center">{{ data.title }}</v-card-title>
+          <v-card-title class="eng temp justify-center">{{ data.title }}</v-card-title>
         </v-card>
       </v-flex>
     </v-layout>
     <h1 class="eng mt-10">Last-watched Videos</h1>
+    <div class="eng toggle-btn">
+            <form class="tabber">
+              <label for="t1">Speaking</label>
+              <input id="t1" type="radio" value="Speaking" v-model="choice" />
+              <label for="t2">Writing</label>
+              <input id="t2" type="radio" value="Dictation" v-model="choice" />
+              <div class="blob"></div>
+            </form>
+          </div>
     <div class="upcoming-contents ma-5">
       <VueSlickCarousel v-bind="settings" v-if="items.length">
         <figure v-for="(item, index) in items" :key="index">
@@ -39,6 +48,7 @@ export default {
   components: { VueSlickCarousel },
   data() {
     return {
+      choice: 'Speaking',
       items: [],
       groups: [],
       infos: [],
@@ -78,7 +88,6 @@ export default {
   async created() {
     this.items = [];
     await http.get('/log/load', { params: { email: this.email } }).then((res) => {
-      console.log(res);
       for (let i = 0; i < res.data.video[0].length; i += 1) {
         this.items.push(res.data.video[0][i]);
       }
@@ -94,7 +103,7 @@ export default {
   methods: {
     async goTraining(item) {
       await http.get('/log/insert', {
-        params: { videoid: Number(item.id), email: this.email, groupid: Number(this.groupid) },
+        params: { videoid: Number(item.id), email: this.email, groupid: Number(item.groupid) },
       });
       if (this.choice === 'Speaking') {
         this.goTalk(item.id);
@@ -122,4 +131,130 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style lang="scss" scoped>
+.temp{
+  background-color: rgba(0, 0, 0, 0.89);
+  padding: 1;
+}
+.toggle-btn {
+  left: 40%;
+  margin-top: calc(10px + 0.5vw);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(20px + 0.8vw);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+.tabber {
+  color: white;
+  width: 500px;
+  // height: 80%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  label {
+    width: 50%;
+    user-select: none;
+    padding: 0.2rem;
+    text-align: center;
+    cursor: pointer;
+    will-change: transform;
+    transform: translateZ(0.5px);
+    z-index: 1;
+    transition: transform 90ms ease-in-out, filter 90ms ease-in-out;
+    // filter: blur(.25rem);
+    &:hover {
+      transform: scale(1.15);
+      filter: blur(0px);
+    }
+  }
+  input[type="radio"] {
+    display: none;
+    // static
+    &#t1 ~ .blob {
+      transform-origin: right center;
+    }
+    &#t2 ~ .blob {
+      transform-origin: left center;
+    }
+    // animated
+    &#t1:checked {
+      ~ .blob {
+        background: rgb(233, 103, 131);
+        animation-name: stretchyRev;
+      }
+    }
+    &#t2:checked {
+      ~ .blob {
+        background-color: rgb(73, 178, 134);
+        animation-name: stretchy;
+      }
+    }
+  }
+
+  .blob {
+    top: 0;
+    left: 0;
+    width: 50%;
+    height: 100%;
+    position: absolute;
+    z-index: 0;
+    border-radius: 2rem;
+    animation-duration: 0.2s;
+    animation-direction: forwards;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+    transition: transform 300ms ease, background 300ms ease;
+    filter: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" version="1.1"><defs><filter id="goo"><feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur" /><feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 19 -9" result="goo" /><feComposite in="SourceGraphic" in2="goo" operator="atop"/></filter></defs></svg>#goo');
+    &:before,
+    &:after {
+      display: block;
+      content: "";
+      position: absolute;
+      top: 0;
+      background-color: inherit;
+      height: 100%;
+      width: 50%;
+      border-radius: 100%;
+      transform: scale(1.15);
+      transition: transform 1s;
+      animation-duration: 1.1s;
+      animation-iteration-count: infinite;
+      animation-direction: alternate;
+    }
+    &:before {
+      left: 0;
+      animation-delay: 2s;
+    }
+    &:after {
+      right: 0;
+    }
+  }
+}
+
+@keyframes stretchy {
+  0% {
+    transform: translateX(0) scaleX(1.5);
+  }
+  50% {
+    transform: translateX(0) scaleX(2);
+  }
+  100% {
+    transform: translateX(100%) scaleX(1);
+  }
+}
+
+@keyframes stretchyRev {
+  0% {
+    transform: translateX(100%) scaleX(1);
+  }
+  50% {
+    transform: translateX(0) scaleX(2);
+  }
+  100% {
+    transform: translateX(0) scaleX(1);
+  }
+}
+</style>
