@@ -16,7 +16,7 @@
             <VueSlickCarousel v-bind="settings" v-if="items.length">
               <img
                 v-for="(item, index) in items"
-                :src="'http://img.youtube.com/vi/' + item.url + '/0.jpg'"
+                :src="'https://img.youtube.com/vi/' + item.url + '/0.jpg'"
                 :key="index"
                 @click="goTraining(item)"
                 class="pa-1"
