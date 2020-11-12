@@ -49,9 +49,10 @@ export default {
       email: '',
       drawer: false,
       // circular menu settings
-      count: 3,
-      icons: ['fas fa-book', 'fas fa-history', 'fas fa-sign-out-alt'],
+      count: 4,
+      icons: ['fas fa-home', 'fas fa-book', 'fas fa-history', 'fas fa-sign-out-alt'],
       list: [
+        { isLink: true, url: '/' },
         { isLink: true, url: '/note' },
         { isLink: true, url: '/history' },
         { isLink: true, url: '/logout' },

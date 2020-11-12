@@ -47,13 +47,14 @@ public class NoteController {
 
     @PostMapping("/insert")
     @ApiOperation(value = "오답노트 추가", notes = "user num에 맞는 video, subtitle 오답노트 추가.")
-    public ResponseEntity<String> addtoNote(@RequestParam String email, @RequestParam int videoid, @RequestParam int subtitleid, @RequestParam int type){
+    public ResponseEntity<String> addtoNote(@RequestParam String email, @RequestParam int videoid, @RequestParam int subtitleid, @RequestParam int type, @RequestParam int engsubtitleid){
         int userid = userRepo.findUserByEmail(email).getId();
         String result = "";
         if(type==0){
             speechnote note = new speechnote();
             note.setUserid(userid);
             note.setSubtitleid(subtitleid);
+            note.setEngsubtitleid(engsubtitleid);
             note.setVideoid(videoid);
             speechNoteRepo.save(note);
             result = "add to speechnote complete";
@@ -61,6 +62,7 @@ public class NoteController {
             writenote note = new writenote();
             note.setUserid(userid);
             note.setSubtitleid(subtitleid);
+            note.setEngsubtitleid(engsubtitleid);
             note.setVideoid(videoid);
             writeNoteRepo.save(note);
             result = "add to writenote complete";
@@ -82,9 +84,11 @@ public class NoteController {
         List<subtitles> speech = new ArrayList<>();
         for (writenote w: writenotes) {
             write.add(subtitlesRepo.getAllById(w.getSubtitleid()));
+            write.add(subtitlesRepo.getAllById(w.getEngsubtitleid()));
         }
         for (speechnote s: speechnotes) {
             speech.add(subtitlesRepo.getAllById(s.getSubtitleid()));
+            speech.add(subtitlesRepo.getAllById(s.getEngsubtitleid()));
         }
         result.put("writenote", Collections.singletonList(writenotes));
         result.put("writenote_sub", Collections.singletonList(write));
