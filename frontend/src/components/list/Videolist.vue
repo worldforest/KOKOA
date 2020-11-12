@@ -279,7 +279,6 @@ svg {
       border-radius: 100%;
       transform: scale(1.15);
       transition: transform 1s;
-      animation-name: pulse;
       animation-duration: 1.1s;
       animation-iteration-count: infinite;
       animation-direction: alternate;
@@ -315,17 +314,6 @@ svg {
   }
   100% {
     transform: translateX(0) scaleX(1);
-  }
-}
-
-@keyframes pulse {
-  0%,
-  50% {
-    transform: scaleX(0.5);
-  }
-  25%,
-  75% {
-    transform: scaleX(0.2);
   }
 }
 </style>
