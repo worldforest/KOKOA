@@ -18,7 +18,7 @@
             <h3>[Speaking]</h3>
             <div v-for="(item, index) in speechnote" :key="index" style="">
               <div
-                class="sentences"
+                class="kor sentences"
                 @click="expanded === index ? (expanded = -1) : setToTop(index)"
                 :id="'sentence' + index"
               >
@@ -37,7 +37,7 @@
             <h3>[Writing]</h3>
             <div v-for="(item, index) in writenote" :key="index" style="">
               <div
-                class="sentences"
+                class="kor sentences"
                 @click="expanded === index ? (expanded = -1) : setToTop(index)"
                 :id="'sentence' + index"
               >
@@ -123,7 +123,7 @@ export default {
 </script>
 
 <style>
-@import url(https://fonts.googleapis.com/css?family=Indie+Flower);
+/* @import url(https://fonts.googleapis.com/css?family=Indie+Flower); */
 .paper {
   position: absolute;
   width: 90%;
