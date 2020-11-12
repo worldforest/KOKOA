@@ -26,7 +26,7 @@
     </v-col>
     <v-col class="testContainer" cols="12" lg="4">
       <v-row class="d-flex justify-center ma-5">
-        <v-col cols="12" style="height: 18vw;">
+        <v-col cols="12" class="ma-5">
           <div class="answerDiv">
             <h3
               class="eng writeTitle"
@@ -44,14 +44,18 @@
               ><v-icon class="restart" style="font-size: 30px;">mdi-replay</v-icon></v-btn
             >
           </div>
-          <draggable class="row wrap justify-center sortable-list" :list="checklist" group="people">
+          <draggable
+            class="drag row wrap justify-center sortable-list"
+            :list="checklist"
+            group="people"
+          >
             <div class="kor wordblock" v-for="element in checklist" :key="element.name">
               {{ element.name }}
             </div>
           </draggable>
         </v-col>
 
-        <v-col cols="12" style="height: 15vw;">
+        <v-col cols="12" class="ma-5">
           <h3 class="eng writeTitle" :class="{ note: type === 'note' }" style="margin-bottom: 1vw;">
             Choice
           </h3>
@@ -289,6 +293,10 @@ export default {
 };
 </script>
 <style scoped>
+.drag {
+  border:1px solid white;
+  padding: 1em
+}
 iframe {
   width: 90%;
   height: 50vh;
@@ -310,20 +318,21 @@ iframe {
   display: flex;
   align-content: center;
   justify-items: center;
-  font-size: 4.5vw;
+  font-size: 3em;
 }
 .restart {
   height: 2vw;
   width: auto;
 }
 .wordblock {
-  font-size: 2.2vw;
+  font-size: 1.5em;
   background-color: rgb(73, 178, 134);
   padding: 1vw;
   border: 50%;
   margin: 0.5vw;
   border-radius: 30px;
 }
+
 .note {
   color: black;
 }
