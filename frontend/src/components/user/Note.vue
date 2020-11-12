@@ -1,20 +1,12 @@
 <template>
-  <div>
-    <div
-      class="bookmarks bookmark-top"
-      @click="type = 0;"
-      :class="{ expandbmk: type === 0, basic: type !== 0 }"
-    >
-      Speaking
-    </div>
-    <div
-      class="bookmarks bookmark-bottom"
-      @click="type = 1;
+  <div style="margin-top: 100px;">
+    <div class="eng bookmarks bookmark-top" style="color: black;"
+    @click="type = 0;"
+      :class="{ expandbmk: type === 0, basic: type !== 0 }">Speaking</div>
+    <div class="eng bookmarks bookmark-bottom" style="color: black;"
+     @click="type = 1;
       "
-      :class="{ expandbmk: type === 1, basic: type !== 1 }"
-    >
-      Writing
-    </div>
+      :class="{ expandbmk: type === 1, basic: type !== 1 }">Writing</div>
     <div class="paper">
       <div class="lines">
         <div class="text">
@@ -214,8 +206,13 @@ export default {
 .expandbmk {
   width: 7vw;
   left: 1%;
+<<<<<<< HEAD
   font-size: 2vw;
   padding-left: 0.5vw;
+=======
+  font-size: 1.6vw;
+  padding-left: .7vw;
+>>>>>>> 37ff10873b4a84f2645e8751604e01626ed7497e
 }
 .basic {
   width: 3vw;

@@ -80,12 +80,10 @@ export default {
 @charset 'ISO-8859-1';
 /* Custom
  * --------------------------------------- */
-body {
-  font-family: arial, helvetica;
-}
 .section {
   position: relative;
   text-align: center;
+  font-family: 'Merriweather', serif;
 }
 .s0 {
   background: url(https://www.c-mw.net/wp-content/uploads/2017/06/Seoul-City-Landscape-CNEW-1600x1000.jpeg);

@@ -2,19 +2,19 @@
   <div class="artist"
   :style="{ 'background-image': 'url(' + require(`@/assets/img/${team}/${team}.jpg`) + ')' }">
     <!-- header -->
-    <div class="header">
+    <div class="engTitle header">
       <div class="group">{{ team }}</div>
     </div>
     <!-- 멤버 -->
     <div class="member">
       <v-row justify="space-around" class="member">
-        <div class="list" v-for="(member,index) in members" :key="index">
+        <div class="eng list" v-for="(member,index) in members" :key="index">
           <img :class="{selected: isActive==index}"
             :src="require(`@/assets/img/${team}/${member.name}.jpg`)"
             alt=""
             @click="changeSelected(index)"
           />
-          <div class="">{{ member.name }}</div>
+          <div>{{ member.name }}</div>
         </div>
       </v-row>
     </div>
@@ -100,11 +100,10 @@ export default {
 
 .group{
   font-size: calc(60px + 5vw);
-  font-family: 'Bangers', cursive;
+  font-family: 'Lobster', cursive;
   color: rgb(255, 127, 0);
   position: absolute;
   bottom: 0px;
-  font-family: 'Lobster', cursive;
 }
 
 .member {

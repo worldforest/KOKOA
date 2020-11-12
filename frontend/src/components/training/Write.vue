@@ -1,51 +1,59 @@
 <template>
-  <v-row>
+  <v-row style="margin-top:100px; margin-bottom: 100px;">
     <v-col class="youtubeContainer" cols="12" lg="8">
       <div class="d-flex justify-center mt-3">
         <youtube :video-id="url" ref="youtube" :player-vars="playerVars" flex></youtube>
       </div>
       <div class="d-flex justify-space-around my-5">
         <v-btn @click="previous" icon>
-          <v-icon color="white">
-            mdi-arrow-left
+          <v-icon color="white" style="font-size: 40px;">
+            mdi-chevron-left
           </v-icon>
         </v-btn>
-        <b-button class="mx-5" variant="success" @click="playVideo">play</b-button>
+        <v-btn @click="playVideo" icon>
+          <v-icon style="font-size: 45px;" color="rgb(73, 178, 134)">
+            mdi-play
+          </v-icon>
+        </v-btn>
+        <!-- <b-button class="eng mx-5" variant="success" @click="playVideo">play</b-button> -->
         <v-btn @click="next" icon>
-          <v-icon color="white">
-            mdi-arrow-right
+          <v-icon color="white" style="font-size: 40px;">
+            mdi-chevron-right
           </v-icon>
         </v-btn>
       </div>
     </v-col>
     <v-col class="testContainer" cols="12" lg="4">
       <v-row class="d-flex justify-center ma-5">
-        <v-col cols="12">
+        <v-col cols="12" style="height: 18vw;">
           <div class="answerDiv">
-            <h3 class="myTitle d-flex justify-center"
-            :class="{ note: type === 'note' }">Answer</h3>
-            <b-button class="mr-10" @click="reset">Reset</b-button>
+            <h3 class="eng writeTitle" :class="{ note: type === 'note' }" style="margin-bottom: 1vw;">Answer</h3>
+            <v-btn icon color="rgb(73, 178, 134)"
+            class="mr-10"
+            style="font-size: 30px;"
+            @click="reset"><v-icon class="restart"
+            style="font-size: 30px;">mdi-replay</v-icon></v-btn>
           </div>
           <draggable
-            class="row wrap fill-height align-center justify-center sortable-list"
+            class="row wrap justify-center sortable-list"
             :list="checklist"
             group="people"
           >
-            <div class="list-group-item" v-for="element in checklist" :key="element.name">
+            <div
+            class="kor wordblock" v-for="element in checklist" :key="element.name">
               {{ element.name }}
             </div>
           </draggable>
         </v-col>
 
-        <v-col cols="12">
-          <h3 class="myTitle d-flex justify-center"
-          :class="{ note: type === 'note' }">Choice</h3>
+        <v-col cols="12" style="height: 15vw;">
+            <h3 class="eng writeTitle" :class="{ note: type === 'note' }" style="margin-bottom: 1vw;">Choice</h3>
           <draggable
-            class="row wrap fill-height align-center justify-center sortable-list"
+            class="row wrap align-center justify-center sortable-list"
             :list="choicelist"
             group="people"
           >
-            <div class="list-group-item" v-for="element in choicelist" :key="element.name">
+            <div class="kor wordblock" v-for="element in choicelist" :key="element.name">
               {{ element.name }}
             </div>
           </draggable>
@@ -272,7 +280,7 @@ export default {
   },
 };
 </script>
-<style>
+<style scoped>
 iframe {
   width: 90%;
   height: 50vh;
@@ -289,8 +297,24 @@ iframe {
   top: 0;
   right: 0;
 }
-.myTitle{
+.writeTitle{
   color: white;
+  display: flex;
+  align-content: center;
+  justify-items: center;
+  font-size: 4.5vw;
+}
+.restart{
+  height: 2vw;
+  width: auto;
+}
+.wordblock{
+  font-size: 2.2vw;
+  background-color: rgb(73, 178, 134);
+  padding: 1vw;
+  border: 50%;
+  margin: 0.5vw;
+  border-radius: 30px;
 }
 .note{
   color: black;

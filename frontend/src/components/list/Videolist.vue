@@ -3,11 +3,11 @@
     <b-container fluid>
       <b-row>
         <b-col sm="12" class="overflow-hidden">
-          <div class="toggle-btn">
+          <div class="eng toggle-btn">
             <form class="tabber">
               <label for="t1">Speaking</label>
               <input id="t1" type="radio" value="Speaking" v-model="choice"/>
-              <label for="t2">Dictation</label>
+              <label for="t2">Writing</label>
               <input id="t2" type="radio" value="Dictation" v-model="choice"/>
               <div class="blob"></div>
             </form>
@@ -20,7 +20,7 @@
                 :key="index"
                 @click="goTraining(item)"
                 class="pa-1"
-                :label=item.id
+                :label=item.title
               />
             </VueSlickCarousel>
           </div>
@@ -170,7 +170,6 @@ export default {
         // eslint-disable-next-line no-await-in-loop
         await http.get(`/search/idol/${i}?groupname=${team}`).then((res) => res.data.content.forEach((element) => {
           items.push(element);
-          console.log(items);
         }));
       }
     },
@@ -186,11 +185,9 @@ export default {
 };
 </script>
 <style lang="scss">
-.slick-prev:before {
+.upcoming-contents::after{
   color: #FDB165;
-}
-.slick-next:before {
-  color: #FDB165;
+  // background-color: #FDB165;
 }
 .choice img {
   height: 100%;
@@ -201,7 +198,6 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: "Concert One", cursive;
   font-size: calc(20px + 0.8vw);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
@@ -283,7 +279,6 @@ svg {
       border-radius: 100%;
       transform: scale(1.15);
       transition: transform 1s;
-      animation-name: pulse;
       animation-duration: 1.1s;
       animation-iteration-count: infinite;
       animation-direction: alternate;
@@ -319,17 +314,6 @@ svg {
   }
   100% {
     transform: translateX(0) scaleX(1);
-  }
-}
-
-@keyframes pulse {
-  0%,
-  50% {
-    transform: scaleX(0.5);
-  }
-  25%,
-  75% {
-    transform: scaleX(0.2);
   }
 }
 </style>

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2 style="color:#fff;
+    <h2 class="eng" style="color:#fff;
       font-size: calc(40px + 2.5vw);
       display: flex;
       justify-content: center;">Choose Your Artist</h2>
@@ -23,7 +23,7 @@
         <v-flex xs12 sm6 md4 lg3 xl2 v-for="(data, index) in items" :key="index">
           <v-card class="scale ma-3" @click="enter(data.id)">
             <v-img aspect-ratio="1" :src="require(`@/assets` + data.img)" />
-            <v-card-title class="temp justify-center">{{ data.title }}</v-card-title>
+            <v-card-title class="eng temp justify-center">{{ data.title }}</v-card-title>
           </v-card>
         </v-flex>
       </v-layout>
@@ -90,9 +90,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-* {
-  font-family: 'Merriweather', serif;
-}
 .scale {
   transform: scale(1);
   transition: all 0.3s ease-in-out;
