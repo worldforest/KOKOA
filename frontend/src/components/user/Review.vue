@@ -119,12 +119,5 @@ export default {
 </script>
 
 <style lang="scss">
-.slick-prev:before {
-  color: red !important;
-  background-color: #eee;
-}
-.slick-next:before {
-  color: red !important;
-  background-color: #eee;
-}
+
 </style>

@@ -6,22 +6,23 @@
           <div class="eng toggle-btn">
             <form class="tabber">
               <label for="t1">Speaking</label>
-              <input id="t1" type="radio" value="Speaking" v-model="choice"/>
+              <input id="t1" type="radio" value="Speaking" v-model="choice" />
               <label for="t2">Writing</label>
-              <input id="t2" type="radio" value="Dictation" v-model="choice"/>
+              <input id="t2" type="radio" value="Dictation" v-model="choice" />
               <div class="blob"></div>
             </form>
           </div>
           <div class="upcoming-contents ma-5">
             <VueSlickCarousel v-bind="settings" v-if="items.length">
-              <img
-                v-for="(item, index) in items"
-                :src="'https://img.youtube.com/vi/' + item.url + '/0.jpg'"
-                :key="index"
-                @click="goTraining(item)"
-                class="pa-1"
-                :label=item.title
-              />
+              <figure v-for="(item, index) in items" :key="index">
+                <img
+                  :src="'https://img.youtube.com/vi/' + item.url + '/0.jpg'"
+                  @click="goTraining(item)"
+                  class="pa-1"
+                  :label="item.title"
+                />
+                <figcaption class="eng">{{ item.title }}</figcaption>
+              </figure>
             </VueSlickCarousel>
           </div>
         </b-col>
@@ -129,11 +130,12 @@ export default {
         }
       }
     },
-
   },
   methods: {
     async goTraining(item) {
-      await http.get('/log/insert', { params: { videoid: Number(item.id), email: this.email, groupid: Number(this.groupid) } });
+      await http.get('/log/insert', {
+        params: { videoid: Number(item.id), email: this.email, groupid: Number(this.groupid) },
+      });
       if (this.choice === 'Speaking') {
         this.goTalk(item.id);
       } else {
@@ -185,8 +187,23 @@ export default {
 };
 </script>
 <style lang="scss">
-.upcoming-contents::after{
-  color: #FDB165;
+figure {
+  padding: 5px;
+  display: table;
+}
+
+figure img {
+  display: block;
+  width: 100%;
+}
+
+figcaption {
+  caption-side: bottom;
+  font-size: 0.875em;
+  padding: 0 5px 5px;
+}
+.upcoming-contents::after {
+  color: #fdb165;
   // background-color: #FDB165;
 }
 .choice img {
@@ -194,7 +211,7 @@ export default {
 }
 .toggle-btn {
   left: 40%;
-  margin-top: calc(10px + .5vw);
+  margin-top: calc(10px + 0.5vw);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -285,7 +302,7 @@ svg {
     }
     &:before {
       left: 0;
-      animation-delay:2s;
+      animation-delay: 2s;
     }
     &:after {
       right: 0;

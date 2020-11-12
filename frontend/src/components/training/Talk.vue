@@ -66,7 +66,7 @@ export default {
   async created() {
     if (this.type !== 'note') {
       await this.getData();
-      this.answer = this.video[0].kor.replace(/[&/\\#,+()$~%.'":*?!<>{}]/g, ' ');
+      this.answer = this.video[0].kor.replace(/[&/\\#,+\-()$~%.'":*?!<>{}]/g, ' ');
     } else {
       this.id = this.noteitem.videoid;
       await http.get('/search/video/', { params: { id: this.id } }).then((res) => {
@@ -78,7 +78,7 @@ export default {
         kor: this.noteitem.content,
         subtitleid: this.noteitem.subtitleid,
       });
-      this.answer = this.video[0].kor.replace(/[&/\\#,+()$~%.'":*?!<>{}]/g, ' ');
+      this.answer = this.video[0].kor.replace(/[&/\\#,+\-()$~%.'":*?!<>{}]/g, ' ');
     }
 
     const start = this.timer(this.video[0].starttime);
@@ -156,13 +156,13 @@ export default {
       this.dict = [];
       const tmp = this.answer;
       this.answerTrim = tmp
-        .replace(/[&/\\#,+()$~%@.'":*?!<>{}[]]/g, ' ')
+        .replace(/[&/\\#,+\-()$~%@.'":*?!<>{}[]]/g, ' ')
         .replace('[', '')
         .replace(']', '');
       await http.get('/subtitle/roma', { params: { word: this.answerTrim } }).then((res) => {
         this.romaza = res.data;
       });
-      this.speechText = text.replace(/[&/\\#,+()$~%.'":*?!<>{}]/g, ' ');
+      this.speechText = text.replace(/[&/\\#,+\-()$~%.'":*?!<>{}]/g, ' ');
       const { subtitleid } = this.video[this.replay];
       await http.get('/subtitle/dict', { params: { subtitleid } }).then((res) => {
         for (let i = 0; i < res.data.length; i += 1) {
@@ -203,7 +203,7 @@ export default {
   watch: {
     replay() {
       this.answer = '';
-      this.answer = this.video[this.replay].kor.replace(/[&/\\#,+()$~%.'":*?!<>{}]/g, '');
+      this.answer = this.video[this.replay].kor.replace(/[&/\\#,+\-()$~%.'":*?!<>{}]/g, '');
       this.play();
     },
     speechText() {

@@ -14,6 +14,7 @@
           <v-icon style="font-size: 45px;" color="rgb(73, 178, 134)">
             mdi-play
           </v-icon>
+          PLAY
         </v-btn>
         <!-- <b-button class="eng mx-5" variant="success" @click="playVideo">play</b-button> -->
         <v-btn @click="next" icon>

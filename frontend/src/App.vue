@@ -115,4 +115,10 @@ footer{
   color: wheat;
   font-size: 15px;
 }
+.slick-prev:before {
+  color: #FDB165 !important;
+}
+.slick-next:before {
+  color: #FDB165 !important;
+}
 </style>
