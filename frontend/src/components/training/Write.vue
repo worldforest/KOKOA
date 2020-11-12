@@ -1,73 +1,78 @@
 <template>
-  <div>
-    <div class="d-flex justify-center mt-3">
-      <youtube
-        :video-id="url"
-        ref="youtube"
-        :player-vars="playerVars"
-        flex
-      ></youtube>
-    </div>
-    <div class="d-flex justify-space-around my-5">
-      <div></div>
-      <b-button class="mx-5"  @click="previous">previous</b-button>
-      <b-button class="mx-5" variant="success" @click="playVideo">replay</b-button>
-      <b-button class="mx-5"  @click="next">next</b-button>
-
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
-    </div>
-    <div>
-      <div class="row d-flex justify-center ma-5">
-        <div class="col-8">
-          <h3 class="d-flex justify-center">Answer</h3>
+  <v-row style="margin-top:100px; margin-bottom: 100px;">
+    <v-col class="youtubeContainer" cols="12" lg="8">
+      <div class="d-flex justify-center mt-3">
+        <youtube :video-id="url" ref="youtube" :player-vars="playerVars" flex></youtube>
+      </div>
+      <div class="d-flex justify-space-around my-5">
+        <v-btn @click="previous" icon>
+          <v-icon color="white" style="font-size: 40px;">
+            mdi-chevron-left
+          </v-icon>
+        </v-btn>
+        <v-btn @click="playVideo" icon>
+          <v-icon style="font-size: 45px;" color="rgb(73, 178, 134)">
+            mdi-play
+          </v-icon>
+        </v-btn>
+        <!-- <b-button class="eng mx-5" variant="success" @click="playVideo">play</b-button> -->
+        <v-btn @click="next" icon>
+          <v-icon color="white" style="font-size: 40px;">
+            mdi-chevron-right
+          </v-icon>
+        </v-btn>
+      </div>
+    </v-col>
+    <v-col class="testContainer" cols="12" lg="4">
+      <v-row class="d-flex justify-center ma-5">
+        <v-col cols="12" style="height: 18vw;">
+          <div class="answerDiv">
+            <h3 class="eng writeTitle" style="margin-bottom: 1vw;">Answer</h3>
+            <v-btn icon color="rgb(73, 178, 134)"
+            class="mr-10"
+            style="font-size: 30px;"
+            @click="reset"><v-icon class="restart"
+            style="font-size: 30px;">mdi-replay</v-icon></v-btn>
+          </div>
           <draggable
-            class="row wrap fill-height align-center sortable-list"
+            class="row wrap justify-center sortable-list"
             :list="checklist"
             group="people"
           >
-            <div class="list-group-item" v-for="(element, index) in checklist" :key="element.name">
-              {{ element.name }} {{ index }}
+            <div
+            class="kor wordblock" v-for="element in checklist" :key="element.name">
+              {{ element.name }}
             </div>
           </draggable>
-        </div>
+        </v-col>
 
-        <div class="col-8">
-          <h3 class="d-flex justify-center">Choice</h3>
+        <v-col cols="12" style="height: 15vw;">
+            <h3 class="eng writeTitle" style="margin-bottom: 1vw;">Choice</h3>
           <draggable
-            class="row wrap fill-height align-center sortable-list"
+            class="row wrap align-center justify-center sortable-list"
             :list="choicelist"
             group="people"
           >
-            <div class="list-group-item" v-for="(element, index) in choicelist" :key="element.name">
-              {{ element.name }} {{ index }}
+            <div class="kor wordblock" v-for="element in choicelist" :key="element.name">
+              {{ element.name }}
             </div>
           </draggable>
-        </div>
-      </div>
-    </div>
-    <b-button v-for="(item, index) in video" :key="index" @click="play(index)">{{
-      item.eng
-    }}</b-button>
-  </div>
+        </v-col>
+      </v-row>
+    </v-col>
+  </v-row>
 </template>
 <script>
 import draggable from 'vuedraggable';
+import http from '../../util/http-common';
 
 export default {
   name: 'Write',
   components: {
     draggable,
   },
-  props: {
-    index: {
-      type: String,
-      default: '',
-    },
-  },
-  created() {
+  async created() {
+    await this.getData();
     this.answer = [];
     this.choicelist = [];
     const list = this.video[0].kor.split(' ');
@@ -78,34 +83,14 @@ export default {
     this.choicelist = this.shuffle(this.choicelist);
     this.checklist = [];
   },
-  mounted() {},
   data() {
     return {
-      url: 'mLx7D98zP_A',
+      id: this.$route.query.index,
+      url: '',
       current: 0,
-      video: [
-        {
-          starttime: '00:00:00,001',
-          endtime: '00:00:01,831',
-          eng: '[National treasure zombie beast 2PM]',
-          kor: '[국보급 짐승 좀비 2PM]',
-        },
-        {
-          starttime: '00:00:01,832',
-          endtime: '00:00:04,034',
-          eng: '"Chansung lifts people up"',
-          kor: '"찬성은 사람을 들어"',
-        },
-        {
-          starttime: '00:00:04,035',
-          endtime: '00:00:06,406',
-          eng: '"Taecyeon is mad"',
-          kor: '"화가 잔뜩 난 택연"',
-        },
-      ],
+      video: [],
       playerVars: {
         modestbranding: 1,
-        autoplay: 1,
         controls: 0,
         loop: 1,
         fs: 0,
@@ -113,22 +98,30 @@ export default {
         showinfo: 0,
         playlist: '',
       },
-      checklist: [
-        { name: 'John', id: 1 },
-        { name: 'Joao', id: 2 },
-        { name: 'Jean', id: 3 },
-        { name: 'Gerard', id: 4 },
-      ],
-      choicelist: [
-        { name: 'Juan', id: 5 },
-        { name: 'Edgard', id: 6 },
-        { name: 'Johnson', id: 7 },
-      ],
-      answer: [
-        { name: 'Jean', id: 3 },
-        { name: 'Gerard', id: 4 },
-      ],
+      checklist: [],
+      choicelist: [],
+      answer: [],
       fail: false,
+      wrongAnswer: {
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Something is Wrong!!',
+        // timer: 2000,
+        showDenyButton: true,
+        confirmButtonText: 'Retry',
+        denyButtonText: 'Answer and Save',
+      },
+      timerInterval: '',
+      correctAnswer: {
+        icon: 'success',
+        title: 'Good Job!',
+        text: "Let's go next sentence",
+        timer: 1000,
+        willOpen: () => {
+          this.$swal.showLoading();
+          this.timerInterval = setInterval(() => {}, 100);
+        },
+      },
     };
   },
   computed: {
@@ -141,18 +134,26 @@ export default {
       let tmp = true;
       if (this.checklist.length === 0 || this.checklist.length !== this.answer.length) {
         tmp = false;
+        return;
       }
+      const n = this;
       for (let i = 0; i < this.checklist.length; i += 1) {
         if (this.answer[i].id !== this.checklist[i].id) {
           tmp = false;
+          this.$swal.fire(n.wrongAnswer).then((result) => {
+            if (result.isDenied) {
+              this.$swal.fire('Answer is', n.answer[0], 'error');
+            }
+          });
           break;
         }
       }
       this.fail = tmp;
       if (this.fail === true) {
-        this.current += 1;
+        this.$swal.fire(n.correctAnswer).then(() => {
+          this.current += 1;
+        });
       }
-      console.log(tmp);
     },
     current() {
       this.fail = false;
@@ -183,10 +184,13 @@ export default {
       this.play();
     },
     timer(input) {
-      const hms = input;
+      const hms = input.replace(/'/g, '');
       const a = hms.split(':');
       const s = a[2].split(',');
-      const ms = Number(a[0] * 60 * 60) + Number(a[1] * 60) + Number(s[0]) + Number(s[1] / 1000);
+      let ms = Number(a[0] * 60 * 60) + Number(a[1] * 60) + Number(s[0]) + Number(s[1] / 1000);
+      if (ms === 0) {
+        ms += 0.001;
+      }
       return ms;
     },
     shuffle(array) {
@@ -204,18 +208,79 @@ export default {
       return tmp;
     },
     previous() {
-      this.current -= 1;
+      if (this.current > 0) {
+        this.current -= 1;
+      }
     },
     next() {
-      this.current += 1;
+      if (this.current < this.video.length - 1) {
+        this.current += 1;
+      }
+    },
+    reset() {
+      this.fail = false;
+      this.answer = [];
+      this.choicelist = [];
+      const list = this.video[this.current].kor.split(' ');
+      for (let i = 0; i < list.length; i += 1) {
+        this.answer.push({ name: list[i], id: i });
+        this.choicelist.push({ name: list[i], id: i });
+      }
+      this.choicelist = this.shuffle(this.choicelist);
+      this.checklist = [];
+    },
+    async getData() {
+      this.video = [];
+      await http.get('/search/video/', { params: { id: this.id } })
+        .then((res) => {
+          this.url = res.data.url;
+          for (let i = 0; i < res.data.Korean.length; i += 1) {
+            this.video.push({
+              starttime: res.data.Korean[i].starttime,
+              endtime: res.data.Korean[i].endtime,
+              eng: res.data.English[i].content,
+              kor: res.data.Korean[i].content,
+            });
+          }
+        });
     },
   },
 };
 </script>
-<style>
+<style scoped>
 iframe {
-  width: 60%;
+  width: 90%;
   height: 50vh;
-  /* max-width: 1000px; Also helpful. Optional. */
+}
+.answerDiv {
+  display: relative;
+}
+.answerDiv h3 {
+  display: block;
+  margin: auto;
+}
+.answerDiv button {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+.writeTitle{
+  color: white;
+  display: flex;
+  align-content: center;
+  justify-items: center;
+  font-size: 4.5vw;
+}
+.restart{
+  height: 2vw;
+  width: auto;
+}
+.wordblock{
+  font-size: 2.2vw;
+  background-color: rgb(73, 178, 134);
+  padding: 1vw;
+  border: 50%;
+  margin: 0.5vw;
+  border-radius: 30px;
 }
 </style>

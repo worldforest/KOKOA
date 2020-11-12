@@ -1,9 +1,9 @@
 <template>
   <div>
     <span @click="clickRCBtn(audioFlag)" style="width:64px; height:64px;">
-      <vue-record-audio @result="onResult" mode="press" />
+      <vue-record-audio  @result="onResult" mode="press" />
     </span>
-    <audio :src="audioSrc" controls="controls"></audio>
+    <audio style="width:70%; margin-left:7%;" :src="audioSrc" controls="controls"></audio>
     <!-- <p v-for="word in transcription">{{ word }}</p> -->
     <!-- <h1>발음 : {{ finalTranscript }}</h1> -->
   </div>
@@ -40,7 +40,7 @@ export default {
     * 음성 인식 시작 처리
     */
     recognition.onstart = function () {
-      console.log('onstart');
+      // console.log('onstart');
       this.isRecognizing = true;
       // $btnMic.className = 'on';
     };
@@ -49,7 +49,7 @@ export default {
     * 음성 인식 종료 처리
     */
     recognition.onend = function () {
-      console.log('onend');
+      // console.log('onend');
       this.isRecognizing = false;
 
       if (this.ignoreEndProcess) {
@@ -70,11 +70,11 @@ export default {
     recognition.onresult = function (event) {
       // console.log('onresult', event);
       // const interimTranscript = '';
-      if (typeof event.results === 'undefined') {
-        recognition.onend = null;
-        recognition.stop();
-        return;
-      }
+      // if (typeof event.results === 'undefined') {
+      //   recognition.onend = null;
+      //   recognition.stop();
+      //   return;
+      // }
 
       for (let i = event.resultIndex; i < event.results.length; i += 1) {
         let transcript = '';
@@ -102,7 +102,7 @@ export default {
      * 음성 인식 에러 처리
      */
     recognition.onerror = function (event) {
-      console.log('onerror', event);
+      // console.log('onerror', event);
 
       if (event.error.match(/no-speech|audio-capture|not-allowed/)) {
         this.ignoreEndProcess = true;
