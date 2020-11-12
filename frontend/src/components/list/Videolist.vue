@@ -7,7 +7,7 @@
             <form class="tabber">
               <label for="t1">Speaking</label>
               <input id="t1" type="radio" value="Speaking" v-model="choice"/>
-              <label for="t2">Dictation</label>
+              <label for="t2">Writing</label>
               <input id="t2" type="radio" value="Dictation" v-model="choice"/>
               <div class="blob"></div>
             </form>
