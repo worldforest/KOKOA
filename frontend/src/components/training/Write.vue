@@ -2,52 +2,44 @@
   <v-row style="margin-top:100px; margin-bottom: 100px;">
     <v-col class="youtubeContainer" cols="12" lg="8">
       <div class="d-flex justify-center mt-3">
-        <youtube
-          :video-id="url"
-          ref="youtube"
-          :player-vars="playerVars"
-          flex
-          fit-parent
-        ></youtube>
+        <youtube :video-id="url" ref="youtube" :player-vars="playerVars" flex fit-parent></youtube>
       </div>
       <div class="d-flex justify-space-around my-5">
-        <v-btn @click="previous" icon>
+        <v-btn v-if="this.current !== 0" @click="previous" icon>
           <v-icon color="white" style="font-size: 40px;">
             mdi-chevron-left
           </v-icon>
         </v-btn>
+        <span v-else></span>
         <v-btn @click="playVideo" color="rgb(73, 178, 134)" icon>
           <v-icon style="font-size: 45px; margin:0.2em">
             mdi-play
           </v-icon>
-          <span class="eng" style="font-size: 2em;">PLAY</span>
+          <span class="eng" :class="{ note: notemode }" style="font-size: 2em;">PLAY</span>
         </v-btn>
-        <!-- <b-button class="eng mx-5" variant="success" @click="playVideo">play</b-button> -->
-        <v-btn @click="next" icon>
+        <v-btn v-if="this.current !== this.video.length - 1" @click="next" icon>
           <v-icon color="white" style="font-size: 40px;">
             mdi-chevron-right
           </v-icon>
         </v-btn>
+        <span v-else></span>
       </div>
     </v-col>
     <v-col class="testContainer" cols="12" lg="4">
       <v-row class="d-flex justify-center ma-5">
         <v-col cols="12" class="ma-5">
           <div class="answerDiv">
-            <h3
-              class="eng writeTitle mr-5"
-              :class="{ note: type === 'note' }"
-              style="margin-bottom: 1vw;"
-            >
+            <h3 class="eng writeTitle mr-5" :class="{ note: notemode }" style="margin-bottom: 1vw;">
               Answer
             </h3>
             <v-btn icon color="rgb(73, 178, 134)" @click="reset"
               ><v-icon class="restart" style="font-size: 2em;">mdi-replay</v-icon></v-btn
             >
-            <span class="eng" style="font-size: 1em;">RESET</span>
+            <span class="eng" :class="{ note: notemode }" style="font-size: 1em;">RESET</span>
           </div>
           <draggable
             class="drag row wrap justify-center sortable-list"
+            :style="{ 'border-color': notemode ? 'black' : 'white' }"
             :list="checklist"
             group="people"
           >
@@ -58,7 +50,7 @@
         </v-col>
 
         <v-col cols="12" class="ma-5">
-          <h3 class="eng writeTitle" :class="{ note: type === 'note' }" style="margin-bottom: 1vw;">
+          <h3 class="eng writeTitle" :class="{ note: notemode }" style="margin-bottom: 1vw;">
             Choice
           </h3>
           <draggable
@@ -70,8 +62,8 @@
               {{ element.name }}
             </div>
           </draggable>
-          <div class="d-flex justify-space-around my-5 eng">
-          {{ answerEng }}
+          <div class="d-flex justify-space-around my-5 eng" :class="{ note: notemode }">
+            {{ answerEng }}
           </div>
         </v-col>
       </v-row>
@@ -87,13 +79,13 @@ export default {
   components: {
     draggable,
   },
-  props: ['type', 'noteitem'],
+  props: ['notemode', 'noteitem'],
   async created() {
     this.answer = [];
     this.choicelist = [];
     this.answerEng = '';
 
-    if (this.type !== 'note') {
+    if (!this.notemode) {
       await this.getData();
     } else {
       this.id = this.noteitem.videoid;
@@ -295,11 +287,7 @@ export default {
       fd.append('type', 1);
       fd.append('videoid', this.id);
 
-      http
-        .post('/note/insert/', fd)
-        .then((res) => {
-          console.log(res);
-        });
+      http.post('/note/insert/', fd).then(() => {});
     },
   },
 };
@@ -335,7 +323,6 @@ export default {
   margin: 0.5vw;
   border-radius: 30px;
 }
-
 .note {
   color: black;
 }

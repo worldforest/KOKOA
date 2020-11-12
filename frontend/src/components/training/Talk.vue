@@ -6,22 +6,29 @@
         <youtube :video-id="url" ref="youtube" :player-vars="playerVars" flex fit-parent></youtube>
       </div>
       <div class="d-flex justify-space-around my-5">
-        <v-btn @click="previous" icon>
-          <v-icon color="white">
-            mdi-arrow-left
+        <v-btn v-if="this.current !== 0" @click="previous" icon>
+          <v-icon color="white" style="font-size: 40px;">
+            mdi-chevron-left
           </v-icon>
         </v-btn>
-        <b-button class="mx-5" variant="success" @click="playVideo">play</b-button>
-        <v-btn @click="next" icon>
-          <v-icon color="white">
-            mdi-arrow-right
+        <span v-else></span>
+        <v-btn @click="playVideo" color="rgb(73, 178, 134)" icon>
+          <v-icon style="font-size: 45px; margin:0.2em">
+            mdi-play
+          </v-icon>
+          <span class="eng" :class="{ note: notemode }" style="font-size: 2em;">PLAY</span>
+        </v-btn>
+        <v-btn v-if="this.current !== this.video.length - 1" @click="next" icon>
+          <v-icon color="white" style="font-size: 40px;">
+            mdi-chevron-right
           </v-icon>
         </v-btn>
+        <span v-else></span>
       </div>
-      <div class="myTitle d-flex justify-space-around my-5" :class="{ note: type === 'note' }">
+      <div class="myTitle d-flex justify-space-around my-5" :class="{ note: notemode }">
         {{ answer }}
       </div>
-      <div class="myTitle d-flex justify-space-around my-5" :class="{ note: type === 'note' }">
+      <div class="myTitle d-flex justify-space-around my-5" :class="{ note: notemode }">
         {{ answerEng }}
       </div>
     </v-col>
@@ -33,7 +40,12 @@
             <Record @child-event="receiveText" />
           </div>
           <!-- 나의 발음 -->
-          <h2 class="myTitle my-5" id="result" :class="{ note: type === 'note' }">
+          <h2
+            class="myTitle my-5"
+            id="result"
+            :class="{ note: notemode }"
+            :style="{ 'border-color': notemode ? 'black' : 'white' }"
+          >
             <!-- {{ speechText }} -->
           </h2>
           <div class="d-flex justify-space-around">
@@ -45,7 +57,7 @@
               Focus on the marked area<br />and try to pronounce it :)
             </div>
           </div>
-          <h4 class="myTitle d-flex justify-space-around" :class="{ note: type === 'note' }">
+          <h4 class="myTitle d-flex justify-space-around" :class="{ note: notemode }">
             {{ romaza }}
           </h4>
           <div class="py-5" style="background:purple" v-for="(item, index) in dict" :key="index">
@@ -65,9 +77,9 @@ export default {
   components: {
     Record,
   },
-  props: ['type', 'noteitem'],
+  props: ['notemode', 'noteitem'],
   async created() {
-    if (this.type !== 'note') {
+    if (!this.notemode) {
       await this.getData();
       this.answer = this.video[0].kor.replace(/[&/\\#,+\-()$~%.'":*?!<>{}]/g, ' ');
       this.answerEng = this.video[0].eng.replace(/[&/\\#,+\-()$~%.'":*?!<>{}]/g, ' ');
@@ -107,7 +119,7 @@ export default {
       id: this.$route.query.index,
       speechText: '',
       url: '',
-      replay: 0,
+      current: 0,
       video: [],
       playerVars: {
         modestbranding: 1,
@@ -128,8 +140,8 @@ export default {
   },
   methods: {
     play() {
-      const start = this.timer(this.video[this.replay].starttime);
-      const end = this.timer(this.video[this.replay].endtime);
+      const start = this.timer(this.video[this.current].starttime);
+      const end = this.timer(this.video[this.current].endtime);
       this.player.loadVideoById({
         videoId: this.url,
         startSeconds: start,
@@ -151,13 +163,13 @@ export default {
       return ms;
     },
     previous() {
-      if (this.replay > 0) {
-        this.replay -= 1;
+      if (this.current > 0) {
+        this.current -= 1;
       }
     },
     next() {
-      if (this.replay < this.video.length - 1) {
-        this.replay += 1;
+      if (this.current < this.video.length - 1) {
+        this.current += 1;
       }
     },
     async receiveText(text) {
@@ -171,7 +183,7 @@ export default {
         this.romaza = res.data;
       });
       this.speechText = text.replace(/[&/\\#,+\-()$~%.'":*?!<>{}]/g, ' ');
-      const { subtitleid } = this.video[this.replay];
+      const { subtitleid } = this.video[this.current];
       await http.get('/subtitle/dict', { params: { subtitleid } }).then((res) => {
         for (let i = 0; i < res.data.length; i += 1) {
           this.dict.push(res.data[i]);
@@ -181,7 +193,6 @@ export default {
     async getData() {
       this.video = [];
       await http.get('/search/video/', { params: { id: this.id } }).then((res) => {
-        console.log(res);
         this.url = res.data.url;
         for (let i = 0; i < res.data.Korean.length; i += 1) {
           this.video.push({
@@ -198,23 +209,19 @@ export default {
     insertNote() {
       const fd = new FormData();
       fd.append('email', this.$store.state.email);
-      fd.append('subtitleid', this.video[this.replay].subtitleid);
-      fd.append('engsubtitleid', this.video[this.replay].engsubtitleid);
+      fd.append('subtitleid', this.video[this.current].subtitleid);
+      fd.append('engsubtitleid', this.video[this.current].engsubtitleid);
       fd.append('type', 0);
       fd.append('videoid', this.id);
 
-      http
-        .post('/note/insert/', fd)
-        .then((res) => {
-          console.log(res);
-        });
+      http.post('/note/insert/', fd).then(() => {});
     },
   },
   watch: {
-    replay() {
+    current() {
       this.answer = '';
-      this.answer = this.video[this.replay].kor.replace(/[&/\\#,+\-()$~%.'":*?!<>{}]/g, ' ');
-      this.answerEng = this.video[this.replay].eng.replace(/[&/\\#,+\-()$~%.'":*?!<>{}]/g, ' ');
+      this.answer = this.video[this.current].kor.replace(/[&/\\#,+\-()$~%.'":*?!<>{}]/g, ' ');
+      this.answerEng = this.video[this.current].eng.replace(/[&/\\#,+\-()$~%.'":*?!<>{}]/g, ' ');
       this.play();
     },
     speechText() {

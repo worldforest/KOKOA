@@ -26,7 +26,7 @@
               </div>
               <div v-if="expanded === index">
                 <Talk
-                :type="'note'"
+                :notemode="true"
                 :noteitem="item"
                 style="background: lightgoldenrodyellow; z-index:2" />
               </div>
@@ -45,7 +45,7 @@
               </div>
               <div v-if="expanded === index">
                 <Write
-                :type="'note'"
+                :notemode="true"
                 :noteitem="item"
                 style="background: lightgoldenrodyellow; z-index:2" />
               </div>
