@@ -247,7 +247,7 @@ export default {
   },
 };
 </script>
-<style>
+<style scoped>
 iframe {
   width: 90%;
   height: 50vh;

@@ -210,7 +210,7 @@ export default {
   },
 };
 </script>
-<style>
+<style scoped>
 font{
   padding:0;
 }
