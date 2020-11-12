@@ -3,7 +3,7 @@
     <!-- left side -->
     <v-col class="youtubeContainer" cols="12" lg="8">
       <div class="d-flex justify-center mt-3">
-        <youtube :video-id="url" ref="youtube" :player-vars="playerVars" flex></youtube>
+        <youtube :video-id="url" ref="youtube" :player-vars="playerVars" flex fit-parent></youtube>
       </div>
       <div class="d-flex justify-space-around my-5">
         <v-btn @click="previous" icon>

@@ -2,7 +2,13 @@
   <v-row style="margin-top:100px; margin-bottom: 100px;">
     <v-col class="youtubeContainer" cols="12" lg="8">
       <div class="d-flex justify-center mt-3">
-        <youtube :video-id="url" ref="youtube" :player-vars="playerVars" flex></youtube>
+        <youtube
+          :video-id="url"
+          ref="youtube"
+          :player-vars="playerVars"
+          flex
+          fit-parent
+        ></youtube>
       </div>
       <div class="d-flex justify-space-around my-5">
         <v-btn @click="previous" icon>
@@ -11,7 +17,7 @@
           </v-icon>
         </v-btn>
         <v-btn @click="playVideo" color="rgb(73, 178, 134)" icon>
-          <v-icon style="font-size: 45px; margin:0.2em" >
+          <v-icon style="font-size: 45px; margin:0.2em">
             mdi-play
           </v-icon>
           <span class="eng" style="font-size: 2em;">PLAY</span>
@@ -35,13 +41,10 @@
             >
               Answer
             </h3>
-            <v-btn
-              icon
-              color="rgb(73, 178, 134)"
-              @click="reset"
-              ><v-icon class="restart" style="font-size: 1.5em;">mdi-replay</v-icon></v-btn
+            <v-btn icon color="rgb(73, 178, 134)" @click="reset"
+              ><v-icon class="restart" style="font-size: 2em;">mdi-replay</v-icon></v-btn
             >
-            <span class="eng" style="font-size: 0.5em;">RESET</span>
+            <span class="eng" style="font-size: 1em;">RESET</span>
           </div>
           <draggable
             class="drag row wrap justify-center sortable-list"
@@ -293,12 +296,8 @@ export default {
 </script>
 <style scoped>
 .drag {
-  border:1px solid white;
-  padding: 1em
-}
-iframe {
-  width: 90%;
-  height: 50vh;
+  border: 1px solid white;
+  padding: 1em;
 }
 .answerDiv {
   display: relative;
