@@ -10,11 +10,11 @@
             mdi-chevron-left
           </v-icon>
         </v-btn>
-        <v-btn @click="playVideo" icon>
-          <v-icon style="font-size: 45px;" color="rgb(73, 178, 134)">
+        <v-btn @click="playVideo" color="rgb(73, 178, 134)" icon>
+          <v-icon style="font-size: 45px; margin:0.2em" >
             mdi-play
           </v-icon>
-          PLAY
+          <span class="eng" style="font-size: 2em;">PLAY</span>
         </v-btn>
         <!-- <b-button class="eng mx-5" variant="success" @click="playVideo">play</b-button> -->
         <v-btn @click="next" icon>
@@ -29,7 +29,7 @@
         <v-col cols="12" class="ma-5">
           <div class="answerDiv">
             <h3
-              class="eng writeTitle"
+              class="eng writeTitle mr-5"
               :class="{ note: type === 'note' }"
               style="margin-bottom: 1vw;"
             >
@@ -38,11 +38,10 @@
             <v-btn
               icon
               color="rgb(73, 178, 134)"
-              class="mr-10"
-              style="font-size: 30px;"
               @click="reset"
-              ><v-icon class="restart" style="font-size: 30px;">mdi-replay</v-icon></v-btn
+              ><v-icon class="restart" style="font-size: 1.5em;">mdi-replay</v-icon></v-btn
             >
+            <span class="eng" style="font-size: 0.5em;">RESET</span>
           </div>
           <draggable
             class="drag row wrap justify-center sortable-list"
@@ -305,17 +304,12 @@ iframe {
   display: relative;
 }
 .answerDiv h3 {
-  display: block;
+  display: inline-block;
   margin: auto;
-}
-.answerDiv button {
-  position: absolute;
-  top: 0;
-  right: 0;
 }
 .writeTitle {
   color: white;
-  display: flex;
+  /* display: flex; */
   align-content: center;
   justify-items: center;
   font-size: 3em;
