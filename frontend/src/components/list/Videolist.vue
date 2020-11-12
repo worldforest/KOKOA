@@ -186,22 +186,7 @@ export default {
   },
 };
 </script>
-<style lang="scss">
-figure {
-  padding: 5px;
-  display: table;
-}
-
-figure img {
-  display: block;
-  width: 100%;
-}
-
-figcaption {
-  caption-side: bottom;
-  font-size: 0.875em;
-  padding: 0 5px 5px;
-}
+<style lang="scss" scoped>
 .upcoming-contents::after {
   color: #fdb165;
   // background-color: #FDB165;

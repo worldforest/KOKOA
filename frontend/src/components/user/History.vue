@@ -1,5 +1,5 @@
 <template>
-  <div class="artist">
+  <div style="margin-top:100px; margin-bottom: 100px;">
     <v-layout wrap>
       <v-flex xs12 sm6 md4 lg3 xl2 v-for="(data, index) in groups" :key="index">
         <v-card class="scale ma-3" @click="enter(data.id)">
@@ -10,13 +10,15 @@
     </v-layout>
     <div class="upcoming-contents ma-5">
       <VueSlickCarousel v-bind="settings" v-if="items.length">
-        <img
-          v-for="(item, index) in items"
-          :src="'http://img.youtube.com/vi/' + item.url + '/0.jpg'"
-          :key="index"
-          @click="goTraining(item)"
-          class="pa-1"
-        />
+         <figure v-for="(item, index) in items" :key="index">
+                <img
+                  :src="'https://img.youtube.com/vi/' + item.url + '/0.jpg'"
+                  @click="goTraining(item)"
+                  class="pa-1"
+                  :label="item.title"
+                />
+                <figcaption class="eng">{{ item.title }}</figcaption>
+              </figure>
       </VueSlickCarousel>
     </div>
   </div>
@@ -118,6 +120,6 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style scoped>
 
 </style>
