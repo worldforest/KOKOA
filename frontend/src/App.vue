@@ -1,5 +1,4 @@
 <template>
-
   <v-app id="create">
     <div id="logo" @click="goHome" v-if="isLogin">
       <img src="@/assets/kokoa1.png">
@@ -55,7 +54,7 @@ export default {
       list: [
         { isLink: true, url: '/' },
         { isLink: true, url: '/note' },
-        { isLink: true, url: '/review' },
+        { isLink: true, url: '/history' },
         { isLink: true, url: '/logout' },
       ],
       backgroundColor: 'rgb(255, 127, 0)',
@@ -115,5 +114,26 @@ footer{
   font-family: 'Xanh Mono', monospace;
   color: wheat;
   font-size: 15px;
+}
+.slick-prev:before {
+  color: #FDB165 !important;
+}
+.slick-next:before {
+  color: #FDB165 !important;
+}
+figure {
+  padding: 5px;
+  display: table;
+}
+
+figure img {
+  display: block;
+  width: 100%;
+}
+
+figcaption {
+  caption-side: bottom;
+  font-size: 0.875em;
+  padding: 0 5px 5px;
 }
 </style>

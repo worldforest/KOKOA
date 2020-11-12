@@ -97,7 +97,6 @@ export default {
 .temp{
   background-color: rgba(0, 0, 0, 0.89);
   padding: 1;
-  color: white;
 }
 .scale:hover {
   transform: scale(1.02);

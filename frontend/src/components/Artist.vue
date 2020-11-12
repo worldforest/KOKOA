@@ -72,7 +72,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .artist {
   background-size: cover;
   position: relative;

@@ -1,9 +1,16 @@
 <template>
-  <section>
-    <b-container fluid>
-      <b-row>
-        <b-col sm="12" class="overflow-hidden">
-          <div class="eng toggle-btn">
+  <div class="px-10" style="margin-top:100px; margin-bottom: 100px;">
+    <h1 class="eng">Last-visited Artist</h1>
+    <v-layout wrap>
+      <v-flex xs12 sm6 md4 lg3 xl2 v-for="(data, index) in groups" :key="index">
+        <v-card class="scale ma-3" @click="enter(data.id)">
+          <v-img aspect-ratio="1" :src="require(`@/assets` + data.img)" />
+          <v-card-title class="eng temp justify-center">{{ data.title }}</v-card-title>
+        </v-card>
+      </v-flex>
+    </v-layout>
+    <h1 class="eng mt-10">Last-watched Videos</h1>
+    <div class="eng toggle-btn">
             <form class="tabber">
               <label for="t1">Speaking</label>
               <input id="t1" type="radio" value="Speaking" v-model="choice" />
@@ -12,26 +19,23 @@
               <div class="blob"></div>
             </form>
           </div>
-          <div class="upcoming-contents ma-5">
-            <VueSlickCarousel v-bind="settings" v-if="items.length">
-              <figure v-for="(item, index) in items" :key="index">
-                <img
-                  :src="'https://img.youtube.com/vi/' + item.url + '/0.jpg'"
-                  @click="goTraining(item)"
-                  class="pa-1"
-                  :label="item.title"
-                />
-                <figcaption class="eng">{{ item.title }}</figcaption>
-              </figure>
-            </VueSlickCarousel>
-          </div>
-        </b-col>
-      </b-row>
-    </b-container>
-  </section>
+    <div class="upcoming-contents ma-5">
+      <VueSlickCarousel v-bind="settings" v-if="items.length">
+        <figure v-for="(item, index) in items" :key="index">
+          <img
+            :src="'https://img.youtube.com/vi/' + item.url + '/0.jpg'"
+            @click="goTraining(item)"
+            class="pa-1"
+            :label="item.title"
+          />
+          <figcaption class="eng">{{ item.title }}</figcaption>
+        </figure>
+      </VueSlickCarousel>
+    </div>
+  </div>
 </template>
+
 <script>
-// import axios from 'axios';
 import VueSlickCarousel from 'vue-slick-carousel';
 import 'vue-slick-carousel/dist/vue-slick-carousel.css';
 import 'vue-slick-carousel/dist/vue-slick-carousel-theme.css';
@@ -40,17 +44,15 @@ import http from '../../util/http-common';
 import channelList from '../core/channelList.json';
 
 export default {
-  name: 'Videolist',
+  name: 'Review',
   components: { VueSlickCarousel },
-  props: ['filters'],
   data() {
     return {
-      items: [],
       choice: 'Speaking',
-      groupid: this.$route.query.groupid,
-      teams: channelList,
-      team: '',
-      page: 0,
+      items: [],
+      groups: [],
+      infos: [],
+      tmp: channelList,
       settings: {
         // lazyload: 'ondemand',
         // fade: true,
@@ -78,63 +80,30 @@ export default {
           },
         ],
       },
-      modalShow: false,
-      timerInterval: '',
-      correctAnswer: {
-        title: 'Loading....',
-        html: 'I will close in <b></b> milliseconds.',
-        timer: 500,
-        timerProgressBar: true,
-        willOpen: () => {
-          this.$swal.showLoading();
-          this.timerInterval = setInterval(() => {
-            const content = this.$swal.getContent();
-            if (content) {
-              const b = content.querySelector('b');
-              if (b) {
-                b.textContent = this.$swal.getTimerLeft();
-              }
-            }
-          }, 100);
-        },
-        onClose: () => {
-          clearInterval(this.timerInterval);
-        },
-      },
     };
   },
   computed: {
     ...mapGetters(['email']),
   },
   async created() {
-    this.team = this.teams[this.groupid - 1].title;
     this.items = [];
-    const pages = await this.getTotalPages(this.team);
-    await this.getTotal(pages, this.team, this.items);
-  },
-  watch: {
-    async filters() {
-      // 나중에 여기서 if문에 따라서 멘트를 바꿔야할듯?
-      // pages === 0 이면 해당 멤버 영상 X -> 모든 멤버를 불러옵니다.
-      //  pages !== 0 이면 해당 멤버 영상 O -> {{member}} 영상을 불러옵니다.
-      this.$swal.fire(this.correctAnswer);
-      if (this.filters === this.team) {
-        this.getStart();
-      } else {
-        this.items = [];
-        const pages = await this.getMemberPages(this.filters);
-        if (pages !== 0) {
-          await this.getMember(pages, this.filters, this.items);
-        } else {
-          await this.getStart();
+    await http.get('/log/load', { params: { email: this.email } }).then((res) => {
+      for (let i = 0; i < res.data.video[0].length; i += 1) {
+        this.items.push(res.data.video[0][i]);
+      }
+      for (let i = 0; i < res.data.video[0].length; i += 1) {
+        for (let j = 0; j < this.tmp.length; j += 1) {
+          if (res.data.group[0][i] === this.tmp[j].groupname) {
+            this.groups.push(this.tmp[j]);
+          }
         }
       }
-    },
+    });
   },
   methods: {
     async goTraining(item) {
       await http.get('/log/insert', {
-        params: { videoid: Number(item.id), email: this.email, groupid: Number(this.groupid) },
+        params: { videoid: Number(item.id), email: this.email, groupid: Number(item.groupid) },
       });
       if (this.choice === 'Speaking') {
         this.goTalk(item.id);
@@ -148,51 +117,24 @@ export default {
     goTalk(index) {
       this.$router.push({ name: 'Talk', query: { index: String(index) } });
     },
-    async getStart() {
-      this.items = [];
-      const pages = await this.getTotalPages(this.team);
-      await this.getTotal(pages, this.team, this.items);
-    },
-    getTotalPages(team) {
-      return new Promise((resolve) => {
-        http.get(`/search/idol/0?groupname=${team}`).then((res) => {
-          resolve(res.data.totalPages);
-        });
-      });
-    },
-    getMemberPages(data) {
-      return new Promise((resolve) => {
-        http.get(`/search/member/0?membername=${data}`).then((res) => {
-          resolve(res.data.totalPages);
-        });
-      });
-    },
-    async getTotal(page, team, items) {
-      for (let i = 0; i < page; i += 1) {
-        // eslint-disable-next-line no-await-in-loop
-        await http.get(`/search/idol/${i}?groupname=${team}`).then((res) => res.data.content.forEach((element) => {
-          items.push(element);
-        }));
-      }
-    },
-    async getMember(page, name, items) {
-      for (let i = 0; i < page; i += 1) {
-        // eslint-disable-next-line no-await-in-loop
-        await http.get(`/search/member/${i}?membername=${name}`).then((res) => res.data.content.forEach((element) => {
-          items.push(element);
-        }));
-      }
+    enter(id) {
+      // let j;
+      // for (let i = 0; i < this.tmp.length; i += 1) {
+      //   if (this.tmp[i].title === id) {
+      //     j = this.tmp[i];
+      //     break;
+      //   }
+      // }
+      this.$router.push({ name: 'Artist', query: { groupid: String(id) } });
     },
   },
 };
 </script>
+
 <style lang="scss" scoped>
-.upcoming-contents::after {
-  color: #fdb165;
-  // background-color: #FDB165;
-}
-.choice img {
-  height: 100%;
+.temp{
+  background-color: rgba(0, 0, 0, 0.89);
+  padding: 1;
 }
 .toggle-btn {
   left: 40%;
@@ -203,9 +145,6 @@ export default {
   font-size: calc(20px + 0.8vw);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
-}
-svg {
-  display: none;
 }
 .tabber {
   color: white;

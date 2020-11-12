@@ -5,7 +5,7 @@ import Talk from '@/components/training/Talk.vue';
 import Home from '@/views/Home.vue';
 import Artist from '@/components/Artist.vue';
 import Note from '@/components/user/Note.vue';
-import Review from '@/components/user/Review.vue';
+import History from '@/components/user/History.vue';
 import VueYoutube from 'vue-youtube';
 import VueSweetalert2 from 'vue-sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css';
@@ -42,7 +42,7 @@ const routes = [
     component: Home,
   },
   {
-    path: '/Artist',
+    path: '/artist',
     name: 'Artist',
     component: Artist,
     beforeEnter: onlyAuthUser,
@@ -69,9 +69,9 @@ const routes = [
     beforeEnter: onlyAuthUser,
   },
   {
-    path: '/review',
-    component: Review,
-    name: 'Review',
+    path: '/history',
+    component: History,
+    name: 'History',
     props: true,
     beforeEnter: onlyAuthUser,
   },
