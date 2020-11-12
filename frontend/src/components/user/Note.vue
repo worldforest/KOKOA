@@ -206,13 +206,10 @@ export default {
 .expandbmk {
   width: 7vw;
   left: 1%;
-<<<<<<< HEAD
-  font-size: 2vw;
-  padding-left: 0.5vw;
-=======
+  /* font-size: 2vw;
+  padding-left: 0.5vw; */
   font-size: 1.6vw;
   padding-left: .7vw;
->>>>>>> 37ff10873b4a84f2645e8751604e01626ed7497e
 }
 .basic {
   width: 3vw;
