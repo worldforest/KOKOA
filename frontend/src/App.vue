@@ -1,4 +1,5 @@
 <template>
+
   <v-app id="create">
     <div id="logo" @click="goHome" v-if="isLogin">
       <img src="@/assets/kokoa1.png">
@@ -15,6 +16,14 @@
     <v-main>
       <router-view />
     </v-main>
+    <footer style="margin: 30px 0 50px; font-family: 'Xanh Mono', monospace;">
+      <h3 class="" style="font-size: 15px;">Copyright © KOKOA 2020</h3>
+      <div>
+        <h3 class="" style="margin-top:30px; font-size: 15px;">Daejeon SSAFY 3 Lastproject</h3>
+        <h3 class="" style="font-size: 15px;">
+          We dream of a world where everyone who loves K-pop understands Korean.</h3>
+      </div>
+    </footer>
   </v-app>
 </template>
 
@@ -98,5 +107,12 @@ export default {
   margin: 20px 0 0 30px;
   height: calc(50px + 1vw);;
   width: auto;
+}
+@import url('https://fonts.googleapis.com/css2?family=Xanh+Mono&display=swap');
+footer{
+  padding-left:80px;
+  font-family: 'Xanh Mono', monospace;
+  color: wheat;
+  font-size: 15px;
 }
 </style>

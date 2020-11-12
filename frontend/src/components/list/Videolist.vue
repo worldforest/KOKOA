@@ -20,7 +20,7 @@
                 :key="index"
                 @click="goTraining(item)"
                 class="pa-1"
-                :label=item.id
+                :label=item.title
               />
             </VueSlickCarousel>
           </div>

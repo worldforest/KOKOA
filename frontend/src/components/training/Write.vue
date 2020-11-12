@@ -1,5 +1,5 @@
 <template>
-  <v-row style="margin-top:100px;">
+  <v-row style="margin-top:100px; margin-bottom: 100px;">
     <v-col class="youtubeContainer" cols="12" lg="8">
       <div class="d-flex justify-center mt-3">
         <youtube :video-id="url" ref="youtube" :player-vars="playerVars" flex></youtube>
