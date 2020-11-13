@@ -12,7 +12,7 @@
               <div class="blob"></div>
             </form>
           </div>
-          <div class="upcoming-contents ma-5">
+          <div class="upcoming-contents ma-5 pa-5">
             <VueSlickCarousel v-bind="settings" v-if="items.length">
               <figure v-for="(item, index) in items" :key="index">
                 <img
