@@ -56,7 +56,7 @@ public class NoteController {
                 speechnote note = speechNoteRepo.getBySubtitleidandUserid(subtitleid,userid);
 
                 if(note!=null){
-                    result = "It's Already Registerd";
+                    result = "fail";
                     return new ResponseEntity<String>(result,HttpStatus.OK);
                 }
                 else {
@@ -66,12 +66,12 @@ public class NoteController {
                     note.setEngsubtitleid(engsubtitleid);
                     note.setVideoid(videoid);
                     speechNoteRepo.save(note);
-                    result = "add to speechnote complete";
+                    result = "success";
                 }
             } else {
                 writenote note = writeNoteRepo.getBySubtitleidandUserid(subtitleid, userid);
                 if (note != null) {
-                    result = "It's Already Registerd";
+                    result = "fail";
                     return new ResponseEntity<String>(result, HttpStatus.OK);
                 } else {
                     note = new writenote();
@@ -80,7 +80,7 @@ public class NoteController {
                     note.setEngsubtitleid(engsubtitleid);
                     note.setVideoid(videoid);
                     writeNoteRepo.save(note);
-                    result = "add to writenote complete";
+                    result = "success";
                 }
             }
             return new ResponseEntity<String>(result, HttpStatus.OK);
