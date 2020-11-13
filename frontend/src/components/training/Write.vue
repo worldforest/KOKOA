@@ -2,7 +2,18 @@
   <v-row style="margin-top:100px; margin-bottom: 100px;">
     <v-col class="youtubeContainer" cols="12" lg="8">
       <div class="d-flex justify-center mt-3 youtube">
-        <youtube :video-id="url" ref="youtube" :player-vars="playerVars" flex fit-parent></youtube>
+        <youtube
+          @playing="playing"
+          @ended="ended"
+          :video-id="url"
+          ref="youtube"
+          :player-vars="playerVars"
+          flex
+          fit-parent
+        ></youtube>
+        <div class="middle" :style="{ opacity: screen === false ? 0 : 1.0 }">
+          <div class="eng hoverTitle">Press Replay If you want retry!</div>
+        </div>
       </div>
       <div class="d-flex justify-space-around my-5">
         <v-btn v-if="this.current !== 0" @click="previous" icon>
@@ -12,10 +23,18 @@
         </v-btn>
         <span v-else></span>
         <v-btn @click="playVideo" color="rgb(73, 178, 134)" icon>
-          <v-icon style="font-size: 45px; margin:0.2em">
+          <v-icon v-show="!screen" style="font-size: 45px; margin:0.2em">
             mdi-play
           </v-icon>
-          <span class="eng" :class="{ note: notemode }" style="font-size: 2em;">PLAY</span>
+          <v-icon v-show="screen" style="font-size: 45px; margin:0.2em">
+            mdi-replay
+          </v-icon>
+          <span v-show="!screen" class="eng" :class="{ note: notemode }" style="font-size: 2em;"
+            >PLAY</span
+          >
+          <span v-show="screen" class="eng" :class="{ note: notemode }" style="font-size: 2em;"
+            >REPLAY</span
+          >
         </v-btn>
         <v-btn v-if="this.current !== this.video.length - 1" @click="next" icon>
           <v-icon color="white" style="font-size: 40px;">
@@ -122,6 +141,7 @@ export default {
   },
   data() {
     return {
+      screen: false,
       id: this.$route.query.index,
       url: '',
       current: 0,
@@ -213,6 +233,12 @@ export default {
     },
   },
   methods: {
+    playing() {
+      this.screen = false;
+    },
+    ended() {
+      this.screen = true;
+    },
     play() {
       const start = this.timer(this.video[this.current].starttime);
       const end = this.timer(this.video[this.current].endtime);
@@ -362,5 +388,26 @@ $stickypink: rgb(233, 103, 131);
   border-left: 0;
   margin-left: -10px;
   margin-top: -20px;
+}
+.middle {
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  width: 100%;
+  opacity: 0;
+  transition: 0.5s ease;
+  position: absolute;
+  background-color: rgba(0, 0, 0, 1);
+}
+
+.hoverTitle {
+  color: white;
+  font-size: 25px;
+  position: relative;
+  text-align: center;
+  vertical-align: middle;
+  top: 80%;
 }
 </style>

@@ -18,12 +18,12 @@
                 <figure class="swiperImg">
                   <img
                     :src="'https://img.youtube.com/vi/' + item.url + '/0.jpg'"
-                    @click="goTraining(item)"
+
                     class="pa-1"
                     :label="item.title"
                   />
                   <!-- <figcaption class="eng">{{ item.title }}</figcaption> -->
-                  <div class="middle">
+                  <div class="middle" @click="goTraining(item)">
                     <div class="eng hoverTitle">{{ item.title }}</div>
                   </div>
                 </figure>
