@@ -1,23 +1,33 @@
 <template>
   <div>
-    <h2 class="eng" style="color:#fff;
+    <h2
+      class="eng"
+      style="color:#fff;
       font-size: calc(40px + 2.5vw);
       display: flex;
-      justify-content: center;">Choose Your Artist</h2>
-  <span class="blinking">
-    <div class="example-3d" @mouseenter="hover = true" @mouseleave="hover = false">
-      <swiper class="swiper" :options="swiperOption" ref="swiperRef">
-        <swiper-slide
-          v-for="(item, index) in items"
-          :key="index"
-          :style="{ 'background-image': 'url(' + require(`@/assets${item.img}`) + ')' }"
-          @click.native="enter(item.id)"
-        ></swiper-slide>
-        <div class="swiper-button-prev" slot="button-prev"></div>
-        <div class="swiper-button-next" slot="button-next"></div>
-      </swiper>
-    </div>
-  </span>
+      justify-content: center;"
+    >
+      Choose Your Artist
+    </h2>
+    <span class="blinking">
+      <div class="example-3d" @mouseenter="hover = true" @mouseleave="hover = false">
+        <swiper class="swiper" :options="swiperOption" ref="swiperRef">
+          <swiper-slide
+            v-for="(item, index) in items"
+            :key="index"
+            :style="{ 'background-image': 'url(' + require(`@/assets${item.img}`) + ')' }"
+            @click.native="enter(item.id)"
+            class="swiperImg"
+          >
+            <div class="middle">
+              <div class="text">{{ item.title }}</div>
+            </div>
+          </swiper-slide>
+          <div class="swiper-button-prev" slot="button-prev"></div>
+          <div class="swiper-button-next" slot="button-next"></div>
+        </swiper>
+      </div>
+    </span>
     <v-flex d-flex>
       <v-layout wrap>
         <v-flex xs12 sm6 md4 lg3 xl2 v-for="(data, index) in items" :key="index">
@@ -94,7 +104,7 @@ export default {
   transform: scale(1);
   transition: all 0.3s ease-in-out;
 }
-.temp{
+.temp {
   background-color: rgba(0, 0, 0, 0.89);
   padding: 1;
 }
@@ -112,7 +122,7 @@ export default {
 .swiper {
   height: auto;
   width: auto;
-  --swiper-theme-color: #FDB165;
+  --swiper-theme-color: #fdb165;
   .swiper-slide {
     display: flex;
     justify-content: center;
@@ -121,7 +131,7 @@ export default {
     height: 50vh;
     text-align: center;
     font-weight: bold;
-    background-color: #FDB165;
+    background-color: #fdb165;
     background-position: center;
     background-size: cover;
   }
@@ -129,21 +139,57 @@ export default {
 .swiper-button-prev {
   text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
 }
-.swiper-button-next{
- text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+.swiper-button-next {
+  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
 }
-.blink{
+.blink {
   animation: blinking 2s alternate infinite;
 }
 @keyframes blinking {
-  from{
-    box-shadow:  0 0 5px 5px rgb(250, 222, 166);
+  from {
+    box-shadow: 0 0 5px 5px rgb(250, 222, 166);
   }
-  50%{
-    box-shadow: 0 0 5px 5px #FDB165;
+  50% {
+    box-shadow: 0 0 5px 5px #fdb165;
   }
-  to{
+  to {
     box-shadow: 0 0 5px 5px rgb(245, 236, 218);
   }
+}
+.swiperImg{
+  opacity: 1;
+  // display: block;
+  // width: 100%;
+  // height: auto;
+  // transition: .5s ease;
+  backface-visibility: hidden;
+}
+
+.middle {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  width: 100%;
+  opacity: 0;
+  transition: .5s ease;
+}
+
+.swiperImg:hover .middle{
+  background-color: rgba(0, 0, 0, 0.5);
+  opacity: 1;
+}
+.text {
+  color: white;
+  font-size: 20px;
+  // position: relative;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  text-align: center;
 }
 </style>

@@ -142,7 +142,7 @@ figure img {
 
 figcaption {
   caption-side: bottom;
-  font-size: 0.875em;
+  font-size: 1.5em;
   padding: 0 5px 5px;
 }
 .youtube{
