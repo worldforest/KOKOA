@@ -17,11 +17,13 @@
               <figure v-for="(item, index) in items" :key="index">
                 <img
                   :src="'https://img.youtube.com/vi/' + item.url + '/0.jpg'"
-                  @click="goTraining(item)"
-                  class="pa-1"
+                  class="pa-1 swiperImg"
                   :label="item.title"
                 />
-                <figcaption class="eng">{{ item.title }}</figcaption>
+                <div class="middle" @click="goTraining(item)">
+                  <div class="eng hoverTitle">{{ item.title }}</div>
+                </div>
+                <!-- <figcaption class="eng">{{ item.title }}</figcaption> -->
               </figure>
             </VueSlickCarousel>
           </div>
@@ -317,5 +319,44 @@ svg {
   100% {
     transform: translateX(0) scaleX(1);
   }
+}
+.swiperImg{
+  opacity: 1;
+  // display: block;
+  // width: 100%;
+  // height: auto;
+  // transition: .5s ease;
+  backface-visibility: hidden;
+}
+
+.middle {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  width: 100%;
+  opacity: 0;
+  transition: .5s ease;
+  // text-align: center;
+  display: block;
+}
+
+.middle:hover{
+  background-color: rgba(0, 0, 0, 0.5);
+  opacity: 1;
+}
+.hoverTitle {
+  color: white;
+  font-size: 3.0vh;
+  position: relative;
+  display: block;
+  top: 80%;
+  // left: 50%;
+  // -webkit-transform: translate(-50%, -50%);
+  // -ms-transform: translate(-50%, -50%);
+  // transform: translate(-50%, -50%);
+  // overflow: auto !important;
 }
 </style>

@@ -20,7 +20,7 @@
             class="swiperImg"
           >
             <div class="middle">
-              <div class="text">{{ item.title }}</div>
+              <div class="eng hoverTitle">{{ item.title }}</div>
             </div>
           </swiper-slide>
           <div class="swiper-button-prev" slot="button-prev"></div>
@@ -175,21 +175,24 @@ export default {
   width: 100%;
   opacity: 0;
   transition: .5s ease;
+  // text-align: center;
+  display: block;
 }
 
 .swiperImg:hover .middle{
   background-color: rgba(0, 0, 0, 0.5);
   opacity: 1;
 }
-.text {
+.hoverTitle {
   color: white;
-  font-size: 20px;
-  // position: relative;
-  top: 50%;
-  left: 50%;
-  -webkit-transform: translate(-50%, -50%);
-  -ms-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
-  text-align: center;
+  font-size: 3.0vh;
+  position: relative;
+  display: block;
+  top: 80%;
+  // left: 50%;
+  // -webkit-transform: translate(-50%, -50%);
+  // -ms-transform: translate(-50%, -50%);
+  // transform: translate(-50%, -50%);
+  // overflow: auto !important;
 }
 </style>
