@@ -23,17 +23,25 @@
           </v-icon>
         </v-btn>
         <span v-else></span>
-        <v-btn @click="playVideo" color="rgb(73, 178, 134)" icon>
+        <v-btn @click="playVideo" class="stickypink" icon>
           <v-icon v-show="!screen" style="font-size: 45px; margin:0.2em">
             mdi-play
           </v-icon>
           <v-icon v-show="screen" style="font-size: 45px; margin:0.2em">
             mdi-replay
           </v-icon>
-          <span v-show="!screen" class="eng" :class="{ note: notemode }" style="font-size: 2em;"
+          <span
+            v-show="!screen"
+            class="eng stickypink"
+            :class="{ note: notemode }"
+            style="font-size: 2em;"
             >PLAY</span
           >
-          <span v-show="screen" class="eng" :class="{ note: notemode }" style="font-size: 2em;"
+          <span
+            v-show="screen"
+            class="eng stickypink"
+            :class="{ note: notemode }"
+            style="font-size: 2em;"
             >REPLAY</span
           >
         </v-btn>
@@ -68,19 +76,29 @@
             <!-- {{ speechText }} -->
           </h2>
           <div class="d-flex justify-space-around">
-            <v-btn class="ma-2" text icon color="purple lighten-2" @click="insertNote">
-              <v-icon>mdi-clipboard-edit-outline</v-icon>
-              Add to<br />Note
+            <v-btn
+              class="mb-5 eng stickypink"
+              text
+              icon
+              style="font-size:20px;"
+              @click="insertNote"
+            >
+              <v-icon class="mr-3" large>mdi-clipboard-edit-outline</v-icon>
+              Add to Note
             </v-btn>
-            <div class="speech-bubble">
+            <!-- <div class="speech-bubble">
               Focus on the marked area<br />and try to pronounce it :)
-            </div>
+            </div> -->
           </div>
-          <h4 class="myTitle d-flex justify-space-around" :class="{ note: notemode }">
-            {{ romaza }}
-          </h4>
-          <div class="py-5" style="background:purple" v-for="(item, index) in dict" :key="index">
-            {{ item.kor + " " + item.eng + " " + item.dfn }}
+
+          <div class="py-5 dictionary" v-for="(item, index) in dict" :key="index">
+            <h4 class="kor stickypink" style="display:inline">
+              {{ item.kor }}
+            </h4>
+            <h5 class="eng note" style="display: inline">(eng) {{ item.eng }}</h5>
+            <div class="eng note">
+              {{ item.dfn }}
+            </div>
           </div>
         </v-col>
       </v-row>
@@ -211,8 +229,11 @@ export default {
       this.speechText = text.replace(/[&/\\#,+\-()$~%.'":*?!<>{}]/g, ' ');
       const { subtitleid } = this.video[this.current];
       await http.get('/subtitle/dict', { params: { subtitleid } }).then((res) => {
+        console.log(res);
         for (let i = 0; i < res.data.length; i += 1) {
-          this.dict.push(res.data[i]);
+          if (res.data[i].dfn !== 'Cannot find the meaning') {
+            this.dict.push(res.data[i]);
+          }
         }
       });
     },
@@ -286,6 +307,18 @@ export default {
         container.appendChild(text);
         pos.appendChild(container);
       }
+      container.appendChild(document.createElement('br'));
+      container.appendChild(document.createElement('br'));
+
+      container = document.createElement('font');
+      text = document.createTextNode(`[ ${this.romaza} ]`);
+      if (this.notemode) {
+        container.style.color = 'black';
+      } else {
+        container.style.color = 'white';
+      }
+      container.appendChild(text);
+      pos.appendChild(container);
     },
   },
 };
@@ -307,6 +340,7 @@ font {
   position: relative;
   background: #cfcdce;
   border-radius: 0.4em;
+  padding: 10px;
 }
 
 .speech-bubble:after {
@@ -319,12 +353,19 @@ font {
   border: 10px solid transparent;
   border-right-color: #cfcdce;
   border-left: 0;
-  margin-top: -10px;
+  margin-top: -20px;
   margin-left: -10px;
 }
 
 .note {
   color: black;
+}
+.dictionary {
+  background: lightgoldenrodyellow;
+  padding-left: 5%;
+}
+.stickypink {
+  color: rgb(233, 103, 131) !important;
 }
 .middle {
   top: 0;
