@@ -1,25 +1,25 @@
 <template>
   <div class="container">
     <div class="eng bookmarks bookmark-top" style="color: black;"
-    @click="type = 0;"
-      :class="{ expandbmk: type === 0, basic: type !== 0 }">Speaking</div>
+    @click="type = 'Speaking';"
+      :class="{ expandbmk: type === 'Speaking', basic: type !== 'Speaking' }">Speaking</div>
     <div class="eng bookmarks bookmark-bottom" style="color: black;"
-     @click="type = 1;
+     @click="type = 'Writing';
       "
-      :class="{ expandbmk: type === 1, basic: type !== 1 }">Writing</div>
+      :class="{ expandbmk: type === 'Writing', basic: type !== 'Writing' }">Writing</div>
     <div class="paper">
       <div class="lines">
         <div class="text">
           <!-- contenteditable spellcheck="false"-->
-          <h2>Note - Review your incorrect sentences.</h2>
+          <h2 class="eng notecolor">[{{this.type}}] Click &amp; Review your sentences.</h2>
           <br />
           <!-- 문장 목록 -->
-          <div v-if="type === 0">
-            <h3>[Speaking]</h3>
+          <div v-if="type === 'Speaking'">
+            <!-- <h3 class="eng notecolor">[Speaking]</h3> -->
             <div v-for="(item, index) in speechnote" :key="index" style="">
               <div
                 class="kor sentences"
-                @click="expanded === index ? (expanded = -1) : setToTop(index)"
+                @click="expanded === index ? (expanded = -'Writing') : setToTop(index)"
                 :id="'sentence' + index"
               >
                 ({{ index + 1 }}) {{ item.content }}
@@ -34,7 +34,7 @@
           </div>
           <!-- writing 문장 목록 -->
           <div v-else>
-            <h3>[Writing]</h3>
+            <!-- <h3 class="eng notecolor">[Writing]</h3> -->
             <div v-for="(item, index) in writenote" :key="index" style="">
               <div
                 class="kor sentences"
@@ -78,7 +78,7 @@ export default {
     speechnote: [],
     writenote: [],
     expanded: -1,
-    type: 0,
+    type: 'Speaking',
   }),
   async created() {
     this.email = this.$store.state.email;
@@ -221,5 +221,8 @@ $topval: 420px;
   left: 2%;
   font-size: 1.6vw;
   padding-left: 0.3vw;
+}
+.notecolor {
+  color: black;
 }
 </style>
