@@ -8,14 +8,12 @@
       "
       :class="{ expandbmk: type === 'Writing', basic: type !== 'Writing' }">Writing</div>
     <div class="paper">
+      <h3 class="eng notecolor ml-15 mt-4">Review your sentences. - {{this.type}} Note</h3>
       <div class="lines">
         <div class="text">
-          <!-- contenteditable spellcheck="false"-->
-          <h2 class="eng notecolor">[{{this.type}}] Click &amp; Review your sentences.</h2>
           <br />
           <!-- 문장 목록 -->
           <div v-if="type === 'Speaking'">
-            <!-- <h3 class="eng notecolor">[Speaking]</h3> -->
             <div v-for="(item, index) in speechnote" :key="index" style="">
               <div
                 class="kor sentences"
@@ -150,7 +148,7 @@ $topval: 440px;
   background: rgba(255, 0, 0, 0.4);
 }
 .lines {
-  margin-top: 40px;
+  margin-top: -15px;
   height: calc(100% - 40px);
   width: 100%;
   background-image: repeating-linear-gradient(
@@ -195,8 +193,8 @@ $topval: 440px;
 }
 .bookmarks {
   position: absolute;
-  // height: 128px;
-  height: 9vw;
+  height: 129px;
+  // height: 9vw;
   box-shadow: inset 0px 0px 2px 0px #888;
   cursor: pointer;
   writing-mode: vertical-lr;
@@ -214,13 +212,13 @@ $topval: 440px;
 .expandbmk {
   width: 7vw;
   left: 1%;
-  font-size: 2vw;
+  font-size: 1.75vw;
   padding-left: .7vw;
 }
 .basic {
   width: 3vw;
   left: 2%;
-  font-size: 1.6vw;
+  font-size: 1.55vw;
   padding-left: 0.3vw;
 }
 .notecolor {
