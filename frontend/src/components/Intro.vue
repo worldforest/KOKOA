@@ -26,19 +26,25 @@
       <div class="section s4">
         <h3>Let's go to learn</h3>
         <h3>with K-pop Artist</h3>
-        <button
-          style="margin:30px; color:white; font-size:30px; position: relative;" @click="getAuth()">
-          <img src="@/assets/google.png" alt="구글로그인버튼" style="width:30px" />
-          Join with Google
-        </button>
       </div>
     </full-page>
 
     <ul class="actions">
-      <li @click="$refs.fullpage.api.silentMoveTo(5, 5)" class="actions-button">go to learn 📚</li>
-      <!-- <li @click="$refs.fullpage.api.moveTo(1, 1)" class='top-button'>👆</li> -->
+      <li
+        v-if="!isLast"
+        @click="$refs.fullpage.api.silentMoveTo(5, 5)"
+        class="actions-button learn"
+      >
+        go to learn 📚
+      </li>
+      <li v-else class="actions-button join eng" @click="getAuth()">
+        <img src="@/assets/google.png" alt="구글로그인버튼" style="width:30px" />
+        Join with Google
+      </li>
     </ul>
-    <ul @click="$refs.fullpage.api.moveTo(1, 1)" class='top-button'>👆</ul>
+    <ul @click="$refs.fullpage.api.moveTo(1, 1)" class="top-button">
+      👆
+    </ul>
   </div>
 </template>
 <script>
@@ -57,6 +63,7 @@ export default {
         afterLoad: this.afterLoad,
         navigation: false,
       },
+      isLast: false,
     };
   },
   methods: {
@@ -72,6 +79,13 @@ export default {
           console.log(error);
         });
     },
+    afterLoad(origin, destination) {
+      if (destination.index === 4) {
+        this.isLast = true;
+      } else {
+        this.isLast = false;
+      }
+    },
   },
 };
 </script>
@@ -83,7 +97,7 @@ export default {
 .section {
   position: relative;
   text-align: center;
-  font-family: 'Merriweather', serif;
+  font-family: "Merriweather", serif;
 }
 .s0 {
   background: url(https://www.c-mw.net/wp-content/uploads/2017/06/Seoul-City-Landscape-CNEW-1600x1000.jpeg);
@@ -149,12 +163,12 @@ export default {
   bottom: 0px;
   background-color: #000;
 }
-.s4{
+.s4 {
   background-image: url(https://thewritelife.com/wp-content/uploads/2019/08/How-to-format-a-book.jpg);
   background-size: cover;
   position: relative;
 }
-.s4::before{
+.s4::before {
   content: "";
   opacity: 0.5;
   position: absolute;
@@ -211,21 +225,28 @@ h3 {
   display: inline;
   margin: 0.1em 0.1em;
   font-size: 2.5em;
+}
+.learn {
   font-family: "Lobster", cursive;
+  background: rgba(245, 128, 11, 0.47);
+  color: #fff;
+}
+.join {
+  background: rgba(37, 218, 76, 0.47);
+  color: rgba(247, 243, 239, 0.952);
 }
 .actions-button {
   padding: 0.23em 1.07em;
-  background: rgba(245, 128, 11, 0.47);
   border-radius: 5px;
   display: block;
-  color: #fff;
   cursor: pointer;
 }
-.top-button{
+.top-button {
   font-size: 5vw;
   position: fixed;
-  top: 2%;
+  bottom: 2%;
   right: 20px;
   cursor: pointer;
+  z-index: 999;
 }
 </style>
