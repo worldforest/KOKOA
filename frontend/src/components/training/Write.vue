@@ -10,9 +10,8 @@
           :player-vars="playerVars"
           flex
           fit-parent
-          :style="{ opacity: screen === false ? 1 : 0 }"
         ></youtube>
-        <div class="middle">
+        <div class="middle" :style="{ opacity: screen === false ? 0 : 1.0 }">
           <div class="eng hoverTitle">Press Replay If you want retry!</div>
         </div>
       </div>
@@ -359,7 +358,7 @@ export default {
   left: 0;
   right: 0;
   height: 100%;
-  width: 90%;
+  width: 100%;
   opacity: 0;
   transition: 0.5s ease;
   position: absolute;

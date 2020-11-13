@@ -331,7 +331,7 @@ font {
   bottom: 0;
   left: 0;
   right: 0;
-  height: 80%;
+  height: 85%;
   width: 100%;
   opacity: 0;
   transition: 0.5s ease;
