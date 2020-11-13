@@ -37,6 +37,7 @@
             >
             <span class="eng" :class="{ note: notemode }" style="font-size: 1em;">RESET</span>
           </div>
+
           <draggable
             class="drag row wrap justify-center sortable-list"
             :style="{ 'border-color': notemode ? 'black' : 'white' }"
@@ -50,9 +51,20 @@
         </v-col>
 
         <v-col cols="12" class="ma-5">
-          <h3 class="eng writeTitle" :class="{ note: notemode }" style="margin-bottom: 1vw;">
+          <h3
+            class="eng writeTitle"
+            :class="{ note: notemode }"
+            style="margin-bottom: 1vw; display:inline"
+          >
             Choice
           </h3>
+          <div class="ml-10 mb-3 eng" style="display:inline">
+            <v-btn icon @click="showhint = !showhint"
+              ><v-icon class="mr-2" color="rgb(73, 178, 134)">fas fa-smile-wink</v-icon>
+              <span class="eng" :class="{ note: notemode }" style="font-size: 1em;">HINT</span>
+            </v-btn>
+            <div v-show="showhint" class="speech-bubble my-3">{{ answerEng }}</div>
+          </div>
           <draggable
             class="row wrap align-center justify-center sortable-list"
             :list="choicelist"
@@ -62,9 +74,6 @@
               {{ element.name }}
             </div>
           </draggable>
-          <div class="d-flex justify-space-around my-5 eng" :class="{ note: notemode }">
-            {{ answerEng }}
-          </div>
         </v-col>
       </v-row>
     </v-col>
@@ -152,6 +161,7 @@ export default {
         },
       },
       answerEng: '',
+      showhint: false,
     };
   },
   computed: {
@@ -187,6 +197,7 @@ export default {
       }
     },
     current() {
+      this.showhint = false;
       this.answerEng = this.video[this.current].eng;
       this.fail = false;
       this.answer = [];
@@ -292,7 +303,10 @@ export default {
   },
 };
 </script>
-<style scoped>
+<style scoped lang="scss">
+$stickygreen: rgb(73, 178, 134);
+$stickypink: rgb(233, 103, 131);
+
 .drag {
   border: 1px solid white;
   padding: 1em;
@@ -317,7 +331,7 @@ export default {
 }
 .wordblock {
   font-size: 1.5em;
-  background-color: rgb(73, 178, 134);
+  background-color: $stickygreen;
   padding: 1vw;
   border: 50%;
   margin: 0.5vw;
@@ -326,5 +340,27 @@ export default {
 .note {
   color: black;
 }
+.speech-bubble {
+  position: relative;
+  background: $stickypink;
+  opacity: 0.95;
+  border-radius: 0.4em;
+  padding: 10px;
+}
 
+.speech-bubble:after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 0;
+  height: 0;
+  border: 20px solid transparent;
+  border-bottom-color: $stickypink;
+  opacity: 0.95;
+  border-top: 0;
+  border-left: 0;
+  margin-left: -10px;
+  margin-top: -20px;
+}
 </style>
