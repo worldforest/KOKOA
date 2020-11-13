@@ -127,11 +127,12 @@ export default {
 </script>
 
 <style lang="scss">
-$topval: 420px;
+$topval: 440px;
+
 .paper {
   position: absolute;
   width: 90%;
-  height: 110%;
+  height: 105%;
   background: lightgoldenrodyellow;
   margin: -350px -25% 30px;
   left: 30%;
@@ -194,7 +195,8 @@ $topval: 420px;
 }
 .bookmarks {
   position: absolute;
-  height: 128px;
+  // height: 128px;
+  height: 9vw;
   box-shadow: inset 0px 0px 2px 0px #888;
   cursor: pointer;
   writing-mode: vertical-lr;
@@ -202,12 +204,11 @@ $topval: 420px;
 }
 
 .bookmark-top {
-  // top: 15%;
   top: $topval * 0.26;
   background: rgb(233, 103, 131);
 }
 .bookmark-bottom {
-  top: $topval * 0.559;
+  top: $topval * 0.57;
   background: rgb(85, 219, 163);
 }
 .expandbmk {
