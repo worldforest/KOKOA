@@ -115,11 +115,20 @@ footer{
   color: wheat;
   font-size: 15px;
 }
+.slick-slider{
+  padding: inherit;
+}
 .slick-prev:before {
+  font-family: 'swiper-icons' !important;
+  content: 'prev' !important;
   color: #FDB165 !important;
+  font-size: 35px !important;
 }
 .slick-next:before {
+  font-family: 'swiper-icons' !important;
+  content: 'next' !important;
   color: #FDB165 !important;
+  font-size: 35px !important;
 }
 figure {
   padding: 5px;
@@ -133,7 +142,11 @@ figure img {
 
 figcaption {
   caption-side: bottom;
-  font-size: 0.875em;
+  font-size: 1.5em;
   padding: 0 5px 5px;
+}
+.youtube{
+  /* margin : 0; */
+  padding : 5vh;
 }
 </style>
