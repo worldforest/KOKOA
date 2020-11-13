@@ -9,6 +9,8 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class speechnote {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

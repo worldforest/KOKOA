@@ -48,27 +48,44 @@ public class NoteController {
     @PostMapping("/insert")
     @ApiOperation(value = "오답노트 추가", notes = "user num에 맞는 video, subtitle 오답노트 추가.")
     public ResponseEntity<String> addtoNote(@RequestParam String email, @RequestParam int videoid, @RequestParam int subtitleid, @RequestParam int type, @RequestParam int engsubtitleid){
+
         int userid = userRepo.findUserByEmail(email).getId();
         String result = "";
-        if(type==0){
-            speechnote note = new speechnote();
-            note.setUserid(userid);
-            note.setSubtitleid(subtitleid);
-            note.setEngsubtitleid(engsubtitleid);
-            note.setVideoid(videoid);
-            speechNoteRepo.save(note);
-            result = "add to speechnote complete";
-        }else{
-            writenote note = new writenote();
-            note.setUserid(userid);
-            note.setSubtitleid(subtitleid);
-            note.setEngsubtitleid(engsubtitleid);
-            note.setVideoid(videoid);
-            writeNoteRepo.save(note);
-            result = "add to writenote complete";
+
+            if (type == 0) {
+                speechnote note = speechNoteRepo.getBySubtitleidandUserid(subtitleid,userid);
+
+                if(note!=null){
+                    result = "fail";
+                    return new ResponseEntity<String>(result,HttpStatus.OK);
+                }
+                else {
+                    note = new speechnote();
+                    note.setUserid(userid);
+                    note.setSubtitleid(subtitleid);
+                    note.setEngsubtitleid(engsubtitleid);
+                    note.setVideoid(videoid);
+                    speechNoteRepo.save(note);
+                    result = "success";
+                }
+            } else {
+                writenote note = writeNoteRepo.getBySubtitleidandUserid(subtitleid, userid);
+                if (note != null) {
+                    result = "fail";
+                    return new ResponseEntity<String>(result, HttpStatus.OK);
+                } else {
+                    note = new writenote();
+                    note.setUserid(userid);
+                    note.setSubtitleid(subtitleid);
+                    note.setEngsubtitleid(engsubtitleid);
+                    note.setVideoid(videoid);
+                    writeNoteRepo.save(note);
+                    result = "success";
+                }
+            }
+            return new ResponseEntity<String>(result, HttpStatus.OK);
         }
-        return new ResponseEntity<String>(result, HttpStatus.OK);
-    }
+
 
     @GetMapping("/load")
     @ApiOperation(value = "오답노트 조회", notes = "user num에 맞는 video, subtitle 오답노트 조회.")
