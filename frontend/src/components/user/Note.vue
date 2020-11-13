@@ -112,7 +112,7 @@ export default {
           this.writenote.push({
             id: res.data.writenote[0][i].id,
             subtitleid: res.data.writenote[0][i].subtitleid,
-            engsubtitleid: res.data.speechnote[0][i].engsubtitleid,
+            engsubtitleid: res.data.writenote[0][i].engsubtitleid,
             videoid: res.data.writenote[0][i].videoid,
             content: res.data.writenote_sub[0][2 * i].content,
             engcontent: res.data.writenote_sub[0][2 * i + 1].content,
