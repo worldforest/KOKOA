@@ -3,15 +3,16 @@
     <v-col class="youtubeContainer" cols="12" lg="8">
       <div class="d-flex justify-center mt-3 youtube">
         <youtube
-        @playing="playing"
+          @playing="playing"
           @ended="ended"
           :video-id="url"
           ref="youtube"
           :player-vars="playerVars"
           flex
           fit-parent
+          :style="{ opacity: screen === false ? 1 : 0 }"
         ></youtube>
-        <div class="middle" :style="{opacity: screen===false ? 0 : 1.0}">
+        <div class="middle">
           <div class="eng hoverTitle">Press Replay If you want retry!</div>
         </div>
       </div>
@@ -29,8 +30,12 @@
           <v-icon v-show="screen" style="font-size: 45px; margin:0.2em">
             mdi-replay
           </v-icon>
-          <span v-show="!screen" class="eng" :class="{ note: notemode }" style="font-size: 2em;">PLAY</span>
-          <span v-show="screen" class="eng" :class="{ note: notemode }" style="font-size: 2em;">REPLAY</span>
+          <span v-show="!screen" class="eng" :class="{ note: notemode }" style="font-size: 2em;"
+            >PLAY</span
+          >
+          <span v-show="screen" class="eng" :class="{ note: notemode }" style="font-size: 2em;"
+            >REPLAY</span
+          >
         </v-btn>
         <v-btn v-if="this.current !== this.video.length - 1" @click="next" icon>
           <v-icon color="white" style="font-size: 40px;">
@@ -176,7 +181,6 @@ export default {
     },
   },
   watch: {
-
     checklist() {
       let tmp = true;
       if (this.checklist.length === 0 || this.checklist.length !== this.answer.length) {
@@ -355,11 +359,11 @@ export default {
   left: 0;
   right: 0;
   height: 100%;
-  width: 100%;
+  width: 90%;
   opacity: 0;
   transition: 0.5s ease;
   position: absolute;
-   background-color: rgba(0, 0, 0, 1);
+  background-color: rgba(0, 0, 0, 1);
 }
 
 .hoverTitle {
@@ -369,6 +373,5 @@ export default {
   text-align: center;
   vertical-align: middle;
   top: 80%;
-
 }
 </style>
