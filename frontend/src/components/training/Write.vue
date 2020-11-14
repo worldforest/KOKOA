@@ -1,5 +1,18 @@
 <template>
-  <v-row style="margin-top:100px; margin-bottom: 100px;">
+  <v-row style="margin-top:100px; margin-bottom: 100px;" @click="closeOverlay">
+    <v-overlay
+      :z-index="zIndex"
+      :value="overlay"
+      style="margin-top: 80px;"
+      class="overlay">
+      <p style="padding-left: 30%; font-size:30px;">
+        1. Click Play Button <br>
+        2. Drag word into Answer Box <br>
+        3. Hint will help you :) <br>
+        4. Click '>' Button If you want the next sentence <br>
+      </p>
+      <img src = "@/assets/tutorialwrite1.gif" class="gif-write">
+    </v-overlay>
     <v-col class="youtubeContainer" cols="12" lg="8">
       <div class="d-flex justify-center mt-3 youtube">
         <youtube :video-id="url" ref="youtube" :player-vars="playerVars" flex fit-parent></youtube>
@@ -25,7 +38,8 @@
         <span v-else></span>
       </div>
     </v-col>
-    <v-col class="testContainer" cols="12" lg="4">
+
+    <v-col class="testContainer" cols="12" lg="4" >
       <v-row class="d-flex justify-center ma-5">
         <v-col cols="12" class="ma-5">
           <div class="answerDiv">
@@ -152,6 +166,9 @@ export default {
         },
       },
       answerEng: '',
+      opacity: true,
+      overlay: true,
+      zIndex: 10,
     };
   },
   computed: {
@@ -289,6 +306,20 @@ export default {
 
       http.post('/note/insert/', fd).then(() => {});
     },
+    closeExplain() {
+      const EXPLAIN = document.querySelector('.explain');
+      const BOUNDARY = document.querySelector('.boundary');
+      const YOUTUBE = document.querySelector('.youtubeContainer');
+      EXPLAIN.setAttribute('class', 'close');
+      BOUNDARY.classList.remove('boundary');
+      YOUTUBE.classList.remove('blocking');
+      this.opacity = false;
+    },
+    closeOverlay() {
+      const OVERLAY = document.querySelector('.overlay');
+      OVERLAY.style.opacity = 0;
+      this.overlay = false;
+    },
   },
 };
 </script>
@@ -326,5 +357,14 @@ export default {
 .note {
   color: black;
 }
-
+.gif-write{
+  width:55%;
+  height:55vh;
+  margin:0px auto;
+  display:block;
+  z-index:11;
+}
+.overlay{
+  background-color:rgba(0,0,0,0.7);
+}
 </style>
