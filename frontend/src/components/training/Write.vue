@@ -14,7 +14,7 @@
         <div
           class="middle"
           :style="{
-            backgroundColor: path === '/write' ? 'black' : 'lightgoldenrodyellow',
+            backgroundColor: path === '/write' ? '#1C1C1C' : 'lightgoldenrodyellow',
             opacity: screen === false ? 0 : 1.0
           }"
         >

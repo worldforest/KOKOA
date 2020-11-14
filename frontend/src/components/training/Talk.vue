@@ -15,7 +15,7 @@
         <div
           class="middle"
           :style="{
-            backgroundColor: path === '/talk' ? 'black' : 'lightgoldenrodyellow',
+            backgroundColor: path === '/talk' ? '#1C1C1C' : 'lightgoldenrodyellow',
             opacity: screen === false ? 0 : 1.0
           }"
         >
