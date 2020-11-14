@@ -204,10 +204,12 @@ export default {
 }
 .hoverTitle {
   color: white;
-  font-size: 3.0vh;
-  position: relative;
-  display: block;
-  top: 80%;
+  font-size: 4.0vw;
+  position: absolute;
+  text-align: center;
+  width:100%;
+  bottom: 5%;
+  // top: 80%;
   // left: 50%;
   // -webkit-transform: translate(-50%, -50%);
   // -ms-transform: translate(-50%, -50%);

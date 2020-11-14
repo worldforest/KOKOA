@@ -22,7 +22,7 @@
           <div class="eng hoverTitle">Press Replay If you want retry!</div>
         </div>
       </div>
-      <div class="d-flex justify-space-around">
+      <div class="d-flex justify-space-around mt-5">
         <v-btn v-if="this.current !== 0" @click="previous" icon>
           <v-icon color="white" style="font-size: 40px;">
             mdi-chevron-left
