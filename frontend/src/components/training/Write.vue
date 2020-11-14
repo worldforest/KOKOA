@@ -5,7 +5,7 @@
       :value="overlay"
       style="margin-top: 80px;"
       class="overlay">
-      <p style="padding-left: 25%; font-size:30px;">
+      <p class="eng" style="padding-left: 25%; font-size:30px;">
         1. Click Play Button <br>
         2. Drag word into Answer Box <br>
         3. Hint will help you :) <br>
@@ -115,7 +115,7 @@
         </v-col>
         <v-btn icon class="question-btn" @click="question">
           <v-icon class="mr-2" color="rgb(73, 178, 134)"
-          style="font-size:55px;">fa fa-question-circle</v-icon>
+          style="font-size:55px;">fas fa-question</v-icon>
         </v-btn>
       </v-row>
     </v-col>
@@ -130,7 +130,7 @@ export default {
   components: {
     draggable,
   },
-  props: ['notemode', 'noteitem'],
+  props: ['notemode', 'noteitem', 'noteoverlay'],
   async created() {
     this.answer = [];
     this.choicelist = [];
@@ -382,6 +382,9 @@ export default {
     question() {
       this.flag = true;
     },
+  },
+  mounted() {
+    if (this.noteoverlay) this.closeOverlay();
   },
 };
 </script>

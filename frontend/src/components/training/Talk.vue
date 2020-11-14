@@ -1,5 +1,18 @@
 <template>
-  <v-row style="margin-top: 100px;">
+  <v-row style="margin-top: 100px;" @click="closeOverlay">
+    <v-overlay
+      :z-index="zIndex"
+      :value="overlay"
+      style="margin-top: 80px;"
+      class="overlay">
+      <p class="eng" style="padding-left: 25%; font-size:30px;">
+        1. Click Play and Listen <br>
+        2. Click Mic Button and Speak <br>
+        3. If you finished, Click mic button again <br>
+        4. Check your pronunciation <br>
+      </p>
+      <img src = "@/assets/tutorialspeak.gif" class="gif-write">
+    </v-overlay>
     <!-- left side -->
     <v-col class="youtubeContainer" cols="12" lg="8">
       <div class="d-flex justify-center youtube why pa-5">
@@ -110,6 +123,10 @@
         </v-col>
       </v-row>
     </v-col>
+    <v-btn icon class="question-btn" @click="question">
+      <v-icon class="mr-2" color="rgb(73, 178, 134)"
+      style="font-size:55px;">fa fa-question-circle</v-icon>
+    </v-btn>
   </v-row>
 </template>
 <script>
@@ -121,7 +138,7 @@ export default {
   components: {
     Record,
   },
-  props: ['notemode', 'noteitem'],
+  props: ['notemode', 'noteitem', 'noteoverlay'],
   async created() {
     if (!this.notemode) {
       await this.getData();
@@ -182,7 +199,13 @@ export default {
       answerTrim: '',
       romaza: '',
       dict: [],
+      overlay: true,
+      zIndex: 10,
+      flag: false,
     };
+  },
+  mounted() {
+    if (this.noteoverlay) this.closeOverlay();
   },
   methods: {
     playing() {
@@ -276,6 +299,19 @@ export default {
         background: '#1C1C1C',
         backdrop: 'rgba(0,0,0,0.89)',
       });
+    },
+    closeOverlay() {
+      const OVERLAY = document.querySelector('.overlay');
+      OVERLAY.style.opacity = 0;
+      this.overlay = false;
+      if (this.flag) {
+        this.overlay = !this.overlay;
+        OVERLAY.style.opacity = 1.0;
+        this.flag = false;
+      }
+    },
+    question() {
+      this.flag = true;
     },
   },
   watch: {
@@ -408,5 +444,19 @@ font {
   width:100%;
   bottom:0;
 }
-
+.gif-write{
+  width:55%;
+  height:55vh;
+  margin:0px auto;
+  display:block;
+  z-index:11;
+}
+.overlay{
+  background-color:rgba(0, 0, 0, 0.702);
+}
+.question-btn {
+  position: absolute;
+  bottom: 8px;
+  right: 10%;
+}
 </style>
