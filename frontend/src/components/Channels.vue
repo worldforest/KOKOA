@@ -13,14 +13,14 @@
       <div class="example-3d" @mouseenter="hover = true" @mouseleave="hover = false">
         <swiper class="swiper" :options="swiperOption" ref="swiperRef">
           <swiper-slide
-            v-for="(item, index) in items"
+            v-for="(item, index) in itemsMixed"
             :key="index"
             :style="{ 'background-image': 'url(' + require(`@/assets${item.img}`) + ')' }"
             @click.native="enter(item.id)"
             class="swiperImg"
           >
             <div class="middle">
-              <div class="text">{{ item.title }}</div>
+              <div class="eng hoverTitle">{{ item.title }}</div>
             </div>
           </swiper-slide>
           <div class="swiper-button-prev" slot="button-prev"></div>
@@ -57,6 +57,7 @@ export default {
       hover: false,
       swiperRef: '',
       items: channelList,
+      itemsMixed: '',
       swiperOption: {
         autoHeight: true,
         effect: 'coverflow',
@@ -82,9 +83,27 @@ export default {
       },
     };
   },
+  created() {
+    this.itemsMixed = this.items.map((o) => ({ ...o }));
+    this.itemsMixed = this.shuffle(this.itemsMixed);
+  },
   methods: {
     enter(id) {
       this.$router.push({ name: 'Artist', query: { groupid: String(id) } });
+    },
+    shuffle(array) {
+      let currentIndex = array.length;
+      let temporaryValue;
+      let randomIndex;
+      const tmp = array;
+      while (currentIndex !== 0) {
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex -= 1;
+        temporaryValue = tmp[currentIndex];
+        tmp[currentIndex] = tmp[randomIndex];
+        tmp[randomIndex] = temporaryValue;
+      }
+      return tmp;
     },
   },
   watch: {
@@ -121,7 +140,7 @@ export default {
 
 .swiper {
   height: auto;
-  width: auto;
+  width: 80%;
   --swiper-theme-color: #fdb165;
   .swiper-slide {
     display: flex;
@@ -131,8 +150,9 @@ export default {
     height: 50vh;
     text-align: center;
     font-weight: bold;
-    background-color: #fdb165;
+    background-color: transparent;
     background-position: center;
+    // background-position-y: 20%;
     background-size: cover;
   }
 }
@@ -159,7 +179,6 @@ export default {
 .swiperImg{
   opacity: 1;
   // display: block;
-  // width: 100%;
   // height: auto;
   // transition: .5s ease;
   backface-visibility: hidden;
@@ -175,21 +194,24 @@ export default {
   width: 100%;
   opacity: 0;
   transition: .5s ease;
+  // text-align: center;
+  display: block;
 }
 
 .swiperImg:hover .middle{
   background-color: rgba(0, 0, 0, 0.5);
   opacity: 1;
 }
-.text {
+.hoverTitle {
   color: white;
-  font-size: 20px;
-  // position: relative;
-  top: 50%;
-  left: 50%;
-  -webkit-transform: translate(-50%, -50%);
-  -ms-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
-  text-align: center;
+  font-size: 3.0vh;
+  position: relative;
+  display: block;
+  top: 80%;
+  // left: 50%;
+  // -webkit-transform: translate(-50%, -50%);
+  // -ms-transform: translate(-50%, -50%);
+  // transform: translate(-50%, -50%);
+  // overflow: auto !important;
 }
 </style>

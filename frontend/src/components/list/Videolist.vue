@@ -14,15 +14,20 @@
           </div>
           <div class="upcoming-contents ma-5 pa-5">
             <VueSlickCarousel v-bind="settings" v-if="items.length">
-              <figure v-for="(item, index) in items" :key="index">
-                <img
-                  :src="'https://img.youtube.com/vi/' + item.url + '/0.jpg'"
-                  @click="goTraining(item)"
-                  class="pa-1"
-                  :label="item.title"
-                />
-                <figcaption class="eng">{{ item.title }}</figcaption>
-              </figure>
+              <div v-for="(item, index) in items" :key="index">
+                <figure class="swiperImg">
+                  <img
+                    :src="'https://img.youtube.com/vi/' + item.url + '/0.jpg'"
+
+                    class="pa-1"
+                    :label="item.title"
+                  />
+                  <!-- <figcaption class="eng">{{ item.title }}</figcaption> -->
+                  <div class="middle" @click="goTraining(item)">
+                    <div class="eng hoverTitle">{{ item.title }}</div>
+                  </div>
+                </figure>
+              </div>
             </VueSlickCarousel>
           </div>
         </b-col>
@@ -317,5 +322,42 @@ svg {
   100% {
     transform: translateX(0) scaleX(1);
   }
+}
+.swiperImg {
+  opacity: 1;
+  backface-visibility: hidden;
+  display: block;
+  position: relative;
+}
+
+.middle {
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  width: 100%;
+  opacity: 0;
+  transition: 0.5s ease;
+  position: absolute;
+}
+
+.swiperImg:hover .middle {
+  background-color: rgba(0, 0, 0, 0.5);
+  opacity: 1;
+}
+
+.hoverTitle {
+  color: white;
+  font-size: 3vh;
+  position: relative;
+  vertical-align: middle;
+  top: 20%;
+  overflow: hidden;
+  white-space: wrap; /* Don't forget this one */
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
 }
 </style>

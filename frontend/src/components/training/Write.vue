@@ -14,10 +14,24 @@
       <img src = "@/assets/tutorialwrite1.gif" class="gif-write">
     </v-overlay>
     <v-col class="youtubeContainer" cols="12" lg="8">
-      <div class="d-flex justify-center mt-3 youtube">
-        <youtube :video-id="url" ref="youtube" :player-vars="playerVars" flex fit-parent></youtube>
+      <div class="d-flex justify-center youtube pa-5">
+        <youtube
+          @playing="playing"
+          @ended="ended"
+          :video-id="url"
+          ref="youtube"
+          :player-vars="playerVars"
+          flex
+          fit-parent
+        ></youtube>
+        <div class="middle" :style="{
+          backgroundColor: path==='/write' ? 'black' : 'lightgoldenrodyellow',
+          opacity: (screen === false ? 0 : 1.0),
+        }">
+          <div class="eng hoverTitle">Press Replay If you want retry!</div>
+        </div>
       </div>
-      <div class="d-flex justify-space-around my-5">
+      <div class="d-flex justify-space-around">
         <v-btn v-if="this.current !== 0" @click="previous" icon>
           <v-icon color="white" style="font-size: 40px;">
             mdi-chevron-left
@@ -25,10 +39,18 @@
         </v-btn>
         <span v-else></span>
         <v-btn @click="playVideo" color="rgb(73, 178, 134)" icon>
-          <v-icon style="font-size: 45px; margin:0.2em">
+          <v-icon v-show="!screen" style="font-size: 45px; margin:0.2em">
             mdi-play
           </v-icon>
-          <span class="eng" :class="{ note: notemode }" style="font-size: 2em;">PLAY</span>
+          <v-icon v-show="screen" style="font-size: 45px; margin:0.2em">
+            mdi-replay
+          </v-icon>
+          <span v-show="!screen" class="eng" :class="{ note: notemode }" style="font-size: 2em;"
+            >PLAY</span
+          >
+          <span v-show="screen" class="eng" :class="{ note: notemode }" style="font-size: 2em;"
+            >REPLAY</span
+          >
         </v-btn>
         <v-btn v-if="this.current !== this.video.length - 1" @click="next" icon>
           <v-icon color="white" style="font-size: 40px;">
@@ -38,10 +60,9 @@
         <span v-else></span>
       </div>
     </v-col>
-
-    <v-col class="testContainer" cols="12" lg="4" >
-      <v-row class="d-flex justify-center ma-5">
-        <v-col cols="12" class="ma-5">
+    <v-col cols="12" lg="4">
+      <v-row class="d-flex justify-center px-5">
+        <v-col cols="12" class="ma-0">
           <div class="answerDiv">
             <h3 class="eng writeTitle mr-5" :class="{ note: notemode }" style="margin-bottom: 1vw;">
               Answer
@@ -51,6 +72,7 @@
             >
             <span class="eng" :class="{ note: notemode }" style="font-size: 1em;">RESET</span>
           </div>
+
           <draggable
             class="drag row wrap justify-center sortable-list"
             :style="{ 'border-color': notemode ? 'black' : 'white' }"
@@ -64,9 +86,20 @@
         </v-col>
 
         <v-col cols="12" class="ma-5">
-          <h3 class="eng writeTitle" :class="{ note: notemode }" style="margin-bottom: 1vw;">
+          <h3
+            class="eng writeTitle"
+            :class="{ note: notemode }"
+            style="margin-bottom: 1vw; display:inline"
+          >
             Choice
           </h3>
+          <div class="ml-10 mb-3 eng" style="display:inline">
+            <v-btn icon @click="showhint = !showhint"
+              ><v-icon class="mr-2" color="rgb(73, 178, 134)">fas fa-smile-wink</v-icon>
+              <span class="eng" :class="{ note: notemode }" style="font-size: 1em;">HINT</span>
+            </v-btn>
+            <div v-show="showhint" class="speech-bubble my-3">{{ answerEng }}</div>
+          </div>
           <draggable
             class="row wrap align-center justify-center sortable-list"
             :list="choicelist"
@@ -76,9 +109,6 @@
               {{ element.name }}
             </div>
           </draggable>
-          <div class="d-flex justify-space-around my-5 eng" :class="{ note: notemode }">
-            {{ answerEng }}
-          </div>
         </v-col>
       </v-row>
     </v-col>
@@ -127,8 +157,10 @@ export default {
   },
   data() {
     return {
+      screen: false,
       id: this.$route.query.index,
       url: '',
+      path: this.$route.path,
       current: 0,
       video: [],
       playerVars: {
@@ -169,6 +201,7 @@ export default {
       opacity: true,
       overlay: true,
       zIndex: 10,
+      showhint: false,
     };
   },
   computed: {
@@ -204,6 +237,7 @@ export default {
       }
     },
     current() {
+      this.showhint = false;
       this.answerEng = this.video[this.current].eng;
       this.fail = false;
       this.answer = [];
@@ -219,6 +253,12 @@ export default {
     },
   },
   methods: {
+    playing() {
+      this.screen = false;
+    },
+    ended() {
+      this.screen = true;
+    },
     play() {
       const start = this.timer(this.video[this.current].starttime);
       const end = this.timer(this.video[this.current].endtime);
@@ -323,7 +363,10 @@ export default {
   },
 };
 </script>
-<style scoped>
+<style scoped lang="scss">
+$stickygreen: rgb(73, 178, 134);
+$stickypink: rgb(233, 103, 131);
+
 .drag {
   border: 1px solid white;
   padding: 1em;
@@ -348,7 +391,7 @@ export default {
 }
 .wordblock {
   font-size: 1.5em;
-  background-color: rgb(73, 178, 134);
+  background-color: $stickygreen;
   padding: 1vw;
   border: 50%;
   margin: 0.5vw;
@@ -366,5 +409,51 @@ export default {
 }
 .overlay{
   background-color:rgba(0,0,0,0.7);
+.speech-bubble {
+  position: relative;
+  background: $stickypink;
+  opacity: 0.95;
+  border-radius: 0.4em;
+  padding: 10px;
+}
+
+.speech-bubble:after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 0;
+  height: 0;
+  border: 20px solid transparent;
+  border-bottom-color: $stickypink;
+  opacity: 0.95;
+  border-top: 0;
+  border-left: 0;
+  margin-left: -10px;
+  margin-top: -20px;
+}
+.youtube{
+  position: relative;
+}
+.middle {
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  width: 100%;
+  opacity: 0;
+  transition: 0.5s ease;
+  position: absolute;
+  // background-color: rgba(0, 0, 0, 1);
+}
+
+.hoverTitle {
+  color: steelblue;
+  font-size: 25px;
+  position: absolute;
+  text-align: center;
+  width:100%;
+  bottom:0;
 }
 </style>

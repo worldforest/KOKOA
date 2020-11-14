@@ -2,21 +2,54 @@
   <v-row style="margin-top: 100px;">
     <!-- left side -->
     <v-col class="youtubeContainer" cols="12" lg="8">
-      <div class="d-flex justify-center mt-3 youtube">
-        <youtube :video-id="url" ref="youtube" :player-vars="playerVars" flex fit-parent></youtube>
+      <div class="d-flex justify-center youtube pa-5">
+        <youtube
+          @playing="playing"
+          @ended="ended"
+          :video-id="url"
+          ref="youtube"
+          :player-vars="playerVars"
+          flex
+          fit-parent
+        ></youtube>
+        <div
+          class="middle"
+          :style="{
+            backgroundColor: path === '/talk' ? 'black' : 'lightgoldenrodyellow',
+            opacity: screen === false ? 0 : 1.0
+          }"
+        >
+          <div class="eng hoverTitle">Press Replay If you want retry!</div>
+        </div>
       </div>
-      <div class="d-flex justify-space-around my-5">
+      <div class="d-flex justify-space-around">
         <v-btn v-if="this.current !== 0" @click="previous" icon>
           <v-icon color="white" style="font-size: 40px;">
             mdi-chevron-left
           </v-icon>
         </v-btn>
         <span v-else></span>
-        <v-btn @click="playVideo" color="rgb(73, 178, 134)" icon>
-          <v-icon style="font-size: 45px; margin:0.2em">
+        <v-btn @click="playVideo" class="stickypink" icon>
+          <v-icon v-show="!screen" style="font-size: 45px; margin:0.2em">
             mdi-play
           </v-icon>
-          <span class="eng" :class="{ note: notemode }" style="font-size: 2em;">PLAY</span>
+          <v-icon v-show="screen" style="font-size: 45px; margin:0.2em">
+            mdi-replay
+          </v-icon>
+          <span
+            v-show="!screen"
+            class="eng stickypink"
+            :class="{ note: notemode }"
+            style="font-size: 2em;"
+            >PLAY</span
+          >
+          <span
+            v-show="screen"
+            class="eng stickypink"
+            :class="{ note: notemode }"
+            style="font-size: 2em;"
+            >REPLAY</span
+          >
         </v-btn>
         <v-btn v-if="this.current !== this.video.length - 1" @click="next" icon>
           <v-icon color="white" style="font-size: 40px;">
@@ -33,8 +66,8 @@
       </div>
     </v-col>
     <!-- right side -->
-    <v-col class="testContainer" cols="12" lg="4">
-      <v-row class="d-flex justify-center ma-5">
+    <v-col cols="12" lg="4">
+      <v-row class="d-flex justify-center pa-5">
         <v-col cols="12">
           <div>
             <Record @child-event="receiveText" />
@@ -49,19 +82,29 @@
             <!-- {{ speechText }} -->
           </h2>
           <div class="d-flex justify-space-around">
-            <v-btn class="ma-2" text icon color="purple lighten-2" @click="insertNote">
-              <v-icon>mdi-clipboard-edit-outline</v-icon>
-              Add to<br />Note
+            <v-btn
+              class="mb-5 eng stickypink"
+              text
+              icon
+              style="font-size:20px;"
+              @click="insertNote"
+            >
+              <v-icon class="mr-3" large>mdi-clipboard-edit-outline</v-icon>
+              Add to Note
             </v-btn>
-            <div class="speech-bubble">
+            <!-- <div class="speech-bubble">
               Focus on the marked area<br />and try to pronounce it :)
-            </div>
+            </div> -->
           </div>
-          <h4 class="myTitle d-flex justify-space-around" :class="{ note: notemode }">
-            {{ romaza }}
-          </h4>
-          <div class="py-5" style="background:purple" v-for="(item, index) in dict" :key="index">
-            {{ item.kor + " " + item.eng + " " + item.dfn }}
+
+          <div class="py-5 dictionary" v-for="(item, index) in dict" :key="index">
+            <h4 class="kor stickypink" style="display:inline">
+              {{ item.kor }}
+            </h4>
+            <h5 class="eng note" style="display: inline">(eng) {{ item.eng }}</h5>
+            <div class="eng note">
+              {{ item.dfn }}
+            </div>
           </div>
         </v-col>
       </v-row>
@@ -116,6 +159,8 @@ export default {
   },
   data() {
     return {
+      path: this.$route.path,
+      screen: false,
       id: this.$route.query.index,
       speechText: '',
       url: '',
@@ -139,6 +184,12 @@ export default {
     };
   },
   methods: {
+    playing() {
+      this.screen = false;
+    },
+    ended() {
+      this.screen = true;
+    },
     play() {
       const start = this.timer(this.video[this.current].starttime);
       const end = this.timer(this.video[this.current].endtime);
@@ -185,8 +236,11 @@ export default {
       this.speechText = text.replace(/[&/\\#,+\-()$~%.'":*?!<>{}]/g, ' ');
       const { subtitleid } = this.video[this.current];
       await http.get('/subtitle/dict', { params: { subtitleid } }).then((res) => {
+        console.log(res);
         for (let i = 0; i < res.data.length; i += 1) {
-          this.dict.push(res.data[i]);
+          if (res.data[i].dfn !== 'Cannot find the meaning') {
+            this.dict.push(res.data[i]);
+          }
         }
       });
     },
@@ -220,6 +274,7 @@ export default {
   watch: {
     current() {
       this.answer = '';
+      this.dict = '';
       this.answer = this.video[this.current].kor.replace(/[&/\\#,+\-()$~%.'":*?!<>{}]/g, ' ');
       this.answerEng = this.video[this.current].eng.replace(/[&/\\#,+\-()$~%.'":*?!<>{}]/g, ' ');
       this.play();
@@ -260,6 +315,18 @@ export default {
         container.appendChild(text);
         pos.appendChild(container);
       }
+      container.appendChild(document.createElement('br'));
+      container.appendChild(document.createElement('br'));
+
+      container = document.createElement('font');
+      text = document.createTextNode(`[ ${this.romaza} ]`);
+      if (this.notemode) {
+        container.style.color = 'black';
+      } else {
+        container.style.color = 'white';
+      }
+      container.appendChild(text);
+      pos.appendChild(container);
     },
   },
 };
@@ -281,6 +348,7 @@ font {
   position: relative;
   background: #cfcdce;
   border-radius: 0.4em;
+  padding: 10px;
 }
 
 .speech-bubble:after {
@@ -293,11 +361,43 @@ font {
   border: 10px solid transparent;
   border-right-color: #cfcdce;
   border-left: 0;
-  margin-top: -10px;
+  margin-top: -20px;
   margin-left: -10px;
 }
 
 .note {
   color: black;
 }
+.dictionary {
+  background: lightgoldenrodyellow;
+  padding-left: 5%;
+}
+.stickypink {
+  color: rgb(233, 103, 131) !important;
+}
+.youtube{
+  position: relative;
+}
+.middle {
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  width: 100%;
+  opacity: 0;
+  transition: 0.5s ease;
+  position: absolute;
+  /* background-color: rgba(0, 0, 0, 1); */
+}
+
+.hoverTitle {
+  color: steelblue;
+  font-size: 25px;
+  position: absolute;
+  text-align: center;
+  width:100%;
+  bottom:0;
+}
+
 </style>
