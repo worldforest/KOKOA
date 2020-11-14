@@ -1,7 +1,7 @@
 <template>
-  <v-row style="margin-top:100px; margin-bottom: 100px;">
+  <v-row style="margin-top:100px;">
     <v-col class="youtubeContainer" cols="12" lg="8">
-      <div class="d-flex justify-center mt-3 youtube">
+      <div class="d-flex justify-center youtube pa-5">
         <youtube
           @playing="playing"
           @ended="ended"
@@ -18,7 +18,7 @@
           <div class="eng hoverTitle">Press Replay If you want retry!</div>
         </div>
       </div>
-      <div class="d-flex justify-space-around my-5">
+      <div class="d-flex justify-space-around">
         <v-btn v-if="this.current !== 0" @click="previous" icon>
           <v-icon color="white" style="font-size: 40px;">
             mdi-chevron-left
@@ -47,9 +47,9 @@
         <span v-else></span>
       </div>
     </v-col>
-    <v-col class="testContainer" cols="12" lg="4">
-      <v-row class="d-flex justify-center ma-5">
-        <v-col cols="12" class="ma-5">
+    <v-col cols="12" lg="4">
+      <v-row class="d-flex justify-center px-5">
+        <v-col cols="12" class="ma-0">
           <div class="answerDiv">
             <h3 class="eng writeTitle mr-5" :class="{ note: notemode }" style="margin-bottom: 1vw;">
               Answer
@@ -403,7 +403,7 @@ $stickypink: rgb(233, 103, 131);
   opacity: 0;
   transition: 0.5s ease;
   position: absolute;
-  background-color: rgba(0, 0, 0, 1);
+  // background-color: rgba(0, 0, 0, 1);
 }
 
 .hoverTitle {
@@ -412,6 +412,6 @@ $stickypink: rgb(233, 103, 131);
   position: relative;
   text-align: center;
   vertical-align: middle;
-  top: 80%;
+  top: 84%;
 }
 </style>

@@ -2,7 +2,7 @@
   <v-row style="margin-top: 100px;">
     <!-- left side -->
     <v-col class="youtubeContainer" cols="12" lg="8">
-      <div class="d-flex justify-center mt-3 youtube">
+      <div class="d-flex justify-center youtube pa-5">
         <youtube
           @playing="playing"
           @ended="ended"
@@ -12,11 +12,14 @@
           flex
           fit-parent
         ></youtube>
-        <div class="middle" :style="{ opacity: screen === false ? 0 : 1.0 }">
+        <div class="middle" :style="{
+          backgroundColor: path==='/talk' ? 'black' : 'lightgoldenrodyellow',
+          opacity: (screen === false ? 0 : 1.0),
+        }">
           <div class="eng hoverTitle">Press Replay If you want retry!</div>
         </div>
       </div>
-      <div class="d-flex justify-space-around my-5">
+      <div class="d-flex justify-space-around">
         <v-btn v-if="this.current !== 0" @click="previous" icon>
           <v-icon color="white" style="font-size: 40px;">
             mdi-chevron-left
@@ -60,8 +63,8 @@
       </div>
     </v-col>
     <!-- right side -->
-    <v-col class="testContainer" cols="12" lg="4">
-      <v-row class="d-flex justify-center ma-5">
+    <v-col cols="12" lg="4">
+      <v-row class="d-flex justify-center pa-5">
         <v-col cols="12">
           <div>
             <Record @child-event="receiveText" />
@@ -153,6 +156,7 @@ export default {
   },
   data() {
     return {
+      path: this.$route.path,
       screen: false,
       id: this.$route.query.index,
       speechText: '',
@@ -372,20 +376,20 @@ font {
   bottom: 0;
   left: 0;
   right: 0;
-  height: 85%;
+  height: 82%;
   width: 100%;
   opacity: 0;
   transition: 0.5s ease;
   position: absolute;
-  background-color: rgba(0, 0, 0, 1);
+  /* background-color: rgba(0, 0, 0, 1); */
 }
 
 .hoverTitle {
-  color: white;
+  color: steelblue;
   font-size: 25px;
   position: relative;
   text-align: center;
   vertical-align: middle;
-  top: 80%;
+  top: 84%;
 }
 </style>

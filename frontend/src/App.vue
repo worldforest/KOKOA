@@ -145,8 +145,4 @@ figcaption {
   font-size: 1.5em;
   padding: 0 5px 5px;
 }
-.youtube{
-  /* margin : 0; */
-  padding : 5vh;
-}
 </style>
