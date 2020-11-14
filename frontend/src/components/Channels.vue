@@ -121,7 +121,7 @@ export default {
 
 .swiper {
   height: auto;
-  width: auto;
+  // width: auto;
   --swiper-theme-color: #fdb165;
   .swiper-slide {
     display: flex;
@@ -131,9 +131,9 @@ export default {
     height: 50vh;
     text-align: center;
     font-weight: bold;
-    background-color: #fdb165;
+    background-color: transparent;
     background-position: center;
-    background-size: cover;
+    background-size: contain;
   }
 }
 .swiper-button-prev {
@@ -159,7 +159,6 @@ export default {
 .swiperImg{
   opacity: 1;
   // display: block;
-  // width: 100%;
   // height: auto;
   // transition: .5s ease;
   backface-visibility: hidden;
