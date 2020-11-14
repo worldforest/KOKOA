@@ -12,10 +12,13 @@
           flex
           fit-parent
         ></youtube>
-        <div class="middle" :style="{
-          backgroundColor: path==='/talk' ? 'black' : 'lightgoldenrodyellow',
-          opacity: (screen === false ? 0 : 1.0),
-        }">
+        <div
+          class="middle"
+          :style="{
+            backgroundColor: path === '/talk' ? 'black' : 'lightgoldenrodyellow',
+            opacity: screen === false ? 0 : 1.0
+          }"
+        >
           <div class="eng hoverTitle">Press Replay If you want retry!</div>
         </div>
       </div>
@@ -271,6 +274,7 @@ export default {
   watch: {
     current() {
       this.answer = '';
+      this.dict = '';
       this.answer = this.video[this.current].kor.replace(/[&/\\#,+\-()$~%.'":*?!<>{}]/g, ' ');
       this.answerEng = this.video[this.current].eng.replace(/[&/\\#,+\-()$~%.'":*?!<>{}]/g, ' ');
       this.play();
@@ -371,12 +375,15 @@ font {
 .stickypink {
   color: rgb(233, 103, 131) !important;
 }
+.youtube{
+  position: relative;
+}
 .middle {
   top: 0;
   bottom: 0;
   left: 0;
   right: 0;
-  height: 82%;
+  height: 100%;
   width: 100%;
   opacity: 0;
   transition: 0.5s ease;
@@ -387,9 +394,10 @@ font {
 .hoverTitle {
   color: steelblue;
   font-size: 25px;
-  position: relative;
+  position: absolute;
   text-align: center;
-  vertical-align: middle;
-  top: 84%;
+  width:100%;
+  bottom:0;
 }
+
 </style>

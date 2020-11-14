@@ -393,6 +393,9 @@ $stickypink: rgb(233, 103, 131);
   margin-left: -10px;
   margin-top: -20px;
 }
+.youtube{
+  position: relative;
+}
 .middle {
   top: 0;
   bottom: 0;
@@ -409,9 +412,9 @@ $stickypink: rgb(233, 103, 131);
 .hoverTitle {
   color: steelblue;
   font-size: 25px;
-  position: relative;
+  position: absolute;
   text-align: center;
-  vertical-align: middle;
-  top: 84%;
+  width:100%;
+  bottom:0;
 }
 </style>
