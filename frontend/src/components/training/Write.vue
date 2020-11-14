@@ -456,4 +456,5 @@ $stickypink: rgb(233, 103, 131);
   width:100%;
   bottom:0;
 }
+}
 </style>
