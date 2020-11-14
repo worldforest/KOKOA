@@ -113,7 +113,7 @@
             </div>
           </draggable>
         </v-col>
-        <v-btn icon class="question-btn" @click="question">
+        <v-btn icon class="question-btn" @click="question" v-show="!noteoverlay">
           <v-icon class="mr-2" color="rgb(73, 178, 134)"
           style="font-size:55px;">fas fa-question</v-icon>
         </v-btn>

@@ -123,9 +123,9 @@
         </v-col>
       </v-row>
     </v-col>
-    <v-btn icon class="question-btn" @click="question">
-      <v-icon class="mr-2" color="rgb(73, 178, 134)"
-      style="font-size:55px;">fa fa-question-circle</v-icon>
+    <v-btn icon class="question-btn" @click="question" v-show="!noteoverlay">
+      <v-icon class="mr-2" color="rgb(233, 103, 131)"
+      style="font-size:55px;">fas fa-question</v-icon>
     </v-btn>
   </v-row>
 </template>
@@ -457,6 +457,6 @@ font {
 .question-btn {
   position: absolute;
   bottom: 8px;
-  right: 10%;
+  right: 5%;
 }
 </style>
