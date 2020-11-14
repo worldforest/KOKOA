@@ -1,6 +1,6 @@
 <template>
   <v-app id="create">
-    <div id="logo" @click="goHome" v-if="isLogin">
+    <div id="logo" @click="goHome" v-if="isLogin" :class="{ 'navbar--hidden': !showLogo }">
       <img src="@/assets/kokoa1.png">
     </div>
     <quick-menu v-show="isLogin"
@@ -43,9 +43,15 @@ export default {
         QUICKMENU.classList.remove('active');
       };
     }
+    window.addEventListener('scroll', this.onScroll);
+  },
+  beforeDestroy() {
+    window.removeEventListener('scroll', this.onScroll);
   },
   data() {
     return {
+      showLogo: true,
+      lastScrollPosition: 0,
       email: '',
       drawer: false,
       // circular menu settings
@@ -77,6 +83,17 @@ export default {
     handleClick(item) {
       this.lastClicked = item;
     },
+    onScroll() {
+      const currentScrollPosition = window.pageYOffset || document.documentElement.scrollTop;
+      if (currentScrollPosition < 0) {
+        return;
+      }
+      if (Math.abs(currentScrollPosition - this.lastScrollPosition) < 60) {
+        return;
+      }
+      this.showLogo = currentScrollPosition < this.lastScrollPosition;
+      this.lastScrollPosition = currentScrollPosition;
+    },
   },
 };
 </script>
@@ -100,14 +117,21 @@ export default {
 #logo{
   position: fixed;
   z-index: 999;
+  transform: translate3d(0, 0, 0);
+  transition: 0.1s all ease-out;
 }
 #logo img{
-  /* position: absolute; */
   z-index: 999;
   margin: 20px 0 0 30px;
   height: calc(50px + 1vw);;
   width: auto;
 }
+
+#logo.navbar--hidden{
+  box-shadow: none;
+  transform: translate3d(0, -100%, 0);
+}
+
 @import url('https://fonts.googleapis.com/css2?family=Xanh+Mono&display=swap');
 footer{
   padding-left:80px;
