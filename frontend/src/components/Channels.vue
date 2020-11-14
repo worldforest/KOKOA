@@ -13,7 +13,7 @@
       <div class="example-3d" @mouseenter="hover = true" @mouseleave="hover = false">
         <swiper class="swiper" :options="swiperOption" ref="swiperRef">
           <swiper-slide
-            v-for="(item, index) in items"
+            v-for="(item, index) in itemsMixed"
             :key="index"
             :style="{ 'background-image': 'url(' + require(`@/assets${item.img}`) + ')' }"
             @click.native="enter(item.id)"
@@ -57,6 +57,7 @@ export default {
       hover: false,
       swiperRef: '',
       items: channelList,
+      itemsMixed: '',
       swiperOption: {
         autoHeight: true,
         effect: 'coverflow',
@@ -82,9 +83,27 @@ export default {
       },
     };
   },
+  created() {
+    this.itemsMixed = this.items.map((o) => ({ ...o }));
+    this.itemsMixed = this.shuffle(this.itemsMixed);
+  },
   methods: {
     enter(id) {
       this.$router.push({ name: 'Artist', query: { groupid: String(id) } });
+    },
+    shuffle(array) {
+      let currentIndex = array.length;
+      let temporaryValue;
+      let randomIndex;
+      const tmp = array;
+      while (currentIndex !== 0) {
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex -= 1;
+        temporaryValue = tmp[currentIndex];
+        tmp[currentIndex] = tmp[randomIndex];
+        tmp[randomIndex] = temporaryValue;
+      }
+      return tmp;
     },
   },
   watch: {
