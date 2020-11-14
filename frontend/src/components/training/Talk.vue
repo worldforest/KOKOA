@@ -2,7 +2,7 @@
   <v-row style="margin-top: 100px;">
     <!-- left side -->
     <v-col class="youtubeContainer" cols="12" lg="8">
-      <div class="d-flex justify-center youtube pa-5">
+      <div class="d-flex justify-center youtube why pa-5">
         <youtube
           @playing="playing"
           @ended="ended"
@@ -10,7 +10,8 @@
           ref="youtube"
           :player-vars="playerVars"
           flex
-          fit-parent
+          width="100%"
+          height="550"
         ></youtube>
         <div
           class="middle"
@@ -381,9 +382,11 @@ font {
 .stickypink {
   color: rgb(233, 103, 131) !important;
 }
+
 .youtube{
   position: relative;
 }
+
 .middle {
   top: 0;
   bottom: 0;
