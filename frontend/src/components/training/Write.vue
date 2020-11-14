@@ -5,7 +5,7 @@
       :value="overlay"
       style="margin-top: 80px;"
       class="overlay">
-      <p style="padding-left: 30%; font-size:30px;">
+      <p style="padding-left: 25%; font-size:30px;">
         1. Click Play Button <br>
         2. Drag word into Answer Box <br>
         3. Hint will help you :) <br>
@@ -110,6 +110,10 @@
             </div>
           </draggable>
         </v-col>
+        <v-btn icon class="question-btn" @click="question">
+          <v-icon class="mr-2" color="rgb(73, 178, 134)"
+          style="font-size:55px;">fa fa-question-circle</v-icon>
+        </v-btn>
       </v-row>
     </v-col>
   </v-row>
@@ -198,9 +202,9 @@ export default {
         },
       },
       answerEng: '',
-      opacity: true,
       overlay: true,
       zIndex: 10,
+      flag: false,
       showhint: false,
     };
   },
@@ -346,19 +350,18 @@ export default {
 
       http.post('/note/insert/', fd).then(() => {});
     },
-    closeExplain() {
-      const EXPLAIN = document.querySelector('.explain');
-      const BOUNDARY = document.querySelector('.boundary');
-      const YOUTUBE = document.querySelector('.youtubeContainer');
-      EXPLAIN.setAttribute('class', 'close');
-      BOUNDARY.classList.remove('boundary');
-      YOUTUBE.classList.remove('blocking');
-      this.opacity = false;
-    },
     closeOverlay() {
       const OVERLAY = document.querySelector('.overlay');
       OVERLAY.style.opacity = 0;
       this.overlay = false;
+      if (this.flag) {
+        this.overlay = !this.overlay;
+        OVERLAY.style.opacity = 1.0;
+        this.flag = false;
+      }
+    },
+    question() {
+      this.flag = true;
     },
   },
 };
@@ -408,7 +411,8 @@ $stickypink: rgb(233, 103, 131);
   z-index:11;
 }
 .overlay{
-  background-color:rgba(0,0,0,0.7);
+  background-color:rgba(0, 0, 0, 0.702);
+}
 .speech-bubble {
   position: relative;
   background: $stickypink;
@@ -456,5 +460,9 @@ $stickypink: rgb(233, 103, 131);
   width:100%;
   bottom:0;
 }
+.question-btn {
+  position: absolute;
+  bottom: 8px;
+  right: 10%;
 }
 </style>
