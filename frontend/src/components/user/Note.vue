@@ -188,7 +188,7 @@ $topval: 440px;
 }
 .sentences {
   cursor: pointer;
-  font-size: 20px;
+  font-size: 30px;
   margin: 10px;
 }
 .bookmarks {

@@ -2,7 +2,7 @@
   <v-row style="margin-top: 100px;">
     <!-- left side -->
     <v-col class="youtubeContainer" cols="12" lg="8">
-      <div class="d-flex justify-center youtube pa-5">
+      <div class="d-flex justify-center youtube why pa-5">
         <youtube
           @playing="playing"
           @ended="ended"
@@ -10,12 +10,13 @@
           ref="youtube"
           :player-vars="playerVars"
           flex
-          fit-parent
+          width="100%"
+          height="550"
         ></youtube>
         <div
           class="middle"
           :style="{
-            backgroundColor: path === '/talk' ? 'black' : 'lightgoldenrodyellow',
+            backgroundColor: path === '/talk' ? '#1C1C1C' : 'lightgoldenrodyellow',
             opacity: screen === false ? 0 : 1.0
           }"
         >
@@ -267,8 +268,14 @@ export default {
       fd.append('engsubtitleid', this.video[this.current].engsubtitleid);
       fd.append('type', 0);
       fd.append('videoid', this.id);
-
       http.post('/note/insert/', fd).then(() => {});
+      this.$swal.fire({
+        icon: 'success',
+        title: '<span style="color:white">Saved</span>',
+        timer: 2000,
+        background: '#1C1C1C',
+        backdrop: 'rgba(0,0,0,0.89)',
+      });
     },
   },
   watch: {
@@ -375,9 +382,11 @@ font {
 .stickypink {
   color: rgb(233, 103, 131) !important;
 }
+
 .youtube{
   position: relative;
 }
+
 .middle {
   top: 0;
   bottom: 0;
