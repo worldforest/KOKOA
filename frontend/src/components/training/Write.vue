@@ -11,10 +11,13 @@
           flex
           fit-parent
         ></youtube>
-        <div class="middle" :style="{
-          backgroundColor: path==='/write' ? 'black' : 'lightgoldenrodyellow',
-          opacity: (screen === false ? 0 : 1.0),
-        }">
+        <div
+          class="middle"
+          :style="{
+            backgroundColor: path === '/write' ? 'black' : 'lightgoldenrodyellow',
+            opacity: screen === false ? 0 : 1.0
+          }"
+        >
           <div class="eng hoverTitle pa-5">Press Replay If you want retry!</div>
         </div>
       </div>
@@ -55,9 +58,9 @@
               Answer
             </h3>
             <v-btn icon color="rgb(73, 178, 134)" @click="reset"
-              ><v-icon class="restart" style="font-size: 2em;">mdi-replay</v-icon></v-btn
-            >
-            <span class="eng" :class="{ note: notemode }" style="font-size: 1em;">RESET</span>
+              ><v-icon class="restart" style="font-size: 2em;">mdi-replay</v-icon>
+              <span class="eng" :class="{ note: notemode }" style="font-size: 1em;">RESET</span>
+            </v-btn>
           </div>
 
           <draggable
@@ -135,8 +138,10 @@ export default {
     }
     const list = this.video[0].kor.replace(/[&/\\#,+()$~%.'":*?!<>{}]/g, '').split(' ');
     for (let i = 0; i < list.length; i += 1) {
-      this.answer.push({ name: list[i], id: i });
-      this.choicelist.push({ name: list[i], id: i });
+      if (list[i].trim().length > 0) {
+        this.answer.push({ name: list[i].trim(), id: i });
+        this.choicelist.push({ name: list[i].trim(), id: i });
+      }
     }
     this.choicelist = this.shuffle(this.choicelist);
     this.checklist = [];
@@ -168,10 +173,12 @@ export default {
         icon: 'error',
         title: 'Oops...',
         text: 'Something is Wrong!!',
-        // timer: 2000,
+        timer: 5000,
         showDenyButton: true,
-        confirmButtonText: 'Retry',
-        denyButtonText: 'Answer and Save',
+        // showCancelButton: true,
+        confirmButtonText: 'Answer',
+        denyButtonText: 'Retry',
+        // cancelButtonText: 'Retry',
       },
       timerInterval: '',
       correctAnswer: {
@@ -205,9 +212,20 @@ export default {
         if (this.answer[i].id !== this.checklist[i].id) {
           tmp = false;
           this.$swal.fire(n.wrongAnswer).then((result) => {
-            if (result.isDenied) {
-              this.$swal.fire('Answer is', n.video[this.current].kor, 'error');
-              this.insertNote();
+            if (result.isConfirmed) {
+              this.$swal
+                .fire({
+                  title: `Answer is \n ${n.video[this.current].kor}`,
+                  icon: 'info',
+                  showDenyButton: true,
+                  denyButtonText: 'Add to Note',
+                })
+                .then((res) => {
+                  if (res.isDenied) {
+                    this.insertNote();
+                    this.$swal.fire('Saved!', '', 'success');
+                  }
+                });
             }
           });
           break;
@@ -228,8 +246,10 @@ export default {
       this.choicelist = [];
       const list = this.video[this.current].kor.split(' ');
       for (let i = 0; i < list.length; i += 1) {
-        this.answer.push({ name: list[i], id: i });
-        this.choicelist.push({ name: list[i], id: i });
+        if (list[i].trim().length > 0) {
+          this.answer.push({ name: list[i].trim(), id: i });
+          this.choicelist.push({ name: list[i].trim(), id: i });
+        }
       }
       this.choicelist = this.shuffle(this.choicelist);
       this.checklist = [];
@@ -327,7 +347,6 @@ export default {
       fd.append('engsubtitleid', this.video[this.current].engsubtitleid);
       fd.append('type', 1);
       fd.append('videoid', this.id);
-
       http.post('/note/insert/', fd).then(() => {});
     },
   },
@@ -393,7 +412,7 @@ $stickypink: rgb(233, 103, 131);
   margin-left: -10px;
   margin-top: -20px;
 }
-.youtube{
+.youtube {
   position: relative;
 }
 .middle {
@@ -414,7 +433,7 @@ $stickypink: rgb(233, 103, 131);
   font-size: 25px;
   position: absolute;
   text-align: center;
-  width:100%;
-  bottom:0;
+  width: 100%;
+  bottom: 0;
 }
 </style>
