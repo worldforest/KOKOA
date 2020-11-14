@@ -171,14 +171,14 @@ export default {
       fail: false,
       wrongAnswer: {
         icon: 'error',
-        title: 'Oops...',
-        text: 'Something is Wrong!!',
+        title: '<span style="color:white">Oops...</span>',
+        html: '<span style="color:white">Something is Wrong!!</span>',
         timer: 5000,
         showDenyButton: true,
-        // showCancelButton: true,
         confirmButtonText: 'Answer',
         denyButtonText: 'Retry',
-        // cancelButtonText: 'Retry',
+        background: '#1C1C1C',
+        backdrop: 'rgba(0,0,0,0.89)',
       },
       timerInterval: '',
       correctAnswer: {

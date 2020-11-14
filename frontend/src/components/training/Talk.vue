@@ -267,8 +267,14 @@ export default {
       fd.append('engsubtitleid', this.video[this.current].engsubtitleid);
       fd.append('type', 0);
       fd.append('videoid', this.id);
-
       http.post('/note/insert/', fd).then(() => {});
+      this.$swal.fire({
+        icon: 'success',
+        title: '<span style="color:white">Saved</span>',
+        timer: 2000,
+        background: '#1C1C1C',
+        backdrop: 'rgba(0,0,0,0.89)',
+      });
     },
   },
   watch: {
