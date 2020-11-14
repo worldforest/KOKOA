@@ -11,7 +11,10 @@
           flex
           fit-parent
         ></youtube>
-        <div class="middle" :style="{ opacity: screen === false ? 0 : 1.0 }">
+        <div class="middle" :style="{
+          backgroundColor: path==='/write' ? 'black' : 'lightgoldenrodyellow',
+          opacity: (screen === false ? 0 : 1.0),
+        }">
           <div class="eng hoverTitle">Press Replay If you want retry!</div>
         </div>
       </div>
@@ -144,6 +147,7 @@ export default {
       screen: false,
       id: this.$route.query.index,
       url: '',
+      path: this.$route.path,
       current: 0,
       video: [],
       playerVars: {
@@ -403,7 +407,7 @@ $stickypink: rgb(233, 103, 131);
 }
 
 .hoverTitle {
-  color: white;
+  color: steelblue;
   font-size: 25px;
   position: relative;
   text-align: center;
