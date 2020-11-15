@@ -93,9 +93,12 @@ export default {
       }
       for (let i = 0; i < res.data.video[0].length; i += 1) {
         for (let j = 0; j < this.tmp.length; j += 1) {
-          if (res.data.group[0][i] === this.tmp[j].groupname) {
+          let str = res.data.group[0][i].replace(/ /g, '_');
+          str = str.replace(/'/g, '');
+          if (str === this.tmp[j].groupname) {
             this.groups.push(this.tmp[j]);
           }
+          str = '';
         }
       }
     });
