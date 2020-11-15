@@ -33,8 +33,8 @@
           >
             IF YOU WANT TO
           </div>
-          <div class="d-flex justify-space-around">
-            <div>
+          <div class="d-flex justify-space-around" >
+            <div v-show="path === '/write'">
               <div>GO BACK</div>
               <v-icon
                 class="stickygreen"
@@ -52,7 +52,7 @@
                 mdi-hand-pointing-down
               </v-icon>
             </div>
-            <div>
+            <div v-show="path === '/write'">
               <div>GO NEXT</div>
               <v-icon
                 class="stickygreen"

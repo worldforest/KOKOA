@@ -33,7 +33,7 @@
             IF YOU WANT TO
           </div>
           <div class="d-flex justify-space-around">
-            <div>
+            <div v-show="path === '/talk'">
               <div>GO BACK</div>
               <v-icon
                 class="stickypink"
@@ -51,7 +51,7 @@
                 mdi-hand-pointing-down
               </v-icon>
             </div>
-            <div>
+            <div v-show="path === '/talk'">
               <div>GO NEXT</div>
               <v-icon
                 class="stickypink"
@@ -61,9 +61,6 @@
               </v-icon>
             </div>
           </div>
-          <!-- <img src="@/assets/block-pink.png"
-          style="top: 0; height: 100%; width: 100%; "
-          class="blocking"> -->
         </div>
       </div>
       <div class="d-flex justify-space-around mt-5">
@@ -125,7 +122,7 @@
           >
             <!-- {{ speechText }} -->
           </h2>
-          <div class="d-flex justify-space-around">
+          <div v-if="path === '/talk'" class="d-flex justify-space-around">
             <v-btn
               class="mb-5 eng stickypink"
               text
