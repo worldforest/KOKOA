@@ -1,5 +1,18 @@
 <template>
-  <v-row style="margin-top:100px;">
+  <v-row style="margin-top:100px; margin-bottom: 100px;" @click="closeOverlay">
+    <v-overlay
+      :z-index="zIndex"
+      :value="overlay"
+      style="margin-top: 80px;"
+      class="overlay">
+      <p class="eng" style="padding-left: 25%; font-size:30px;">
+        1. Click Play Button <br>
+        2. Drag word into Answer Box <br>
+        3. Hint will help you :) <br>
+        4. Click '>' Button If you want the next sentence <br>
+      </p>
+      <img src = "@/assets/tutorialwrite1.gif" class="gif-write">
+    </v-overlay>
     <v-col class="youtubeContainer" cols="12" lg="8">
       <div class="d-flex justify-center youtube pa-5">
         <youtube
@@ -100,6 +113,10 @@
             </div>
           </draggable>
         </v-col>
+        <v-btn icon class="question-btn" @click="question" v-show="!noteoverlay">
+          <v-icon class="mr-2" color="rgb(73, 178, 134)"
+          style="font-size:55px;">fas fa-question</v-icon>
+        </v-btn>
       </v-row>
     </v-col>
   </v-row>
@@ -113,7 +130,7 @@ export default {
   components: {
     draggable,
   },
-  props: ['notemode', 'noteitem'],
+  props: ['notemode', 'noteitem', 'noteoverlay'],
   async created() {
     this.answer = [];
     this.choicelist = [];
@@ -192,6 +209,9 @@ export default {
         },
       },
       answerEng: '',
+      overlay: true,
+      zIndex: 10,
+      flag: false,
       showhint: false,
     };
   },
@@ -349,6 +369,22 @@ export default {
       fd.append('videoid', this.id);
       http.post('/note/insert/', fd).then(() => {});
     },
+    closeOverlay() {
+      const OVERLAY = document.querySelector('.overlay');
+      OVERLAY.style.opacity = 0;
+      this.overlay = false;
+      if (this.flag) {
+        this.overlay = !this.overlay;
+        OVERLAY.style.opacity = 1.0;
+        this.flag = false;
+      }
+    },
+    question() {
+      this.flag = true;
+    },
+  },
+  mounted() {
+    if (this.noteoverlay) this.closeOverlay();
   },
 };
 </script>
@@ -388,6 +424,16 @@ $stickypink: rgb(233, 103, 131);
 }
 .note {
   color: black;
+}
+.gif-write{
+  width:55%;
+  height:55vh;
+  margin:0px auto;
+  display:block;
+  z-index:11;
+}
+.overlay{
+  background-color:rgba(0, 0, 0, 0.702);
 }
 .speech-bubble {
   position: relative;
@@ -435,5 +481,10 @@ $stickypink: rgb(233, 103, 131);
   text-align: center;
   width: 100%;
   bottom: 0;
+}
+.question-btn {
+  position: absolute;
+  bottom: 8px;
+  right: 10%;
 }
 </style>

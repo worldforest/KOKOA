@@ -26,6 +26,7 @@
                 <Talk
                 :notemode="true"
                 :noteitem="item"
+                :noteoverlay="true"
                 style="background: lightgoldenrodyellow; z-index:2" />
               </div>
             </div>
@@ -45,6 +46,7 @@
                 <Write
                 :notemode="true"
                 :noteitem="item"
+                :noteoverlay="true"
                 style="background: lightgoldenrodyellow; z-index:2" />
               </div>
             </div>
