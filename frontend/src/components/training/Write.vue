@@ -1,7 +1,7 @@
 <template>
   <v-row style="margin-top:100px; margin-bottom: 100px;" @click="closeOverlay">
-    <v-overlay :z-index="zIndex" :value="overlay" style="margin-top: 80px;" class="overlay">
-      <p class="eng" style="padding-left: 25%; font-size:30px;">
+    <v-overlay :z-index="zIndex" :value="overlay" class="overlay">
+      <p class="eng" style="padding-left: 25%; font-size: calc(1.5vw + 10px);">
         1. Click Play Button <br />
         2. Drag word into Answer Box <br />
         3. Hint will help you :) <br />
@@ -453,6 +453,7 @@ $stickypink: rgb(233, 103, 131);
 }
 .gif-write {
   width: 55%;
+  min-width: 300px;
   height: auto;
   margin: 0px auto;
   display: block;
