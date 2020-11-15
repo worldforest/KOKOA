@@ -27,23 +27,37 @@
             opacity: screen === false ? 0 : 1.0
           }"
         >
-          <div class="mt-auto mb-0" style="font-size: calc(1vw + 40px);">IF YOU WANT TO</div>
+          <div
+            class="mt-auto mb-0"
+            style="font-size: calc(1vw + 40px); line-height:calc(1vw + 40px);"
+          >
+            IF YOU WANT TO
+          </div>
           <div class="d-flex justify-space-around">
             <div>
               <div>GO BACK</div>
-              <v-icon class="stickygreen" style="font-size: calc(1vw + 20px);">
+              <v-icon
+                class="stickygreen"
+                style="font-size: calc(1vw + 20px); line-height:calc(1vw + 20px);"
+              >
                 mdi-hand-pointing-down
               </v-icon>
             </div>
             <div>
               <div>TRY AGAIN</div>
-              <v-icon class="stickygreen" style="font-size: calc(1vw + 20px);">
+              <v-icon
+                class="stickygreen"
+                style="font-size: calc(1vw + 20px); line-height:calc(1vw + 20px);"
+              >
                 mdi-hand-pointing-down
               </v-icon>
             </div>
             <div>
               <div>GO NEXT</div>
-              <v-icon class="stickygreen" style="font-size: calc(1vw + 20px);">
+              <v-icon
+                class="stickygreen"
+                style="font-size: calc(1vw + 20px); line-height:calc(1vw + 20px);"
+              >
                 mdi-hand-pointing-down
               </v-icon>
             </div>
@@ -502,7 +516,7 @@ $stickypink: rgb(233, 103, 131);
   transition: 0.4s ease;
   position: absolute;
   text-align: center;
-  font-size: calc(1vw + 20px);
+  font-size: calc(1vw + 10px);
 }
 .stickygreen {
   color: $stickygreen !important;
