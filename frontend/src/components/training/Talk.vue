@@ -1,7 +1,7 @@
 <template>
   <v-row style="margin-top: 100px;" @click="closeOverlay">
-    <v-overlay :z-index="zIndex" :value="overlay" style="margin-top: 80px;" class="overlay">
-      <p class="eng" style="padding-left: 25%; font-size:30px;">
+    <v-overlay :z-index="zIndex" :value="overlay" class="overlay">
+      <p class="eng" style="padding-left: 25%; font-size: calc(1.5vw + 10px);">
         1. Click Play and Listen <br />
         2. Click Mic Button and Speak <br />
         3. If you finished, Click mic button again <br />
