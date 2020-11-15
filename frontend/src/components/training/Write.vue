@@ -1,17 +1,13 @@
 <template>
   <v-row style="margin-top:100px; margin-bottom: 100px;" @click="closeOverlay">
-    <v-overlay
-      :z-index="zIndex"
-      :value="overlay"
-      style="margin-top: 80px;"
-      class="overlay">
+    <v-overlay :z-index="zIndex" :value="overlay" style="margin-top: 80px;" class="overlay">
       <p class="eng" style="padding-left: 25%; font-size:30px;">
-        1. Click Play Button <br>
-        2. Drag word into Answer Box <br>
-        3. Hint will help you :) <br>
-        4. Click '>' Button If you want the next sentence <br>
+        1. Click Play Button <br />
+        2. Drag word into Answer Box <br />
+        3. Hint will help you :) <br />
+        4. Click '>' Button If you want the next sentence <br />
       </p>
-      <img src = "@/assets/tutorialwrite1.gif" class="gif-write">
+      <img src="@/assets/tutorialwrite1.gif" class="gif-write" />
     </v-overlay>
     <v-col class="youtubeContainer" cols="12" lg="8">
       <div class="d-flex justify-center youtube pa-5">
@@ -25,13 +21,35 @@
           fit-parent
         ></youtube>
         <div
-          class="middle"
+          class="middle d-flex flex-column justify-space-around eng stickygreen"
           :style="{
             backgroundColor: path === '/write' ? '#1C1C1C' : 'lightgoldenrodyellow',
             opacity: screen === false ? 0 : 1.0
           }"
         >
-          <img src="@/assets/block-green.png" class="blocking">
+          <div class="mt-auto"></div>
+          <div>IF YOU WANT TO</div>
+          <div class="d-flex justify-space-around mt-auto">
+            <div>
+              <div>GO BACK</div>
+              <v-icon class="stickygreen" style="font-size: calc(1vw + 20px);">
+                mdi-hand-pointing-down
+              </v-icon>
+            </div>
+            <div>
+              <div>TRY AGAIN</div>
+              <v-icon class="stickygreen" style="font-size: calc(1vw + 20px);">
+                mdi-hand-pointing-down
+              </v-icon>
+            </div>
+            <div>
+              <div>GO NEXT</div>
+              <v-icon class="stickygreen" style="font-size: calc(1vw + 20px);">
+                mdi-hand-pointing-down
+              </v-icon>
+            </div>
+          </div>
+          <!-- <img src="@/assets/block-green.png" class="blocking"> -->
         </div>
       </div>
       <div class="d-flex justify-space-around mt-5">
@@ -48,10 +66,18 @@
           <v-icon v-show="screen" style="font-size: 45px; margin:0.2em">
             mdi-replay
           </v-icon>
-          <span v-show="!screen" class="eng" :class="{ note: notemode }" style="font-size: 2em;"
+          <span
+            v-show="!screen"
+            class="eng stickygreen"
+            :class="{ note: notemode }"
+            style="font-size: 2em;"
             >PLAY</span
           >
-          <span v-show="screen" class="eng" :class="{ note: notemode }" style="font-size: 2em;"
+          <span
+            v-show="screen"
+            class="eng stickygreen"
+            :class="{ note: notemode }"
+            style="font-size: 2em;"
             >REPLAY</span
           >
         </v-btn>
@@ -114,8 +140,9 @@
           </draggable>
         </v-col>
         <v-btn icon class="question-btn" @click="question" v-show="!noteoverlay">
-          <v-icon class="mr-2" color="rgb(73, 178, 134)"
-          style="font-size:55px;">fas fa-question</v-icon>
+          <v-icon class="mr-2" color="rgb(73, 178, 134)" style="font-size:55px;"
+            >fas fa-question</v-icon
+          >
         </v-btn>
       </v-row>
     </v-col>
@@ -425,15 +452,15 @@ $stickypink: rgb(233, 103, 131);
 .note {
   color: black;
 }
-.gif-write{
-  width:55%;
-  height:55vh;
-  margin:0px auto;
-  display:block;
-  z-index:11;
+.gif-write {
+  width: 55%;
+  height: 55vh;
+  margin: 0px auto;
+  display: block;
+  z-index: 11;
 }
-.overlay{
-  background-color:rgba(0, 0, 0, 0.702);
+.overlay {
+  background-color: rgba(0, 0, 0, 0.702);
 }
 .speech-bubble {
   position: relative;
@@ -469,23 +496,27 @@ $stickypink: rgb(233, 103, 131);
   height: 100%;
   width: 100%;
   opacity: 0;
-  transition: 0.5s ease;
+  transition: 0.4s ease;
   position: absolute;
-  // background-color: rgba(0, 0, 0, 1);
+  text-align: center;
+  font-size: calc(1vw + 20px);
 }
-.blocking{
+.stickygreen {
+  color: $stickygreen !important;
+}
+.blocking {
   top: 0;
   height: 100%;
   width: 100%;
 }
-.hoverTitle {
-  color: steelblue;
-  font-size: 25px;
-  position: absolute;
-  text-align: center;
-  width: 100%;
-  bottom: 0;
-}
+// .hoverTitle {
+//   color: steelblue;
+//   font-size: 25px;
+//   position: absolute;
+//   text-align: center;
+//   width: 100%;
+//   bottom: 0;
+// }
 .question-btn {
   position: absolute;
   bottom: 8px;

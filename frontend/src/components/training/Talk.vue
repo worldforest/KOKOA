@@ -1,21 +1,17 @@
 <template>
   <v-row style="margin-top: 100px;" @click="closeOverlay">
-    <v-overlay
-      :z-index="zIndex"
-      :value="overlay"
-      style="margin-top: 80px;"
-      class="overlay">
+    <v-overlay :z-index="zIndex" :value="overlay" style="margin-top: 80px;" class="overlay">
       <p class="eng" style="padding-left: 25%; font-size:30px;">
-        1. Click Play and Listen <br>
-        2. Click Mic Button and Speak <br>
-        3. If you finished, Click mic button again <br>
-        4. Check your pronunciation <br>
+        1. Click Play and Listen <br />
+        2. Click Mic Button and Speak <br />
+        3. If you finished, Click mic button again <br />
+        4. Check your pronunciation <br />
       </p>
-      <img src = "@/assets/tutorialspeak.gif" class="gif-write">
+      <img src="@/assets/tutorialspeak.gif" class="gif-write" />
     </v-overlay>
     <!-- left side -->
     <v-col class="youtubeContainer" cols="12" lg="8">
-      <div class="d-flex justify-center youtube why pa-5">
+      <div class="d-flex justify-center youtube pa-5">
         <youtube
           @playing="playing"
           @ended="ended"
@@ -27,15 +23,37 @@
           height="550"
         ></youtube>
         <div
-          class="middle"
+          class="middle d-flex flex-column justify-space-around eng stickypink"
           :style="{
             backgroundColor: path === '/talk' ? '#1C1C1C' : 'lightgoldenrodyellow',
             opacity: screen === false ? 0 : 1.0
           }"
         >
-          <img src="@/assets/block-pink.png"
-          style="top: 0; height: 100%; width: 100%;"
-          class="blocking">
+          <div class="mt-auto"></div>
+          <div>IF YOU WANT TO</div>
+          <div class="d-flex justify-space-around mt-auto">
+            <div>
+              <div>GO BACK</div>
+              <v-icon class="stickypink" style="font-size: calc(1vw + 20px);">
+                mdi-hand-pointing-down
+              </v-icon>
+            </div>
+            <div>
+              <div>TRY AGAIN</div>
+              <v-icon class="stickypink" style="font-size: calc(1vw + 20px);">
+                mdi-hand-pointing-down
+              </v-icon>
+            </div>
+            <div>
+              <div>GO NEXT</div>
+              <v-icon class="stickypink" style="font-size: calc(1vw + 20px);">
+                mdi-hand-pointing-down
+              </v-icon>
+            </div>
+          </div>
+          <!-- <img src="@/assets/block-pink.png"
+          style="top: 0; height: 100%; width: 100%; "
+          class="blocking"> -->
         </div>
       </div>
       <div class="d-flex justify-space-around mt-5">
@@ -126,8 +144,9 @@
       </v-row>
     </v-col>
     <v-btn icon class="question-btn" @click="question" v-show="!noteoverlay">
-      <v-icon class="mr-2" color="rgb(233, 103, 131)"
-      style="font-size:55px;">fas fa-question</v-icon>
+      <v-icon class="mr-2" color="rgb(233, 103, 131)" style="font-size:55px;"
+        >fas fa-question</v-icon
+      >
     </v-btn>
   </v-row>
 </template>
@@ -163,14 +182,14 @@ export default {
       this.answerEng = this.video[0].eng.replace(/[&/\\#,+\-()$~%.'":*?!<>{}]/g, ' ');
     }
 
-    const start = this.timer(this.video[0].starttime);
-    const end = this.timer(this.video[0].endtime);
-    this.player.loadVideoById({
-      videoId: this.url,
-      startSeconds: start,
-      endSeconds: end,
-      suggestedQuality: 'default',
-    });
+    // const start = this.timer(this.video[0].starttime);
+    // const end = this.timer(this.video[0].endtime);
+    // this.player.loadVideoById({
+    //   videoId: this.url,
+    //   startSeconds: start,
+    //   endSeconds: end,
+    //   suggestedQuality: 'default',
+    // });
   },
   computed: {
     player() {
@@ -421,7 +440,7 @@ font {
   color: rgb(233, 103, 131) !important;
 }
 
-.youtube{
+.youtube {
   position: relative;
 }
 
@@ -435,30 +454,25 @@ font {
   opacity: 0;
   transition: 0.4s ease;
   position: absolute;
+  text-align: center;
+  font-size: calc(1vw + 20px);
   /* background-color: rgba(0, 0, 0, 1); */
 }
-.blocking{
+.blocking {
   top: 0;
   height: 100%;
   width: 100%;
 }
-.hoverTitle {
-  color: steelblue;
-  font-size: 25px;
-  position: absolute;
-  text-align: center;
-  width:100%;
-  bottom:0;
+
+.gif-write {
+  width: 55%;
+  height: 55vh;
+  margin: 0px auto;
+  display: block;
+  z-index: 11;
 }
-.gif-write{
-  width:55%;
-  height:55vh;
-  margin:0px auto;
-  display:block;
-  z-index:11;
-}
-.overlay{
-  background-color:rgba(0, 0, 0, 0.702);
+.overlay {
+  background-color: rgba(0, 0, 0, 0.702);
 }
 .question-btn {
   position: absolute;
