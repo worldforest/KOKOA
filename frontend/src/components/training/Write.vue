@@ -31,7 +31,7 @@
             opacity: screen === false ? 0 : 1.0
           }"
         >
-          <div class="eng hoverTitle pa-5">Press Replay If you want retry!</div>
+          <img src="@/assets/block-green.png" class="blocking">
         </div>
       </div>
       <div class="d-flex justify-space-around mt-5">
@@ -473,7 +473,11 @@ $stickypink: rgb(233, 103, 131);
   position: absolute;
   // background-color: rgba(0, 0, 0, 1);
 }
-
+.blocking{
+  top: 0;
+  height: 100%;
+  width: 100%;
+}
 .hoverTitle {
   color: steelblue;
   font-size: 25px;

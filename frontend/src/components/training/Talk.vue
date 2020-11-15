@@ -33,7 +33,9 @@
             opacity: screen === false ? 0 : 1.0
           }"
         >
-          <div class="eng hoverTitle pa-5">Press Replay If you want retry!</div>
+          <img src="@/assets/block-pink.png"
+          style="top: 0; height: 100%; width: 100%;"
+          class="blocking">
         </div>
       </div>
       <div class="d-flex justify-space-around mt-5">
@@ -431,11 +433,15 @@ font {
   height: 100%;
   width: 100%;
   opacity: 0;
-  transition: 0.5s ease;
+  transition: 0.4s ease;
   position: absolute;
   /* background-color: rgba(0, 0, 0, 1); */
 }
-
+.blocking{
+  top: 0;
+  height: 100%;
+  width: 100%;
+}
 .hoverTitle {
   color: steelblue;
   font-size: 25px;
