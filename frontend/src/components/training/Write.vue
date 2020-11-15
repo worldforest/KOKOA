@@ -27,9 +27,8 @@
             opacity: screen === false ? 0 : 1.0
           }"
         >
-          <div class="mt-auto"></div>
-          <div>IF YOU WANT TO</div>
-          <div class="d-flex justify-space-around mt-auto">
+          <div class="mt-auto mb-0" style="font-size: calc(1vw + 40px);">IF YOU WANT TO</div>
+          <div class="d-flex justify-space-around">
             <div>
               <div>GO BACK</div>
               <v-icon class="stickygreen" style="font-size: calc(1vw + 20px);">
@@ -454,7 +453,7 @@ $stickypink: rgb(233, 103, 131);
 }
 .gif-write {
   width: 55%;
-  height: 55vh;
+  height: auto;
   margin: 0px auto;
   display: block;
   z-index: 11;

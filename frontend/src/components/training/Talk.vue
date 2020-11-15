@@ -29,9 +29,8 @@
             opacity: screen === false ? 0 : 1.0
           }"
         >
-          <div class="mt-auto"></div>
-          <div>IF YOU WANT TO</div>
-          <div class="d-flex justify-space-around mt-auto">
+          <div class="mt-auto mb-0" style="font-size: calc(1vw + 40px);">IF YOU WANT TO</div>
+          <div class="d-flex justify-space-around">
             <div>
               <div>GO BACK</div>
               <v-icon class="stickypink" style="font-size: calc(1vw + 20px);">
