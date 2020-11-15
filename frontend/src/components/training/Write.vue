@@ -149,6 +149,7 @@
 </template>
 <script>
 import draggable from 'vuedraggable';
+import { mapActions } from 'vuex';
 import http from '../../util/http-common';
 
 export default {
@@ -235,7 +236,7 @@ export default {
         },
       },
       answerEng: '',
-      overlay: true,
+      overlay: this.$store.state.overlayWrite,
       zIndex: 10,
       flag: false,
       showhint: false,
@@ -303,6 +304,7 @@ export default {
     },
   },
   methods: {
+    ...mapActions(['overlayWrite']),
     playing() {
       this.screen = false;
     },
@@ -404,13 +406,14 @@ export default {
         OVERLAY.style.opacity = 1.0;
         this.flag = false;
       }
+      this.$store.dispatch('overlayWrite');
     },
     question() {
       this.flag = true;
     },
   },
   mounted() {
-    if (this.noteoverlay) this.closeOverlay();
+    if (this.noteoverlay || !this.overlay) this.closeOverlay();
   },
 };
 </script>

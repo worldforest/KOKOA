@@ -8,21 +8,37 @@ export default new Vuex.Store({
   state: {
     email: '',
     isLogin: false,
+    overlayWrite: true,
+    overlayTalk: true,
   },
   mutations: {
     setLogOut(state) {
       state.email = null;
       state.isLogin = false;
+      state.overlayWrite = true;
+      state.overlayTalk = true;
       localStorage.removeItem('email');
     },
     setLogIn(state, data) {
       state.isLogin = true;
       state.email = data;
     },
+    setOverlayWrite(state) {
+      state.overlayWrite = false;
+    },
+    setOverlayTalk(state) {
+      state.overlayTalk = false;
+    },
   },
   getters: {
     email(state) {
       return state.email;
+    },
+    overlayTalk(state) {
+      return state.overlayTalk;
+    },
+    overlayWrite(state) {
+      return state.overlayWrite;
     },
   },
   actions: {
@@ -49,6 +65,12 @@ export default new Vuex.Store({
     },
     logout({ commit }) {
       commit('setLogout');
+    },
+    overlayTalk({ commit }) {
+      commit('setOverlayTalk');
+    },
+    overlayWrite({ commit }) {
+      commit('setOverlayWrite');
     },
   },
   modules: {},

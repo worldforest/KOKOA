@@ -150,6 +150,7 @@
   </v-row>
 </template>
 <script>
+import { mapActions } from 'vuex';
 import Record from './Record.vue';
 import http from '../../util/http-common';
 
@@ -219,15 +220,16 @@ export default {
       answerTrim: '',
       romaza: '',
       dict: [],
-      overlay: true,
+      overlay: this.$store.state.overlayTalk,
       zIndex: 10,
       flag: false,
     };
   },
   mounted() {
-    if (this.noteoverlay) this.closeOverlay();
+    if (this.noteoverlay || !this.overlay) this.closeOverlay();
   },
   methods: {
+    ...mapActions(['overlayTalk']),
     playing() {
       this.screen = false;
     },
@@ -280,7 +282,6 @@ export default {
       this.speechText = text.replace(/[&/\\#,+\-()$~%.'":*?!<>{}]/g, ' ');
       const { subtitleid } = this.video[this.current];
       await http.get('/subtitle/dict', { params: { subtitleid } }).then((res) => {
-        console.log(res);
         for (let i = 0; i < res.data.length; i += 1) {
           if (res.data[i].dfn !== 'Cannot find the meaning') {
             this.dict.push(res.data[i]);
@@ -329,6 +330,7 @@ export default {
         OVERLAY.style.opacity = 1.0;
         this.flag = false;
       }
+      this.$store.dispatch('overlayTalk');
     },
     question() {
       this.flag = true;
