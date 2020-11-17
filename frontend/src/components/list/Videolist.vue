@@ -111,7 +111,14 @@ export default {
     ...mapGetters(['email']),
   },
   async created() {
-    this.team = this.teams[this.groupid - 1].title;
+    let cur;
+    for (let i = 0; i < this.teams.length; i += 1) {
+      if (Number(this.teams[i].id) === Number(this.groupid)) {
+        cur = this.teams[i];
+        break;
+      }
+    }
+    this.team = cur.title;
     this.items = [];
     const pages = await this.getTotalPages(this.team);
     await this.getTotal(pages, this.team, this.items);
