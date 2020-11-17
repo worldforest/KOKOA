@@ -124,6 +124,11 @@ export default {
     await this.getData();
     // this.answer = this.video[0].kor.replace(/[&/\\#,+()$~%.'":*?!<>{}]/g, ' ');
   },
+  watch: {
+    currentSpeechPage() {
+      this.getData();
+    },
+  },
   methods: {
     setToTop(index) {
       const elmnt = document.getElementById(`sentence${index}`);
