@@ -1,5 +1,5 @@
 <template>
-  <v-row style="margin-top: 100px;" @click="closeOverlay">
+  <v-row :style="{ marginTop: path === '/talk' ? '100px' : '0px' }" @click="closeOverlay">
     <v-overlay :z-index="zIndex" :value="overlay" class="overlay">
       <p class="eng" style="padding-left: 25%; font-size: calc(1.5vw + 10px);">
         1. Click Play and Listen <br />
@@ -26,7 +26,7 @@
           class="middle d-flex flex-column justify-space-around eng stickypink"
           :style="{
             backgroundColor: path === '/talk' ? '#1C1C1C' : 'lightgoldenrodyellow',
-            opacity: screen === false ? 0 : 1.0
+            opacity: screen === false ? 0 : 0.9
           }"
         >
           <div class="mt-auto" style="font-size: calc(1vw + 40px); line-height:calc(1vw + 40px);">
@@ -99,10 +99,14 @@
         </v-btn>
         <span v-else></span>
       </div>
-      <div class="myTitle d-flex justify-space-around my-5" :class="{ note: notemode }">
+      <div
+        class="myTitle d-flex justify-space-around my-5 mx-5"
+        :class="{ note: notemode }"
+        style="font-size:2em"
+      >
         {{ answer }}
       </div>
-      <div class="myTitle d-flex justify-space-around my-5" :class="{ note: notemode }">
+      <div class="myTitle d-flex justify-space-around my-5 mx-5" :class="{ note: notemode }">
         {{ answerEng }}
       </div>
     </v-col>
@@ -150,6 +154,11 @@
         </v-col>
       </v-row>
     </v-col>
+    <div class = "automode">
+      <v-btn @click="playVideo">retry</v-btn>
+      <v-btn @click="playAdvanced">play</v-btn>
+      <v-btn @click="stopAdvanced">stop</v-btn>
+    </div>
     <v-btn icon class="question-btn" @click="question" v-show="!noteoverlay">
       <v-icon class="mr-2" color="rgb(233, 103, 131)" style="font-size:55px;"
         >fas fa-question</v-icon
@@ -234,10 +243,13 @@ export default {
       flag: false,
       settimer: '',
       starttimer: '',
+      autoMode: false,
+      startFlag: false,
     };
   },
   mounted() {
     if (this.noteoverlay || !this.overlay) this.closeOverlay();
+    this.autoMode = true;
   },
   methods: {
     ...mapActions(['overlayTalk']),
@@ -249,8 +261,7 @@ export default {
     },
     play() {
       const start = this.timer(this.video[this.current].starttime);
-      // const end = this.timer(this.video[this.current].endtime);
-      const end = this.timer(this.video[this.video.length - 1].endtime);
+      const end = this.timer(this.video[this.current].endtime);
 
       this.player.loadVideoById({
         videoId: this.url,
@@ -258,16 +269,9 @@ export default {
         endSeconds: end,
         suggestedQuality: 'default',
       });
-
-      const tt = this.timer(this.video[this.current].endtime)
-      - this.timer(this.video[this.current].starttime);
-      console.log(this.timer(this.video[this.current].endtime));
-      console.log(tt * 1000);
-      this.starttimer = window.setTimeout(() => {
-        this.current += 1;
-      }, tt * 1000);
     },
     playVideo() {
+      this.screen = false;
       this.play();
     },
     timer(input) {
@@ -341,8 +345,6 @@ export default {
         background: '#1C1C1C',
         backdrop: 'rgba(0,0,0,0.89)',
       });
-      window.clearTimeout(this.settimer);
-      this.$refs.youtube.player.pauseVideo();
     },
     closeOverlay() {
       const OVERLAY = document.querySelector('.overlay');
@@ -361,14 +363,44 @@ export default {
     async getCurrentTime() {
       return this.$refs.youtube.player.getCurrentTime();
     },
-    testtt() {
-      console.log(this.current, 3);
+    subAdvanced() {
+      console.log(this.current);
       this.getCurrentTime().then((res) => {
         console.log(res, this.timer(this.video[this.current].endtime));
         this.settimer = window.setTimeout(() => {
           this.current += 1;
         }, this.timer(this.video[this.current].endtime) * 1000 - res * 1000);
       });
+    },
+    playAdvanced() {
+      // const start = this.timer(this.video[this.current].starttime);
+      const ref = this;
+      let start = 0.001;
+      const end = this.timer(this.video[this.video.length - 1].endtime);
+
+      this.getCurrentTime().then((res) => {
+        if (res === undefined) start = 0.001;
+        else start = res;
+        console.log(start, this.timer(this.video[this.current].endtime));
+        ref.player.playVideo();
+        this.settimer = window.setTimeout(() => {
+          this.current += 1;
+        }, this.timer(this.video[this.current].endtime) * 1000 - start * 1000);
+      });
+
+      console.log(start);
+      console.log(end);
+      this.startFlag = true;
+    },
+    stopAdvanced() {
+      window.clearTimeout(this.settimer);
+      this.$refs.youtube.player.pauseVideo();
+    },
+    playMode() {
+      if (this.autoMode) {
+        if (this.startFlag) this.subAdvanced();
+        else this.playAdvanced();
+      } else this.playVideo();
     },
   },
   watch: {
@@ -377,12 +409,14 @@ export default {
       this.dict = '';
       this.answer = this.video[this.current].kor.replace(/[&/\\#,+\-()$~%.'":*?!<>{}]/g, ' ');
       this.answerEng = this.video[this.current].eng.replace(/[&/\\#,+\-()$~%.'":*?!<>{}]/g, ' ');
-      // this.play();
-      this.testtt();
+      this.screen = false;
+      this.playMode();
     },
     speechText() {
-      const answerTrimTrim = this.answerTrim.replaceAll(' ', '');
-      const speechTextTrim = this.speechText.replaceAll(' ', '');
+      // const answerTrimTrim = this.answerTrim.replaceAll(' ', '');
+      // const speechTextTrim = this.speechText.replaceAll(' ', '');
+      const answerTrimTrim = this.answerTrim.trim();
+      const speechTextTrim = this.speechText;
       const pos = document.getElementById('result');
       pos.innerHTML = '';
       let text;
@@ -393,14 +427,18 @@ export default {
         if (speechTextTrim.length > i) {
           if (speechTextTrim.charAt(i) === answerTrimTrim.charAt(i)) {
             text = document.createTextNode(speechTextTrim.charAt(i));
-            container.style.color = 'blue';
+            if (this.notemode) {
+              container.style.color = 'black';
+            } else {
+              container.style.color = 'white';
+            }
           } else {
             text = document.createTextNode(speechTextTrim.charAt(i));
-            container.style.color = 'red';
+            container.style.color = 'rgb(255, 127, 0)';
           }
         } else {
           text = document.createTextNode(speechTextTrim.charAt(i));
-          container.style.color = 'red';
+          container.style.color = 'rgb(255, 127, 0)';
           container.appendChild(text);
           pos.appendChild(container);
           break;
@@ -412,7 +450,7 @@ export default {
       for (i = 0; i < left.length; i += 1) {
         container = document.createElement('font');
         text = document.createTextNode(left.charAt(i));
-        container.style.color = 'red';
+        container.style.color = 'rgb(255, 127, 0)';
         container.appendChild(text);
         pos.appendChild(container);
       }

@@ -1,5 +1,5 @@
 <template>
-  <v-row style="margin-top:100px; margin-bottom: 100px;" @click="closeOverlay">
+  <v-row :style="{marginTop: path === '/write' ? '100px' : '0px'}" @click="closeOverlay">
     <v-overlay :z-index="zIndex" :value="overlay" class="overlay">
       <p class="eng" style="padding-left: 25%; font-size: calc(1.5vw + 10px);">
         1. Click Play Button <br />
