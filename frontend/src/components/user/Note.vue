@@ -146,7 +146,7 @@ export default {
       if (this.type === 'Speaking') {
         type = 0;
       }
-      await http.get('/note/delete/', { params: { email: this.email, noteid, type } }).then((res) => {
+      await http.delete('/note/delete/', { params: { email: this.email, noteid, type } }).then((res) => {
         console.log(res);
       });
       await this.getData();
