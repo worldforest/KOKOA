@@ -43,12 +43,12 @@ public class SearchService {
     }
 
     public Page<speechnote> getSpeechNote(int page, int memberid){
-        Pageable pageable = PageRequest.of(page,15);
+        Pageable pageable = PageRequest.of(page,10);
         return speechNoteRepo.findAllByUserid(pageable, memberid);
     }
 
     public Page<writenote> getWriteNote(int page, int memberid){
-        Pageable pageable = PageRequest.of(page,15);
+        Pageable pageable = PageRequest.of(page,10);
         return writeNoteRepo.findAllByUserid(pageable, memberid);
     }
 }
