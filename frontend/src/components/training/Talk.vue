@@ -357,8 +357,10 @@ export default {
       this.play();
     },
     speechText() {
-      const answerTrimTrim = this.answerTrim.replaceAll(' ', '');
-      const speechTextTrim = this.speechText.replaceAll(' ', '');
+      // const answerTrimTrim = this.answerTrim.replaceAll(' ', '');
+      // const speechTextTrim = this.speechText.replaceAll(' ', '');
+      const answerTrimTrim = this.answerTrim.trim();
+      const speechTextTrim = this.speechText;
       const pos = document.getElementById('result');
       pos.innerHTML = '';
       let text;
