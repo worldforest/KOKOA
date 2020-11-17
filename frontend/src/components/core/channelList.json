@@ -1,23 +1,5 @@
 [
   {
-    "id": 1,
-    "title": "2PM",
-    "groupname": "2PM",
-    "img": "/img/2PM/2PM.jpg"
-  },
-  {
-    "id": 2,
-    "title": "APINK",
-    "groupname": "APINK",
-    "img": "/img/APINK/APINK.jpg"
-  },
-  {
-    "id": 3,
-    "title": "APRIL",
-    "groupname": "APRIL",
-    "img": "/img/APRIL/APRIL.jpg"
-  },
-  {
     "id": 4,
     "title": "BLACKPINK",
     "groupname": "BLACKPINK",
@@ -36,6 +18,30 @@
     "img": "/img/EXO/EXO.jpg"
   },
   {
+    "id": 3,
+    "title": "APRIL",
+    "groupname": "APRIL",
+    "img": "/img/APRIL/APRIL.jpg"
+  },
+  {
+    "id": 9,
+    "title": "IU",
+    "groupname": "IU",
+    "img": "/img/IU/IU.jpg"
+  },
+  {
+    "id": 1,
+    "title": "2PM",
+    "groupname": "2PM",
+    "img": "/img/2PM/2PM.jpg"
+  },
+  {
+    "id": 2,
+    "title": "APINK",
+    "groupname": "APINK",
+    "img": "/img/APINK/APINK.jpg"
+  },
+  {
     "id": 7,
     "title": "GIRL'S GENERATION",
     "groupname": "GIRLS_GENERATION",
@@ -46,12 +52,6 @@
     "title": "GIRLFRIEND",
     "groupname": "GIRLFRIEND",
     "img": "/img/GIRLFRIEND/GIRLFRIEND.jpg"
-  },
-  {
-    "id": 9,
-    "title": "IU",
-    "groupname": "IU",
-    "img": "/img/IU/IU.jpg"
   },
   {
     "id": 10,

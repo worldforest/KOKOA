@@ -46,13 +46,21 @@ export default {
     };
   },
   created() {
-    this.team = this.teams[this.groupid - 1].groupname;
-    this.title = this.teams[this.groupid - 1].title;
+    let cur;
+    for (let i = 0; i < this.teams.length; i += 1) {
+      if (Number(this.teams[i].id) === Number(this.groupid)) {
+        cur = this.teams[i];
+        break;
+      }
+    }
+    this.team = cur.groupname;
+    this.title = cur.title;
+    console.log(this.team);
     this.filters = this.team;
     this.members = [];
     this.members.push({ name: this.title });
     for (let i = 0; i < this.stars.length; i += 1) {
-      if (String(this.stars[i].groupid) === this.groupid) {
+      if (String(this.stars[i].groupid) === String(cur.id)) {
         this.members.push(this.stars[i]);
       }
     }

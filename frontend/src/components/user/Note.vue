@@ -114,9 +114,9 @@ export default {
     writenote: [],
     expanded: -1,
     type: 'Speaking',
-    speechTotalPage: 20,
+    speechTotalPage: 1,
     currentSpeechPage: 1,
-    writeTotalPage: 20,
+    writeTotalPage: 1,
     currentWritePage: 1,
   }),
   async created() {
