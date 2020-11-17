@@ -67,18 +67,18 @@
               class="py-1"
               style="background: transparent;"
             >
-            <div class="check d-flex">
+              <div class="check d-flex">
                 <v-btn @click="remove(item.id)" fab small depressed>
                   <v-icon>mdi-close-circle-outline</v-icon>
                 </v-btn>
-              <div
-                class="kor sentences"
-                @click="expanded === index ? (expanded = -1) : setToTop(index)"
-                :id="'sentence' + index"
-              >
-                ({{ index + 1 }}) {{ item.content }}
+                <div
+                  class="kor sentences"
+                  @click="expanded === index ? (expanded = -1) : setToTop(index)"
+                  :id="'sentence' + index"
+                >
+                  ({{ index + 1 }}) {{ item.content }}
+                </div>
               </div>
-            </div>
               <div v-if="expanded === index">
                 <Write
                   :notemode="true"
@@ -124,6 +124,16 @@ export default {
     writeTotalPage: 1,
     currentWritePage: 1,
     hover: false,
+    removeTry: {
+      icon: 'error',
+      title: '<span style="color:white">Oops...</span>',
+      html: '<span style="color:white">Do you want to remove?</span>',
+      showDenyButton: true,
+      confirmButtonText: 'YES',
+      denyButtonText: 'NO',
+      background: '#1C1C1C',
+      backdrop: 'rgba(0,0,0,0.89)',
+    },
   }),
   async created() {
     this.email = this.$store.state.email;
@@ -146,10 +156,12 @@ export default {
       if (this.type === 'Speaking') {
         type = 0;
       }
-      await http.delete('/note/delete/', { params: { email: this.email, noteid, type } }).then((res) => {
-        console.log(res);
-      });
-      await this.getData();
+      const tmp = await this.$swal.fire(this.removeTry);
+      if (tmp.isConfirmed) {
+        await http.delete('/note/delete/', { params: { email: this.email, noteid, type } }).then(() => {
+        });
+        await this.getData();
+      }
     },
     async getData() {
       this.speechnote = [];
