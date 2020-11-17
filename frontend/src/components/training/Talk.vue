@@ -30,7 +30,7 @@
           }"
         >
           <div class="mt-auto" style="font-size: calc(1vw + 40px); line-height:calc(1vw + 40px);">
-            IF YOU WANT TO
+            <!-- IF YOU WANT TO -->
           </div>
           <div class="d-flex justify-space-around">
             <div v-show="path === '/talk'">
@@ -43,13 +43,13 @@
               </v-icon>
             </div>
             <div>
-              <div>TRY AGAIN</div>
+              <!-- <div>TRY AGAIN</div>
               <v-icon
                 class="stickypink"
                 style="font-size: calc(1vw + 20px); line-height:calc(1vw + 20px);"
               >
                 mdi-hand-pointing-down
-              </v-icon>
+              </v-icon> -->
             </div>
             <div v-show="path === '/talk'">
               <div>GO NEXT</div>
@@ -65,15 +65,18 @@
       </div>
       <div class="d-flex justify-space-around mt-5">
         <v-btn v-if="this.current !== 0" @click="previous" icon>
-          <v-icon color="white" style="font-size: 40px;">
-            mdi-chevron-left
+          <v-icon color="white" style="font-size: 35px;">
+            fas fa-backward
           </v-icon>
         </v-btn>
         <span v-else></span>
         <v-btn @click="playVideo" class="stickypink" icon>
-          <v-icon v-show="!screen" style="font-size: 45px; margin:0.2em">
+          <!-- <v-icon v-show="!screen" style="font-size: 45px; margin:0.2em">
             mdi-play
-          </v-icon>
+          </v-icon> -->
+           <img v-show="!screen"  src="@/assets/play-pink.gif"
+          style="width:70px;margin:0.2em;">
+
           <v-icon v-show="screen" style="font-size: 45px; margin:0.2em">
             mdi-replay
           </v-icon>
@@ -93,8 +96,8 @@
           >
         </v-btn>
         <v-btn v-if="this.current !== this.video.length - 1" @click="next" icon>
-          <v-icon color="white" style="font-size: 40px;">
-            mdi-chevron-right
+          <v-icon color="white" style="font-size: 35px;">
+            fas fa-forward
           </v-icon>
         </v-btn>
         <span v-else></span>

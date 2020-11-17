@@ -19,7 +19,7 @@
     <div class="paper">
       <h3 class="eng notecolor ml-15 mt-4">Review your sentences. - {{ this.type }} Note</h3>
       <div class="lines">
-        <div class="text">
+        <div class="text box">
           <br />
           <!-- 문장 목록 -->
           <div v-if="type === 'Speaking'">
@@ -42,6 +42,7 @@
                   :noteitem="item"
                   :noteoverlay="true"
                   style="background: lightgoldenrodyellow; z-index:2"
+
                 />
               </div>
             </v-list>
@@ -278,5 +279,12 @@ $topval: 440px;
   background-color: transparent !important;
   color: black !important;
   box-shadow: none !important;
+}
+.box {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+}
+.box::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera*/
 }
 </style>
