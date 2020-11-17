@@ -245,6 +245,7 @@ export default {
       starttimer: '',
       autoMode: false,
       startFlag: false,
+      retryFlag: false,
     };
   },
   mounted() {
@@ -269,6 +270,8 @@ export default {
         endSeconds: end,
         suggestedQuality: 'default',
       });
+      this.retryFlag = true;
+      window.clearTimeout(this.settimer);
     },
     playVideo() {
       this.screen = false;
@@ -286,11 +289,17 @@ export default {
     },
     previous() {
       if (this.current > 0) {
+        if (this.autoMode) {
+          this.retryFlag = true;
+        }
         this.current -= 1;
       }
     },
     next() {
       if (this.current < this.video.length - 1) {
+        if (this.autoMode) {
+          this.retryFlag = true;
+        }
         this.current += 1;
       }
     },
@@ -364,37 +373,48 @@ export default {
       return this.$refs.youtube.player.getCurrentTime();
     },
     subAdvanced() {
-      console.log(this.current);
       this.getCurrentTime().then((res) => {
-        console.log(res, this.timer(this.video[this.current].endtime));
         this.settimer = window.setTimeout(() => {
           this.current += 1;
         }, this.timer(this.video[this.current].endtime) * 1000 - res * 1000);
       });
     },
     playAdvanced() {
-      // const start = this.timer(this.video[this.current].starttime);
-      const ref = this;
       let start = 0.001;
-      const end = this.timer(this.video[this.video.length - 1].endtime);
-
-      this.getCurrentTime().then((res) => {
-        if (res === undefined) start = 0.001;
-        else start = res;
-        console.log(start, this.timer(this.video[this.current].endtime));
-        ref.player.playVideo();
+      if (this.retryFlag) {
+        this.resumeAdvanced(this.retryFlag);
+        this.retryFlag = false;
         this.settimer = window.setTimeout(() => {
           this.current += 1;
-        }, this.timer(this.video[this.current].endtime) * 1000 - start * 1000);
-      });
-
-      console.log(start);
-      console.log(end);
+        }, this.timer(this.video[this.current].endtime) * 1000
+          - this.timer(this.video[this.current].starttime) * 1000);
+      } else {
+        this.getCurrentTime().then((res) => {
+          start = res;
+          this.resumeAdvanced(this.retryFlag);
+          this.retryFlag = false;
+          this.settimer = window.setTimeout(() => {
+            this.current += 1;
+          }, this.timer(this.video[this.current].endtime) * 1000 - start * 1000);
+        });
+      }
       this.startFlag = true;
     },
     stopAdvanced() {
       window.clearTimeout(this.settimer);
       this.$refs.youtube.player.pauseVideo();
+    },
+    resumeAdvanced(retryFlag) {
+      if (retryFlag) {
+        this.player.loadVideoById({
+          videoId: this.url,
+          startSeconds: this.timer(this.video[this.current].starttime),
+          endSeconds: this.timer(this.video[this.video.length - 1].endtime),
+          suggestedQuality: 'default',
+        });
+      } else {
+        this.$refs.youtube.player.playVideo();
+      }
     },
     playMode() {
       if (this.autoMode) {
