@@ -369,7 +369,11 @@ export default {
         if (speechTextTrim.length > i) {
           if (speechTextTrim.charAt(i) === answerTrimTrim.charAt(i)) {
             text = document.createTextNode(speechTextTrim.charAt(i));
-            container.style.color = 'white';
+            if (this.notemode) {
+              container.style.color = 'black';
+            } else {
+              container.style.color = 'white';
+            }
           } else {
             text = document.createTextNode(speechTextTrim.charAt(i));
             container.style.color = 'rgb(255, 127, 0)';
