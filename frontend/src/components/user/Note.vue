@@ -88,7 +88,12 @@
                 />
               </div>
             </v-list>
-            <v-pagination v-model="currentWritePage" :length="writeTotalPage" :total-visible="7">
+            <v-pagination
+              color="none"
+              v-model="currentWritePage"
+              :length="writeTotalPage"
+              :total-visible="7"
+            >
             </v-pagination>
           </div>
         </div>
@@ -158,8 +163,9 @@ export default {
       }
       const tmp = await this.$swal.fire(this.removeTry);
       if (tmp.isConfirmed) {
-        await http.delete('/note/delete/', { params: { email: this.email, noteid, type } }).then(() => {
-        });
+        await http
+          .delete('/note/delete/', { params: { email: this.email, noteid, type } })
+          .then(() => {});
         await this.getData();
       }
     },
@@ -309,8 +315,12 @@ $topval: 440px;
   font-family: "Merriweather", serif;
   font-size: 30px !important;
 }
+.v-pagination__item--active .primary {
+  background-color: transparent !important;
+}
 .v-pagination__item--active {
   color: rgb(255, 127, 0) !important;
+  background-color: transparent !important;
 }
 button:focus {
   outline: 0;
