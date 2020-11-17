@@ -1,20 +1,34 @@
 <template>
   <div class="container">
-    <div class="eng bookmarks bookmark-top" style="color: black;"
-    @click="type = 'Speaking';"
-      :class="{ expandbmk: type === 'Speaking', basic: type !== 'Speaking' }">Speaking</div>
-    <div class="eng bookmarks bookmark-bottom" style="color: black;"
-     @click="type = 'Writing';
-      "
-      :class="{ expandbmk: type === 'Writing', basic: type !== 'Writing' }">Writing</div>
+    <div
+      class="eng bookmarks bookmark-top"
+      style="color: black;"
+      @click="type = 'Speaking'"
+      :class="{ expandbmk: type === 'Speaking', basic: type !== 'Speaking' }"
+    >
+      Speaking
+    </div>
+    <div
+      class="eng bookmarks bookmark-bottom"
+      style="color: black;"
+      @click="type = 'Writing'"
+      :class="{ expandbmk: type === 'Writing', basic: type !== 'Writing' }"
+    >
+      Writing
+    </div>
     <div class="paper">
-      <h3 class="eng notecolor ml-15 mt-4">Review your sentences. - {{this.type}} Note</h3>
+      <h3 class="eng notecolor ml-15 mt-4">Review your sentences. - {{ this.type }} Note</h3>
       <div class="lines">
         <div class="text">
           <br />
           <!-- 문장 목록 -->
           <div v-if="type === 'Speaking'">
-            <div v-for="(item, index) in speechnote" :key="index" style="">
+            <v-list
+              v-for="(item, index) in speechnote"
+              :key="index"
+              class="py-1"
+              style="background: transparent;"
+            >
               <div
                 class="kor sentences"
                 @click="expanded === index ? (expanded = -'Writing') : setToTop(index)"
@@ -24,17 +38,30 @@
               </div>
               <div v-if="expanded === index">
                 <Talk
-                :notemode="true"
-                :noteitem="item"
-                :noteoverlay="true"
-                style="background: lightgoldenrodyellow; z-index:2" />
+                  :notemode="true"
+                  :noteitem="item"
+                  :noteoverlay="true"
+                  style="background: lightgoldenrodyellow; z-index:2"
+                />
               </div>
-            </div>
+            </v-list>
+            <v-pagination
+              color="orange"
+              v-model="currentSpeechPage"
+              :length="speechTotalPage"
+              :total-visible="7"
+            >
+            </v-pagination>
           </div>
           <!-- writing 문장 목록 -->
           <div v-else>
             <!-- <h3 class="eng notecolor">[Writing]</h3> -->
-            <div v-for="(item, index) in writenote" :key="index" style="">
+            <v-list
+              v-for="(item, index) in writenote"
+              :key="index"
+              class="py-1"
+              style="background: transparent;"
+            >
               <div
                 class="kor sentences"
                 @click="expanded === index ? (expanded = -1) : setToTop(index)"
@@ -44,12 +71,20 @@
               </div>
               <div v-if="expanded === index">
                 <Write
-                :notemode="true"
-                :noteitem="item"
-                :noteoverlay="true"
-                style="background: lightgoldenrodyellow; z-index:2" />
+                  :notemode="true"
+                  :noteitem="item"
+                  :noteoverlay="true"
+                  style="background: lightgoldenrodyellow; z-index:2"
+                />
               </div>
-            </div>
+            </v-list>
+            <v-pagination
+              color="orange"
+              v-model="currentWritePage"
+              :length="writeTotalPage"
+              :total-visible="7"
+            >
+            </v-pagination>
           </div>
         </div>
       </div>
@@ -79,6 +114,10 @@ export default {
     writenote: [],
     expanded: -1,
     type: 'Speaking',
+    speechTotalPage: 20,
+    currentSpeechPage: 1,
+    writeTotalPage: 20,
+    currentWritePage: 1,
   }),
   async created() {
     this.email = this.$store.state.email;
@@ -94,33 +133,37 @@ export default {
     async getData() {
       this.speechnote = [];
       this.writenote = [];
-      await http.get('/note/load/', { params: { email: this.email, page: 0 } }).then((res) => {
-        for (let i = 0; i < res.data.speechnote[0].content.length; i += 1) {
-          this.speechnote.push({
-            id: res.data.speechnote[0].content[i].id,
-            subtitleid: res.data.speechnote[0].content[i].subtitleid,
-            engsubtitleid: res.data.speechnote[0].content[i].engsubtitleid,
-            videoid: res.data.speechnote[0].content[i].videoid,
-            content: res.data.speechnote_sub[0][2 * i].content,
-            engcontent: res.data.speechnote_sub[0][2 * i + 1].content,
-            starttime: res.data.speechnote_sub[0][2 * i].starttime,
-            endtime: res.data.speechnote_sub[0][2 * i].endtime,
-          });
-        }
+      await http
+        .get('/note/load/', { params: { email: this.email, page: this.currentSpeechPage - 1 } })
+        .then((res) => {
+          this.speechTotalPage = res.data.speechnote[0].totalPages;
+          for (let i = 0; i < res.data.speechnote[0].content.length; i += 1) {
+            this.speechnote.push({
+              id: res.data.speechnote[0].content[i].id,
+              subtitleid: res.data.speechnote[0].content[i].subtitleid,
+              engsubtitleid: res.data.speechnote[0].content[i].engsubtitleid,
+              videoid: res.data.speechnote[0].content[i].videoid,
+              content: res.data.speechnote_sub[0][2 * i].content,
+              engcontent: res.data.speechnote_sub[0][2 * i + 1].content,
+              starttime: res.data.speechnote_sub[0][2 * i].starttime,
+              endtime: res.data.speechnote_sub[0][2 * i].endtime,
+            });
+          }
 
-        for (let i = 0; i < res.data.writenote[0].content.length; i += 1) {
-          this.writenote.push({
-            id: res.data.writenote[0].content[i].id,
-            subtitleid: res.data.writenote[0].content[i].subtitleid,
-            engsubtitleid: res.data.writenote[0].content[i].engsubtitleid,
-            videoid: res.data.writenote[0].content[i].videoid,
-            content: res.data.writenote_sub[0][2 * i].content,
-            engcontent: res.data.writenote_sub[0][2 * i + 1].content,
-            starttime: res.data.writenote_sub[0][2 * i].starttime,
-            endtime: res.data.writenote_sub[0][2 * i].endtime,
-          });
-        }
-      });
+          for (let i = 0; i < res.data.writenote[0].content.length; i += 1) {
+            this.writeTotalPage = res.data.writenote[0].totalPages;
+            this.writenote.push({
+              id: res.data.writenote[0].content[i].id,
+              subtitleid: res.data.writenote[0].content[i].subtitleid,
+              engsubtitleid: res.data.writenote[0].content[i].engsubtitleid,
+              videoid: res.data.writenote[0].content[i].videoid,
+              content: res.data.writenote_sub[0][2 * i].content,
+              engcontent: res.data.writenote_sub[0][2 * i + 1].content,
+              starttime: res.data.writenote_sub[0][2 * i].starttime,
+              endtime: res.data.writenote_sub[0][2 * i].endtime,
+            });
+          }
+        });
     },
   },
 };
@@ -215,7 +258,7 @@ $topval: 440px;
   width: 7vw;
   left: 1%;
   font-size: 1.75vw;
-  padding-left: .7vw;
+  padding-left: 0.7vw;
 }
 .basic {
   width: 3vw;
@@ -225,5 +268,10 @@ $topval: 440px;
 }
 .notecolor {
   color: black;
+}
+.v-pagination * {
+  background-color: transparent !important;
+  color: black !important;
+  box-shadow: none !important;
 }
 </style>

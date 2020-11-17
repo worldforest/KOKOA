@@ -88,11 +88,9 @@ export default {
         }
         transcript = '';
       }
-
       // this.finalTranscript = capitalize(this.finalTranscript);
       // final_span.innerHTML = linebreak(finalTranscript);
       // interim_span.innerHTML = linebreak(interimTranscript);
-
       // console.log('finalTranscript', this.finalTranscript);
       // console.log('interimTranscript', this.interimTranscript);
       // fireCommand(interimTranscript);
@@ -103,11 +101,9 @@ export default {
      */
     recognition.onerror = function (event) {
       // console.log('onerror', event);
-
       if (event.error.match(/no-speech|audio-capture|not-allowed/)) {
         this.ignoreEndProcess = true;
       }
-
       // $btnMic.className = 'off';
     };
   },
