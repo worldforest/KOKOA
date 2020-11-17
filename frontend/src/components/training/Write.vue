@@ -387,8 +387,10 @@ export default {
         .replace(/[&/\\#,+()$~%.'":*?!<>{}]/g, '')
         .split(' ');
       for (let i = 0; i < list.length; i += 1) {
-        this.answer.push({ name: list[i], id: i });
-        this.choicelist.push({ name: list[i], id: i });
+        if (list[i].trim().length > 0) {
+          this.answer.push({ name: list[i].trim(), id: i });
+          this.choicelist.push({ name: list[i].trim(), id: i });
+        }
       }
       this.choicelist = this.shuffle(this.choicelist);
       this.checklist = [];
