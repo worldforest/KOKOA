@@ -70,12 +70,11 @@
           </v-icon>
         </v-btn>
         <span v-else></span>
-        <v-btn @click="playVideo" class="stickypink" icon>
+        <v-btn v-if="!pause" @click="playVideo" class="stickypink" icon>
           <!-- <v-icon v-show="!screen" style="font-size: 45px; margin:0.2em">
             mdi-play
           </v-icon> -->
-           <img v-show="!screen"  src="@/assets/play-pink.gif"
-          style="width:70px;margin:0.2em;">
+          <img v-show="!screen" src="@/assets/play-pink.gif" style="width:70px;margin:0.2em;" />
 
           <v-icon v-show="screen" style="font-size: 45px; margin:0.2em">
             mdi-replay
@@ -94,6 +93,9 @@
             style="font-size: 2em;"
             >REPLAY</span
           >
+        </v-btn>
+        <v-btn v-else icon @click="pauseVideo">
+          <v-icon class="stickypink" style="font-size:45px;">far fa-stop-circle</v-icon>
         </v-btn>
         <v-btn v-if="this.current !== this.video.length - 1" @click="next" icon>
           <v-icon color="white" style="font-size: 35px;">
@@ -156,12 +158,12 @@
           </div>
         </v-col>
       </v-row>
+      <v-col cols="12">
+        <v-btn icon class="question-btn" @click="question" v-show="!noteoverlay">
+          <h5 class="eng" style="color:rgb(255, 127, 0)">HELP</h5>
+        </v-btn>
+      </v-col>
     </v-col>
-    <v-btn icon class="question-btn" @click="question" v-show="!noteoverlay">
-      <v-icon class="mr-2" color="rgb(233, 103, 131)" style="font-size:55px;"
-        >fas fa-question</v-icon
-      >
-    </v-btn>
   </v-row>
 </template>
 <script>
@@ -213,6 +215,7 @@ export default {
   },
   data() {
     return {
+      pause: false,
       path: this.$route.path,
       screen: false,
       id: this.$route.query.index,
@@ -247,9 +250,11 @@ export default {
     ...mapActions(['overlayTalk']),
     playing() {
       this.screen = false;
+      this.pause = true;
     },
     ended() {
       this.screen = true;
+      this.pause = false;
       this.playCheck();
     },
     play() {
@@ -269,7 +274,9 @@ export default {
         startSeconds: end,
         suggestedQuality: 'default',
       });
-      setTimeout(() => { this.player.pauseVideo(); }, 500);
+      setTimeout(() => {
+        this.player.pauseVideo();
+      }, 500);
     },
     playVideo() {
       this.screen = false;
@@ -360,6 +367,11 @@ export default {
     },
     question() {
       this.flag = true;
+    },
+    pauseVideo() {
+      this.player.pauseVideo();
+      this.pause = false;
+      this.screen = true;
     },
   },
   watch: {

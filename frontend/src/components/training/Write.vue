@@ -27,21 +27,15 @@
             opacity: screen === false ? 0 : 0.9
           }"
         >
-
-         <div
-            class="mt-auto"
-            style="font-size: calc(1vw + 40px);color:lightgoldenrodyellow"
-          >
-           | How to Use |
+          <div class="mt-auto" style="font-size: calc(1vw + 40px);color:lightgoldenrodyellow">
+            | How to Use |
           </div>
 
-          <div
-            class="ma-auto mt-15"
-          >
+          <div class="ma-auto mt-15">
             <!-- <img src="@/assets/dragtuto-slow.gif" style="width:67%">
              -->
-            <img v-if="path === '/write'" src="@/assets/dragtuto4.gif" style="width:90%">
-            <img v-else src="@/assets/dragtuto3.gif" style="width:67%">
+            <img v-if="path === '/write'" src="@/assets/dragtuto4.gif" style="width:90%" />
+            <img v-else src="@/assets/dragtuto3.gif" style="width:67%" />
 
             <!-- IF YOU WANT TO -->
           </div>
@@ -88,8 +82,7 @@
           <!-- <v-icon v-show="!screen" style="font-size: 45px; margin:0.2em">
             mdi-play
           </v-icon> -->
-          <img v-show="!screen"  src="@/assets/play-green.gif"
-          style="width:70px;margin:0.2em;">
+          <img v-show="!screen" src="@/assets/play-green.gif" style="width:70px;margin:0.2em;" />
 
           <v-icon v-show="screen" style="font-size: 45px; margin:0.2em">
             mdi-replay
@@ -109,7 +102,6 @@
             >REPLAY</span
           >
         </v-btn>
-           <!-- pause icon 추가 -->
         <v-btn v-else icon @click="pauseVideo">
           <v-icon class="stickygreen" style="font-size:45px;">far fa-stop-circle</v-icon>
         </v-btn>
@@ -146,7 +138,7 @@
           </draggable>
         </v-col>
         <div>
-          <img src="@/assets/arrow-ani.gif" class="arrow" style="transform:rotate(-22deg);"/>
+          <img src="@/assets/arrow-ani.gif" class="arrow" style="transform:rotate(-22deg);" />
         </div>
 
         <v-col cols="12">
@@ -354,8 +346,6 @@ export default {
       this.playCheck();
     },
     play() {
-      // this.screen = false;
-      // this.pause = true;
       const start = this.timer(this.video[this.current].starttime);
       const end = this.timer(this.video[this.current].endtime);
       this.player.loadVideoById({
@@ -364,11 +354,6 @@ export default {
         endSeconds: end,
         suggestedQuality: 'default',
       });
-      // setTimeout(() => {
-      //   this.player.pauseVideo();
-      //   this.screen = true;
-      //   this.pause = false;
-      // }, (Number(end) - Number(start)) * 1000 - 50);
     },
     playCheck() {
       const end = this.timer(this.video[this.current].endtime);
@@ -377,7 +362,9 @@ export default {
         startSeconds: end,
         suggestedQuality: 'default',
       });
-      setTimeout(() => { this.player.pauseVideo(); }, 500);
+      setTimeout(() => {
+        this.player.pauseVideo();
+      }, 500);
     },
     playVideo() {
       this.play();
