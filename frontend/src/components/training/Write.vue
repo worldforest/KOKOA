@@ -1,5 +1,5 @@
 <template>
-  <v-row :style="{marginTop: path === '/write' ? '100px' : '0px'}" @click="closeOverlay">
+  <v-row :style="{ marginTop: path === '/write' ? '100px' : '0px' }" @click="closeOverlay">
     <v-overlay :z-index="zIndex" :value="overlay" class="overlay">
       <p class="eng" style="padding-left: 25%; font-size: calc(1.5vw + 10px);">
         1. Click Play Button <br />
@@ -24,7 +24,7 @@
           class="middle d-flex flex-column justify-space-around eng stickygreen"
           :style="{
             backgroundColor: path === '/write' ? '#1C1C1C' : 'lightgoldenrodyellow',
-            opacity: screen === false ? 0 : 1.0
+            opacity: screen === false ? 0 : 0.9
           }"
         >
           <div
@@ -33,7 +33,7 @@
           >
             IF YOU WANT TO
           </div>
-          <div class="d-flex justify-space-around" >
+          <div class="d-flex justify-space-around">
             <div v-show="path === '/write'">
               <div>GO BACK</div>
               <v-icon
@@ -303,6 +303,7 @@ export default {
       this.showhint = false;
       this.answerEng = this.video[this.current].eng;
       this.fail = false;
+      this.screen = false;
       this.answer = [];
       this.choicelist = [];
       const list = this.video[this.current].kor.split(' ');
@@ -326,6 +327,7 @@ export default {
       this.screen = true;
     },
     play() {
+      this.screen = false;
       const start = this.timer(this.video[this.current].starttime);
       const end = this.timer(this.video[this.current].endtime);
       this.player.loadVideoById({
@@ -334,7 +336,12 @@ export default {
         endSeconds: end,
         suggestedQuality: 'default',
       });
+      setTimeout(() => {
+        this.player.pauseVideo();
+        this.screen = true;
+      }, (Number(end) - Number(start)) * 1000 - 50);
     },
+
     playVideo() {
       this.play();
     },
