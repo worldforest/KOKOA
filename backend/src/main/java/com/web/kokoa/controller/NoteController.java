@@ -6,10 +6,12 @@ import com.web.kokoa.model.subtitles;
 import com.web.kokoa.model.user;
 import com.web.kokoa.model.writenote;
 import com.web.kokoa.repository.*;
+import com.web.kokoa.service.SearchService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -44,6 +46,8 @@ public class NoteController {
     @Autowired
     WriteNoteRepo writeNoteRepo;
 
+    @Autowired
+    SearchService searchService;
 
     @PostMapping("/insert")
     @ApiOperation(value = "오답노트 추가", notes = "user num에 맞는 video, subtitle 오답노트 추가.")
@@ -89,12 +93,11 @@ public class NoteController {
 
     @GetMapping("/load")
     @ApiOperation(value = "오답노트 조회", notes = "user num에 맞는 video, subtitle 오답노트 조회.")
-    public ResponseEntity<HashMap<String, List<Object>>> loadUserNote(@RequestParam String email){
-        System.out.println(email);
+    public ResponseEntity<HashMap<String, List<Object>>> loadUserNote(@RequestParam String email, @RequestParam int page){
         user user = userRepo.findUserByEmail(email);
         int userid = user.getId();
-        List<writenote> writenotes = writeNoteRepo.findAllByUserid(userid);
-        List<speechnote> speechnotes = speechNoteRepo.findAllByUserid(userid);
+        Page<writenote> writenotes = searchService.getWriteNote(page,userid);
+        Page<speechnote> speechnotes = searchService.getSpeechNote(page,userid);
 
         HashMap<String,List<Object>> result = new HashMap<>();
         List<subtitles> write = new ArrayList<>();
@@ -113,5 +116,25 @@ public class NoteController {
         result.put("speechnote_sub", Collections.singletonList(speech));
 
         return new ResponseEntity<HashMap<String, List<Object>>>(result,HttpStatus.OK);
+    }
+
+    @DeleteMapping("/delete")
+    public ResponseEntity<String> deleteNote(@RequestParam String email, @RequestParam int noteid, @RequestParam int type) {
+        user user = userRepo.findUserByEmail(email);
+        int userid = user.getId();
+        String result ="";
+        try {
+            if (type == 0) {
+                speechnote deleteitem = speechNoteRepo.findById(noteid);
+                speechNoteRepo.delete(deleteitem);
+            } else {
+                writenote writenote = writeNoteRepo.findById(noteid);
+                writeNoteRepo.delete(writenote);
+            }
+            result="success";
+        }catch (Exception e){
+            result = "fail";
+        }
+        return new ResponseEntity<String>(result,HttpStatus.OK);
     }
 }
