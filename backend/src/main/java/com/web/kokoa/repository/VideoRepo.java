@@ -16,6 +16,5 @@ public interface VideoRepo extends JpaRepository<video, String> {
 
         @Query(value="select id, groupid, title, url from video where id in (select videoid from video_member where memberid =:id) ",nativeQuery = true)
         Page<video> findVideosByMemberid(Pageable pageable, int id);
-        
         video findById(int id);
 }
