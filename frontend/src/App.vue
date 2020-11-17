@@ -18,7 +18,7 @@
     <footer style="margin: 30px 0 50px; font-family: 'Xanh Mono', monospace;">
       <h3 class="" style="font-size: 15px;">Copyright © KOKOA 2020</h3>
       <div>
-        <h3 class="" style="margin-top:30px; font-size: 15px;">Daejeon SSAFY 3 Lastproject</h3>
+        <h3 class="" style="margin-top:30px; font-size: 15px;">Daejeon SSAFY 3 Last Project</h3>
         <h3 class="" style="font-size: 15px;">
           We dream of a world where everyone who loves K-pop understands Korean.</h3>
       </div>
