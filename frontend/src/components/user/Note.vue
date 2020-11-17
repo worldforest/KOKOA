@@ -29,12 +29,17 @@
               class="py-1"
               style="background: transparent;"
             >
-              <div
-                class="kor sentences"
-                @click="expanded === index ? (expanded = -'Writing') : setToTop(index)"
-                :id="'sentence' + index"
-              >
-                ({{ index + 1 }}) {{ item.content }}
+              <div class="check d-flex">
+                <v-btn @click="remove(item.id)" fab small depressed>
+                  <v-icon>mdi-close-circle-outline</v-icon>
+                </v-btn>
+                <div
+                  class="kor sentences"
+                  @click="expanded === index ? (expanded = -'Writing') : setToTop(index)"
+                  :id="'sentence' + index"
+                >
+                  ({{ index + 1 }}) {{ item.content }}
+                </div>
               </div>
               <div v-if="expanded === index">
                 <Talk
@@ -46,7 +51,7 @@
               </div>
             </v-list>
             <v-pagination
-              color="orange"
+              color="none"
               v-model="currentSpeechPage"
               :length="speechTotalPage"
               :total-visible="7"
@@ -62,6 +67,10 @@
               class="py-1"
               style="background: transparent;"
             >
+            <div class="check d-flex">
+                <v-btn @click="remove(item.id)" fab small depressed>
+                  <v-icon>mdi-close-circle-outline</v-icon>
+                </v-btn>
               <div
                 class="kor sentences"
                 @click="expanded === index ? (expanded = -1) : setToTop(index)"
@@ -69,6 +78,7 @@
               >
                 ({{ index + 1 }}) {{ item.content }}
               </div>
+            </div>
               <div v-if="expanded === index">
                 <Write
                   :notemode="true"
@@ -78,12 +88,7 @@
                 />
               </div>
             </v-list>
-            <v-pagination
-              color="orange"
-              v-model="currentWritePage"
-              :length="writeTotalPage"
-              :total-visible="7"
-            >
+            <v-pagination v-model="currentWritePage" :length="writeTotalPage" :total-visible="7">
             </v-pagination>
           </div>
         </div>
@@ -118,6 +123,7 @@ export default {
     currentSpeechPage: 1,
     writeTotalPage: 1,
     currentWritePage: 1,
+    hover: false,
   }),
   async created() {
     this.email = this.$store.state.email;
@@ -134,6 +140,16 @@ export default {
       const elmnt = document.getElementById(`sentence${index}`);
       elmnt.scrollIntoView(true);
       this.expanded = index;
+    },
+    async remove(noteid) {
+      let type = 1;
+      if (this.type === 'Speaking') {
+        type = 0;
+      }
+      await http.get('/note/delete/', { params: { email: this.email, noteid, type } }).then((res) => {
+        console.log(res);
+      });
+      await this.getData();
     },
     async getData() {
       this.speechnote = [];
@@ -155,8 +171,8 @@ export default {
             });
           }
 
+          this.writeTotalPage = res.data.writenote[0].totalPages;
           for (let i = 0; i < res.data.writenote[0].content.length; i += 1) {
-            this.writeTotalPage = res.data.writenote[0].totalPages;
             this.writenote.push({
               id: res.data.writenote[0].content[i].id,
               subtitleid: res.data.writenote[0].content[i].subtitleid,
@@ -278,5 +294,22 @@ $topval: 440px;
   background-color: transparent !important;
   color: black !important;
   box-shadow: none !important;
+  font-family: "Merriweather", serif;
+  font-size: 30px !important;
+}
+.v-pagination__item--active {
+  color: rgb(255, 127, 0) !important;
+}
+button:focus {
+  outline: 0;
+}
+.check button {
+  display: none;
+  background-color: transparent !important;
+  // color: rgb(255, 127, 0) !important;
+  color: red !important;
+}
+.check:hover button {
+  display: inherit;
 }
 </style>
