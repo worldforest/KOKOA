@@ -161,6 +161,7 @@
 import { mapActions } from 'vuex';
 import Record from './Record.vue';
 import http from '../../util/http-common';
+// import func from '../../../vue-temp/vue-editor-bridge';
 
 export default {
   name: 'Talk',
@@ -231,6 +232,8 @@ export default {
       overlay: this.$store.state.overlayTalk,
       zIndex: 10,
       flag: false,
+      settimer: '',
+      starttimer: '',
     };
   },
   mounted() {
@@ -246,13 +249,23 @@ export default {
     },
     play() {
       const start = this.timer(this.video[this.current].starttime);
-      const end = this.timer(this.video[this.current].endtime);
+      // const end = this.timer(this.video[this.current].endtime);
+      const end = this.timer(this.video[this.video.length - 1].endtime);
+
       this.player.loadVideoById({
         videoId: this.url,
         startSeconds: start,
         endSeconds: end,
         suggestedQuality: 'default',
       });
+
+      const tt = this.timer(this.video[this.current].endtime)
+      - this.timer(this.video[this.current].starttime);
+      console.log(this.timer(this.video[this.current].endtime));
+      console.log(tt * 1000);
+      this.starttimer = window.setTimeout(() => {
+        this.current += 1;
+      }, tt * 1000);
     },
     playVideo() {
       this.play();
@@ -328,6 +341,8 @@ export default {
         background: '#1C1C1C',
         backdrop: 'rgba(0,0,0,0.89)',
       });
+      window.clearTimeout(this.settimer);
+      this.$refs.youtube.player.pauseVideo();
     },
     closeOverlay() {
       const OVERLAY = document.querySelector('.overlay');
@@ -343,6 +358,18 @@ export default {
     question() {
       this.flag = true;
     },
+    async getCurrentTime() {
+      return this.$refs.youtube.player.getCurrentTime();
+    },
+    testtt() {
+      console.log(this.current, 3);
+      this.getCurrentTime().then((res) => {
+        console.log(res, this.timer(this.video[this.current].endtime));
+        this.settimer = window.setTimeout(() => {
+          this.current += 1;
+        }, this.timer(this.video[this.current].endtime) * 1000 - res * 1000);
+      });
+    },
   },
   watch: {
     current() {
@@ -350,7 +377,8 @@ export default {
       this.dict = '';
       this.answer = this.video[this.current].kor.replace(/[&/\\#,+\-()$~%.'":*?!<>{}]/g, ' ');
       this.answerEng = this.video[this.current].eng.replace(/[&/\\#,+\-()$~%.'":*?!<>{}]/g, ' ');
-      this.play();
+      // this.play();
+      this.testtt();
     },
     speechText() {
       const answerTrimTrim = this.answerTrim.replaceAll(' ', '');
