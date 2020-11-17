@@ -1,5 +1,5 @@
 <template>
-  <v-row style="margin-top: 100px;" @click="closeOverlay">
+  <v-row :style="{ marginTop: path === '/talk' ? '100px' : '0px' }" @click="closeOverlay">
     <v-overlay :z-index="zIndex" :value="overlay" class="overlay">
       <p class="eng" style="padding-left: 25%; font-size: calc(1.5vw + 10px);">
         1. Click Play and Listen <br />
@@ -99,10 +99,14 @@
         </v-btn>
         <span v-else></span>
       </div>
-      <div class="myTitle d-flex justify-space-around my-5" :class="{ note: notemode }">
+      <div
+        class="myTitle d-flex justify-space-around my-5 mx-5"
+        :class="{ note: notemode }"
+        style="font-size:2em"
+      >
         {{ answer }}
       </div>
-      <div class="myTitle d-flex justify-space-around my-5" :class="{ note: notemode }">
+      <div class="myTitle d-flex justify-space-around my-5 mx-5" :class="{ note: notemode }">
         {{ answerEng }}
       </div>
     </v-col>
@@ -365,14 +369,14 @@ export default {
         if (speechTextTrim.length > i) {
           if (speechTextTrim.charAt(i) === answerTrimTrim.charAt(i)) {
             text = document.createTextNode(speechTextTrim.charAt(i));
-            container.style.color = 'blue';
+            container.style.color = 'white';
           } else {
             text = document.createTextNode(speechTextTrim.charAt(i));
-            container.style.color = 'red';
+            container.style.color = 'rgb(255, 127, 0)';
           }
         } else {
           text = document.createTextNode(speechTextTrim.charAt(i));
-          container.style.color = 'red';
+          container.style.color = 'rgb(255, 127, 0)';
           container.appendChild(text);
           pos.appendChild(container);
           break;
@@ -384,7 +388,7 @@ export default {
       for (i = 0; i < left.length; i += 1) {
         container = document.createElement('font');
         text = document.createTextNode(left.charAt(i));
-        container.style.color = 'red';
+        container.style.color = 'rgb(255, 127, 0)';
         container.appendChild(text);
         pos.appendChild(container);
       }
