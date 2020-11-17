@@ -246,6 +246,7 @@ export default {
       autoMode: false,
       startFlag: false,
       retryFlag: false,
+      moveFlag: false,
     };
   },
   mounted() {
@@ -291,16 +292,20 @@ export default {
       if (this.current > 0) {
         if (this.autoMode) {
           this.retryFlag = true;
+          this.moveFlag = true;
         }
         this.current -= 1;
+        this.moveFlag = false;
       }
     },
     next() {
       if (this.current < this.video.length - 1) {
         if (this.autoMode) {
           this.retryFlag = true;
+          this.moveFlag = true;
         }
         this.current += 1;
+        this.moveFlag = false;
       }
     },
     async receiveText(text) {
@@ -418,7 +423,8 @@ export default {
     },
     playMode() {
       if (this.autoMode) {
-        if (this.startFlag) this.subAdvanced();
+        if (this.moveFlag) this.playAdvanced();
+        else if (this.startFlag) this.subAdvanced();
         else this.playAdvanced();
       } else this.playVideo();
     },
