@@ -7,6 +7,7 @@
     </div>
     <!-- 멤버 -->
     <div class="member">
+
       <v-row justify="space-around" class="member">
         <div class="eng list" v-for="(member,index) in members" :key="index">
           <img :class="{selected: isActive==index}"
