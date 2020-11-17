@@ -26,6 +26,10 @@ Vue.use(VueYoutube);
 Vue.use(VueRouter);
 Vue.use(VueSweetalert2);
 
+// const quickMenuClose = () => {
+//   const QUICKMENU = document.querySelector('.quick-menu');
+//   QUICKMENU.classList.remove('active');
+// };
 const onlyAuthUser = (to, from, next) => {
   // 로그인 된 유저만 접속 가능
   if (store.state.isLogin === true || localStorage.getItem('email') !== null) {

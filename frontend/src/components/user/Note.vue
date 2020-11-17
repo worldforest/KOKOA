@@ -94,13 +94,13 @@ export default {
     async getData() {
       this.speechnote = [];
       this.writenote = [];
-      await http.get('/note/load/', { params: { email: this.email } }).then((res) => {
-        for (let i = 0; i < res.data.speechnote[0].length; i += 1) {
+      await http.get('/note/load/', { params: { email: this.email, page: 0 } }).then((res) => {
+        for (let i = 0; i < res.data.speechnote[0].content.length; i += 1) {
           this.speechnote.push({
-            id: res.data.speechnote[0][i].id,
-            subtitleid: res.data.speechnote[0][i].subtitleid,
-            engsubtitleid: res.data.speechnote[0][i].engsubtitleid,
-            videoid: res.data.speechnote[0][i].videoid,
+            id: res.data.speechnote[0].content[i].id,
+            subtitleid: res.data.speechnote[0].content[i].subtitleid,
+            engsubtitleid: res.data.speechnote[0].content[i].engsubtitleid,
+            videoid: res.data.speechnote[0].content[i].videoid,
             content: res.data.speechnote_sub[0][2 * i].content,
             engcontent: res.data.speechnote_sub[0][2 * i + 1].content,
             starttime: res.data.speechnote_sub[0][2 * i].starttime,
@@ -108,12 +108,12 @@ export default {
           });
         }
 
-        for (let i = 0; i < res.data.writenote[0].length; i += 1) {
+        for (let i = 0; i < res.data.writenote[0].content.length; i += 1) {
           this.writenote.push({
-            id: res.data.writenote[0][i].id,
-            subtitleid: res.data.writenote[0][i].subtitleid,
-            engsubtitleid: res.data.writenote[0][i].engsubtitleid,
-            videoid: res.data.writenote[0][i].videoid,
+            id: res.data.writenote[0].content[i].id,
+            subtitleid: res.data.writenote[0].content[i].subtitleid,
+            engsubtitleid: res.data.writenote[0].content[i].engsubtitleid,
+            videoid: res.data.writenote[0].content[i].videoid,
             content: res.data.writenote_sub[0][2 * i].content,
             engcontent: res.data.writenote_sub[0][2 * i + 1].content,
             starttime: res.data.writenote_sub[0][2 * i].starttime,
