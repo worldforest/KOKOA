@@ -18,7 +18,6 @@
                 <figure class="swiperImg">
                   <img
                     :src="'https://img.youtube.com/vi/' + item.url + '/0.jpg'"
-
                     class="pa-1"
                     :label="item.title"
                   />

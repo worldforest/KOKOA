@@ -26,7 +26,7 @@
           class="middle d-flex flex-column justify-space-around eng stickypink"
           :style="{
             backgroundColor: path === '/talk' ? '#1C1C1C' : 'lightgoldenrodyellow',
-            opacity: screen === false ? 0 : 1.0
+            opacity: screen === false ? 0 : 0.9
           }"
         >
           <div class="mt-auto" style="font-size: calc(1vw + 40px); line-height:calc(1vw + 40px);">
@@ -247,6 +247,7 @@ export default {
     },
     ended() {
       this.screen = true;
+      this.playCheck();
     },
     play() {
       const start = this.timer(this.video[this.current].starttime);
@@ -258,7 +259,17 @@ export default {
         suggestedQuality: 'default',
       });
     },
+    playCheck() {
+      const end = this.timer(this.video[this.current].endtime);
+      this.player.loadVideoById({
+        videoId: this.url,
+        startSeconds: end,
+        suggestedQuality: 'default',
+      });
+      setTimeout(() => { this.player.pauseVideo(); }, 500);
+    },
     playVideo() {
+      this.screen = false;
       this.play();
     },
     timer(input) {
@@ -354,6 +365,7 @@ export default {
       this.dict = '';
       this.answer = this.video[this.current].kor.replace(/[&/\\#,+\-()$~%.'":*?!<>{}]/g, ' ');
       this.answerEng = this.video[this.current].eng.replace(/[&/\\#,+\-()$~%.'":*?!<>{}]/g, ' ');
+      this.screen = false;
       this.play();
     },
     speechText() {
