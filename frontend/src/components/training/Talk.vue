@@ -30,14 +30,14 @@
           }"
         >
 
-         <div class="mt-auto" style="font-size: calc(1vw + 40px);color:lightgoldenrodyellow">
+         <div class="mt-auto" style="font-size: calc(1vw + 40px);"
+         :style="{color:path !== '/talk' ? '#1C1C1C' : 'lightgoldenrodyellow'}">
             | How to Use |
-            <h1>(1)press button and repeat sentence</h1>
           </div>
 
-          <div class="ma-auto mt-15">
-            <img v-if="path === '/write'" src="@/assets/dragtuto4.gif" style="width:90%" />
-            <img v-else src="@/assets/speak-basic.gif" style="width:67%" />
+          <div class="ma-auto mt-8">
+            <img v-if="path === '/talk'" src="@/assets/screenspeak-sephia.gif" style="width:90%" />
+            <img v-else src="@/assets/screenspeak-neg.gif" style="width:67%" />
 
           </div>
 
