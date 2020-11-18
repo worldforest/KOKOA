@@ -37,7 +37,7 @@
 
           <div class="ma-auto mt-15">
             <img v-if="path === '/write'" src="@/assets/dragtuto4.gif" style="width:90%" />
-            <img v-else src="@/assets/screenspeak.gif" style="width:67%" />
+            <img v-else src="@/assets/speak-basic.gif" style="width:67%" />
 
           </div>
 
