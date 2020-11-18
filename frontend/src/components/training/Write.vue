@@ -21,23 +21,30 @@
           fit-parent
         ></youtube>
         <div
-          class="middle d-flex flex-column justify-space-around eng stickygreen"
+          class="middle d-flex flex-column justify-space-around eng"
           :style="{
             backgroundColor: path === '/write' ? '#1C1C1C' : 'lightgoldenrodyellow',
             opacity: screen === false ? 0 : 0.9
           }"
         >
-          <div
-            class="mt-auto mb-0"
-            style="font-size: calc(1vw + 40px); line-height:calc(1vw + 40px);"
-          >
-            IF YOU WANT TO
+          <div class="mt-auto" style="font-size: calc(1vw + 40px);color:lightgoldenrodyellow">
+            | How to Use |
           </div>
-          <div class="d-flex justify-space-around">
+
+          <div class="ma-auto mt-15">
+            <!-- <img src="@/assets/dragtuto-slow.gif" style="width:67%">
+             -->
+            <img v-if="path === '/write'" src="@/assets/dragtuto4.gif" style="width:90%" />
+            <img v-else src="@/assets/dragtuto3.gif" style="width:67%" />
+
+            <!-- IF YOU WANT TO -->
+          </div>
+
+          <!-- <div class="d-flex justify-space-around">
             <div v-show="path === '/write'">
               <div>GO BACK</div>
               <v-icon
-                class="stickygreen"
+                class="stickypink"
                 style="font-size: calc(1vw + 20px); line-height:calc(1vw + 20px);"
               >
                 mdi-hand-pointing-down
@@ -46,7 +53,7 @@
             <div>
               <div>TRY AGAIN</div>
               <v-icon
-                class="stickygreen"
+                class="stickypink"
                 style="font-size: calc(1vw + 20px); line-height:calc(1vw + 20px);"
               >
                 mdi-hand-pointing-down
@@ -55,27 +62,28 @@
             <div v-show="path === '/write'">
               <div>GO NEXT</div>
               <v-icon
-                class="stickygreen"
+                class="stickypink"
                 style="font-size: calc(1vw + 20px); line-height:calc(1vw + 20px);"
               >
                 mdi-hand-pointing-down
               </v-icon>
             </div>
-          </div>
-          <!-- <img src="@/assets/block-green.png" class="blocking"> -->
+          </div> -->
         </div>
       </div>
       <div class="d-flex justify-space-around mt-5">
         <v-btn v-if="this.current !== 0" @click="previous" icon>
-          <v-icon color="white" style="font-size: 40px;">
-            mdi-chevron-left
+          <v-icon color="white" style="font-size: 35px;">
+            fas fa-backward
           </v-icon>
         </v-btn>
         <span v-else></span>
-        <v-btn @click="playVideo" color="rgb(73, 178, 134)" icon>
-          <v-icon v-show="!screen" style="font-size: 45px; margin:0.2em">
+        <v-btn v-if="!pause" @click="playVideo" color="rgb(73, 178, 134)" icon>
+          <!-- <v-icon v-show="!screen" style="font-size: 45px; margin:0.2em">
             mdi-play
-          </v-icon>
+          </v-icon> -->
+          <img v-show="!screen" src="@/assets/play-green.gif" style="width:70px;margin:0.2em;" />
+
           <v-icon v-show="screen" style="font-size: 45px; margin:0.2em">
             mdi-replay
           </v-icon>
@@ -94,9 +102,12 @@
             >REPLAY</span
           >
         </v-btn>
+        <v-btn v-else icon @click="pauseVideo">
+          <v-icon class="stickygreen" style="font-size:45px;">far fa-stop-circle</v-icon>
+        </v-btn>
         <v-btn v-if="this.current !== this.video.length - 1" @click="next" icon>
-          <v-icon color="white" style="font-size: 40px;">
-            mdi-chevron-right
+          <v-icon color="white" style="font-size: 35px;">
+            fas fa-forward
           </v-icon>
         </v-btn>
         <span v-else></span>
@@ -126,8 +137,11 @@
             </div>
           </draggable>
         </v-col>
+        <div>
+          <img src="@/assets/arrow-ani.gif" class="arrow" style="transform:rotate(-22deg);" />
+        </div>
 
-        <v-col cols="12" class="ma-5">
+        <v-col cols="12">
           <h3
             class="eng writeTitle"
             :class="{ note: notemode }"
@@ -152,11 +166,11 @@
             </div>
           </draggable>
         </v-col>
-        <v-btn icon class="question-btn" @click="question" v-show="!noteoverlay">
-          <v-icon class="mr-2" color="rgb(73, 178, 134)" style="font-size:55px;"
-            >fas fa-question</v-icon
-          >
-        </v-btn>
+        <v-col cols="12" class="ma-15">
+          <v-btn icon class="question-btn" @click="question" v-show="!noteoverlay">
+            <h5 class="eng" style="color:rgb(255, 127, 0)">HELP</h5>
+          </v-btn>
+        </v-col>
       </v-row>
     </v-col>
   </v-row>
@@ -207,6 +221,7 @@ export default {
   },
   data() {
     return {
+      pause: false,
       screen: false,
       id: this.$route.query.index,
       url: '',
@@ -304,6 +319,7 @@ export default {
       this.answerEng = this.video[this.current].eng;
       this.fail = false;
       this.screen = false;
+      this.pause = false;
       this.answer = [];
       this.choicelist = [];
       const list = this.video[this.current].kor.split(' ');
@@ -322,12 +338,14 @@ export default {
     ...mapActions(['overlayWrite']),
     playing() {
       this.screen = false;
+      this.pause = true;
     },
     ended() {
       this.screen = true;
+      this.pause = false;
+      this.playCheck();
     },
     play() {
-      this.screen = false;
       const start = this.timer(this.video[this.current].starttime);
       const end = this.timer(this.video[this.current].endtime);
       this.player.loadVideoById({
@@ -336,12 +354,18 @@ export default {
         endSeconds: end,
         suggestedQuality: 'default',
       });
+    },
+    playCheck() {
+      const end = this.timer(this.video[this.current].endtime);
+      this.player.loadVideoById({
+        videoId: this.url,
+        startSeconds: end,
+        suggestedQuality: 'default',
+      });
       setTimeout(() => {
         this.player.pauseVideo();
-        this.screen = true;
-      }, (Number(end) - Number(start)) * 1000 - 50);
+      }, 500);
     },
-
     playVideo() {
       this.play();
     },
@@ -433,6 +457,11 @@ export default {
     },
     question() {
       this.flag = true;
+    },
+    pauseVideo() {
+      this.player.pauseVideo();
+      this.pause = false;
+      this.screen = true;
     },
   },
   mounted() {
@@ -530,6 +559,9 @@ $stickypink: rgb(233, 103, 131);
 .stickygreen {
   color: $stickygreen !important;
 }
+.stickypink {
+  color: $stickypink !important;
+}
 .blocking {
   top: 0;
   height: 100%;
@@ -547,5 +579,11 @@ $stickypink: rgb(233, 103, 131);
   position: absolute;
   bottom: 8px;
   right: 10%;
+}
+.arrow {
+  height: 100px;
+  // display: block;
+  margin-left: auto;
+  margin-right: auto;
 }
 </style>
