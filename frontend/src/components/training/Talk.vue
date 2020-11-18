@@ -63,6 +63,18 @@
           </div>
         </div>
       </div>
+      <div style="float:right;">
+        <v-switch
+          v-model="autoMode"
+          label=""
+          color="orange"
+          v-show="!notemode"
+          class="custom-red"
+        ><template v-slot:label>
+          <span class="input__label">MODE</span>
+        </template>
+        </v-switch>
+      </div>
       <div class="d-flex justify-space-around mt-5" v-if="!autoMode">
         <v-btn v-if="this.current !== 0" @click="previous" icon>
           <v-icon color="white" style="font-size: 40px;">
@@ -147,18 +159,6 @@
           </v-icon>
         </v-btn>
         <span v-else></span> -->
-      </div>
-      <div>
-        <v-switch
-          v-model="autoMode"
-          label=""
-          color="orange"
-          v-show="!notemode"
-          class="custom-red"
-        ><template v-slot:label>
-          <span class="input__label">MODE</span>
-        </template>
-        </v-switch>
       </div>
       <div
         class="myTitle d-flex justify-space-around my-5 mx-5"
@@ -645,7 +645,6 @@ font {
 }
 .custom-red .v-input--selection-controls__input div {
   color: red;
-  z-index: 13;
 }
 /* .v-input--switch__track {
   color: white;
