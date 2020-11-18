@@ -63,7 +63,7 @@
           </div>
         </div>
       </div>
-      <div class="d-flex justify-space-around mt-5">
+      <div class="d-flex justify-space-around mt-5" v-if="!autoMode">
         <v-btn v-if="this.current !== 0" @click="previous" icon>
           <v-icon color="white" style="font-size: 40px;">
             mdi-chevron-left
@@ -99,6 +99,62 @@
         </v-btn>
         <span v-else></span>
       </div>
+
+      <!-- 자동재생일때 버튼 -->
+      <div class="d-flex justify-space-around mt-5" v-else-if="autoMode">
+        <!-- <v-btn v-if="this.current !== 0" @click="previous" icon>
+          <v-icon color="white" style="font-size: 40px;">
+            mdi-chevron-left
+          </v-icon>
+        </v-btn>
+        <span v-else></span> -->
+        <v-btn @click="playVideo" class="stickypink" icon>
+          <v-icon style="font-size: 45px; margin:0.2em">
+            mdi-replay
+          </v-icon>
+          <span
+            class="eng stickypink"
+            :class="{ note: notemode }"
+            style="font-size: 2em;"
+            >REPLAY</span
+          >
+        </v-btn>
+         <v-btn @click="playAdvanced" class="stickypink" icon>
+          <v-icon style="font-size: 45px; margin:0.2em">
+            mdi-play
+          </v-icon>
+          <span
+            class="eng stickypink"
+            :class="{ note: notemode }"
+            style="font-size: 2em;"
+            >PLAY</span
+          >
+        </v-btn>
+          <v-btn @click="stopAdvanced" class="stickypink" icon>
+          <v-icon style="font-size: 45px; margin:0.2em">
+            mdi-pause
+          </v-icon>
+          <span
+            class="eng stickypink"
+            :class="{ note: notemode }"
+            style="font-size: 2em;"
+            >PAUSE</span
+          >
+        </v-btn>
+        <!-- <v-btn v-if="this.current !== this.video.length - 1" @click="next" icon>
+          <v-icon color="white" style="font-size: 40px;">
+            mdi-chevron-right
+          </v-icon>
+        </v-btn>
+        <span v-else></span> -->
+      </div>
+      <span>
+        <v-checkbox
+          v-model="autoMode"
+          :label="`mode: ${autoMode.toString()}`"
+        ></v-checkbox>
+      </span>
+
       <div
         class="myTitle d-flex justify-space-around my-5 mx-5"
         :class="{ note: notemode }"
@@ -154,11 +210,6 @@
         </v-col>
       </v-row>
     </v-col>
-    <div class = "automode">
-      <v-btn @click="playVideo">retry</v-btn>
-      <v-btn @click="playAdvanced">play</v-btn>
-      <v-btn @click="stopAdvanced">stop</v-btn>
-    </div>
     <v-btn icon class="question-btn" @click="question" v-show="!noteoverlay">
       <v-icon class="mr-2" color="rgb(233, 103, 131)" style="font-size:55px;"
         >fas fa-question</v-icon
@@ -247,11 +298,11 @@ export default {
       startFlag: false,
       retryFlag: false,
       moveFlag: false,
+      pause: false,
     };
   },
   mounted() {
     if (this.noteoverlay || !this.overlay) this.closeOverlay();
-    this.autoMode = true;
   },
   methods: {
     ...mapActions(['overlayTalk']),
@@ -295,7 +346,6 @@ export default {
           this.moveFlag = true;
         }
         this.current -= 1;
-        this.moveFlag = false;
       }
     },
     next() {
@@ -305,7 +355,6 @@ export default {
           this.moveFlag = true;
         }
         this.current += 1;
-        this.moveFlag = false;
       }
     },
     async receiveText(text) {
@@ -378,6 +427,7 @@ export default {
       return this.$refs.youtube.player.getCurrentTime();
     },
     subAdvanced() {
+      if (this.moveFlag) return;
       this.getCurrentTime().then((res) => {
         this.settimer = window.setTimeout(() => {
           this.current += 1;
@@ -385,10 +435,12 @@ export default {
       });
     },
     playAdvanced() {
+      if (this.pause) return;
       let start = 0.001;
-      if (this.retryFlag) {
+      if (this.retryFlag || this.moveFlag) {
         this.resumeAdvanced(this.retryFlag);
         this.retryFlag = false;
+        this.moveFlag = false;
         this.settimer = window.setTimeout(() => {
           this.current += 1;
         }, this.timer(this.video[this.current].endtime) * 1000
@@ -404,10 +456,12 @@ export default {
         });
       }
       this.startFlag = true;
+      this.pause = true;
     },
     stopAdvanced() {
       window.clearTimeout(this.settimer);
       this.$refs.youtube.player.pauseVideo();
+      this.pause = false;
     },
     resumeAdvanced(retryFlag) {
       if (retryFlag) {
