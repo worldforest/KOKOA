@@ -76,7 +76,19 @@
           </div> -->
         </div>
       </div>
-      <div class="d-flex justify-space-around mt-5">
+      <div style="float:right;">
+        <v-switch
+          v-model="autoMode"
+          label=""
+          color="orange"
+          v-show="!notemode"
+          class="custom-red"
+        ><template v-slot:label>
+          <span class="input__label">MODE</span>
+        </template>
+        </v-switch>
+      </div>
+      <div class="d-flex justify-space-around mt-5" v-if="!autoMode">
         <v-btn v-if="this.current !== 0" @click="previous" icon>
           <v-icon color="white" style="font-size: 35px;">
             fas fa-backward
@@ -116,6 +128,55 @@
           </v-icon>
         </v-btn>
         <span v-else></span>
+      </div>
+
+      <!-- 자동재생일때 버튼 -->
+      <div class="d-flex justify-space-around mt-5" v-else-if="autoMode">
+        <!-- <v-btn v-if="this.current !== 0" @click="previous" icon>
+          <v-icon color="white" style="font-size: 40px;">
+            mdi-chevron-left
+          </v-icon>
+        </v-btn>
+        <span v-else></span> -->
+        <v-btn @click="playVideo" class="stickypink" icon>
+          <v-icon style="font-size: 45px; margin:0.2em">
+            mdi-replay
+          </v-icon>
+          <span
+            class="eng stickypink"
+            :class="{ note: notemode }"
+            style="font-size: 2em;"
+            >REPLAY</span
+          >
+        </v-btn>
+         <v-btn @click="playAdvanced" class="stickypink" icon>
+          <v-icon style="font-size: 45px; margin:0.2em">
+            mdi-play
+          </v-icon>
+          <span
+            class="eng stickypink"
+            :class="{ note: notemode }"
+            style="font-size: 2em;"
+            >PLAY</span
+          >
+        </v-btn>
+          <v-btn @click="stopAdvanced" class="stickypink" icon>
+          <v-icon style="font-size: 45px; margin:0.2em">
+            mdi-pause
+          </v-icon>
+          <span
+            class="eng stickypink"
+            :class="{ note: notemode }"
+            style="font-size: 2em;"
+            >PAUSE</span
+          >
+        </v-btn>
+        <!-- <v-btn v-if="this.current !== this.video.length - 1" @click="next" icon>
+          <v-icon color="white" style="font-size: 40px;">
+            mdi-chevron-right
+          </v-icon>
+        </v-btn>
+        <span v-else></span> -->
       </div>
       <div
         class="myTitle d-flex justify-space-around my-5 mx-5"
@@ -183,6 +244,7 @@
 import { mapActions } from 'vuex';
 import Record from './Record.vue';
 import http from '../../util/http-common';
+// import func from '../../../vue-temp/vue-editor-bridge';
 
 export default {
   name: 'Talk',
@@ -254,6 +316,13 @@ export default {
       overlay: this.$store.state.overlayTalk,
       zIndex: 10,
       flag: false,
+      settimer: '',
+      starttimer: '',
+      autoMode: false,
+      startFlag: false,
+      retryFlag: false,
+      moveFlag: false,
+      pauseFlag: false,
     };
   },
   mounted() {
@@ -273,12 +342,15 @@ export default {
     play() {
       const start = this.timer(this.video[this.current].starttime);
       const end = this.timer(this.video[this.current].endtime);
+
       this.player.loadVideoById({
         videoId: this.url,
         startSeconds: start,
         endSeconds: end,
         suggestedQuality: 'default',
       });
+      this.retryFlag = true;
+      window.clearTimeout(this.settimer);
     },
     playCheck() {
       const end = this.timer(this.video[this.current].endtime);
@@ -293,6 +365,7 @@ export default {
     },
     playVideo() {
       this.screen = false;
+      this.pauseFlag = false;
       this.play();
     },
     timer(input) {
@@ -307,11 +380,19 @@ export default {
     },
     previous() {
       if (this.current > 0) {
+        if (this.autoMode) {
+          this.retryFlag = true;
+          this.moveFlag = true;
+        }
         this.current -= 1;
       }
     },
     next() {
       if (this.current < this.video.length - 1) {
+        if (this.autoMode) {
+          this.retryFlag = true;
+          this.moveFlag = true;
+        }
         this.current += 1;
       }
     },
@@ -381,6 +462,65 @@ export default {
     question() {
       this.flag = true;
     },
+    async getCurrentTime() {
+      return this.$refs.youtube.player.getCurrentTime();
+    },
+    subAdvanced() {
+      if (this.moveFlag) return;
+      this.getCurrentTime().then((res) => {
+        this.settimer = window.setTimeout(() => {
+          this.current += 1;
+        }, this.timer(this.video[this.current].endtime) * 1000 - res * 1000);
+      });
+    },
+    playAdvanced() {
+      if (this.pauseFlag) return;
+      let start = 0.001;
+      if (this.retryFlag || this.moveFlag) {
+        this.resumeAdvanced(this.retryFlag);
+        this.retryFlag = false;
+        this.moveFlag = false;
+        this.settimer = window.setTimeout(() => {
+          this.current += 1;
+        }, this.timer(this.video[this.current].endtime) * 1000
+          - this.timer(this.video[this.current].starttime) * 1000);
+      } else {
+        this.getCurrentTime().then((res) => {
+          start = res;
+          this.resumeAdvanced(this.retryFlag);
+          this.retryFlag = false;
+          this.settimer = window.setTimeout(() => {
+            this.current += 1;
+          }, this.timer(this.video[this.current].endtime) * 1000 - start * 1000);
+        });
+      }
+      this.startFlag = true;
+      this.pauseFlag = true;
+    },
+    stopAdvanced() {
+      window.clearTimeout(this.settimer);
+      this.$refs.youtube.player.pauseVideo();
+      this.pauseFlag = false;
+    },
+    resumeAdvanced(retryFlag) {
+      if (retryFlag) {
+        this.player.loadVideoById({
+          videoId: this.url,
+          startSeconds: this.timer(this.video[this.current].starttime),
+          endSeconds: this.timer(this.video[this.video.length - 1].endtime),
+          suggestedQuality: 'default',
+        });
+      } else {
+        this.$refs.youtube.player.playVideo();
+      }
+    },
+    playMode() {
+      if (this.autoMode) {
+        if (this.moveFlag) this.playAdvanced();
+        else if (this.startFlag) this.subAdvanced();
+        else this.playAdvanced();
+      } else this.playVideo();
+    },
     pauseVideo() {
       this.player.pauseVideo();
       this.pause = false;
@@ -394,7 +534,7 @@ export default {
       this.answer = this.video[this.current].kor.replace(/[&/\\#,+\-()$~%.'":*?!<>{}]/g, ' ');
       this.answerEng = this.video[this.current].eng.replace(/[&/\\#,+\-()$~%.'":*?!<>{}]/g, ' ');
       this.screen = false;
-      this.play();
+      this.playMode();
     },
     speechText() {
       // const answerTrimTrim = this.answerTrim.replaceAll(' ', '');
@@ -538,4 +678,14 @@ font {
   bottom: 8px;
   right: 5%;
 }
+.input__label{
+  color: white;
+}
+.custom-red .v-input--selection-controls__input div {
+  color: red;
+}
+/* .v-input--switch__track {
+  color: white;
+  background-color: white;
+} */
 </style>
