@@ -23,14 +23,27 @@
           height="550"
         ></youtube>
         <div
-          class="middle d-flex flex-column justify-space-around eng stickypink"
+          class="middle d-flex flex-column justify-space-around eng"
           :style="{
             backgroundColor: path === '/talk' ? '#1C1C1C' : 'lightgoldenrodyellow',
             opacity: screen === false ? 0 : 0.9
           }"
         >
-          <div class="mt-auto" style="font-size: calc(1vw + 40px); line-height:calc(1vw + 40px);">
-            <!-- IF YOU WANT TO -->
+
+         <div class="mt-auto" style="font-size: calc(1vw + 40px);color:lightgoldenrodyellow">
+            | How to Use |
+            <h1>(1)press button and repeat sentence</h1>
+          </div>
+
+          <div class="ma-auto mt-15">
+            <img v-if="path === '/write'" src="@/assets/dragtuto4.gif" style="width:90%" />
+            <img v-else src="@/assets/screenspeak.gif" style="width:67%" />
+
+          </div>
+
+          <!-- <div class="mt-auto" style="font-size: calc(1vw + 40px);
+          line-height:calc(1vw + 40px);">
+            IF YOU WANT TO
           </div>
           <div class="d-flex justify-space-around">
             <div v-show="path === '/talk'">
@@ -43,13 +56,13 @@
               </v-icon>
             </div>
             <div>
-              <!-- <div>TRY AGAIN</div>
+              <div>TRY AGAIN</div>
               <v-icon
                 class="stickypink"
                 style="font-size: calc(1vw + 20px); line-height:calc(1vw + 20px);"
               >
                 mdi-hand-pointing-down
-              </v-icon> -->
+              </v-icon>
             </div>
             <div v-show="path === '/talk'">
               <div>GO NEXT</div>
@@ -60,7 +73,7 @@
                 mdi-hand-pointing-down
               </v-icon>
             </div>
-          </div>
+          </div> -->
         </div>
       </div>
       <div class="d-flex justify-space-around mt-5">
