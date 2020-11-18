@@ -148,12 +148,14 @@
         </v-btn>
         <span v-else></span> -->
       </div>
-      <span>
-        <v-checkbox
-          v-model="autoMode"
-          :label="`mode: ${autoMode.toString()}`"
-        ></v-checkbox>
-      </span>
+        <v-switch
+              v-model="autoMode"
+              label="orange"
+              color="orange"
+              value="orange"
+              hide-details
+              v-show="!notemode"
+        ></v-switch>
 
       <div
         class="myTitle d-flex justify-space-around my-5 mx-5"
@@ -327,6 +329,7 @@ export default {
     },
     playVideo() {
       this.screen = false;
+      this.pause = false;
       this.play();
     },
     timer(input) {
