@@ -1,6 +1,6 @@
 <template>
   <v-row :style="{ marginTop: path === '/talk' ? '100px' : '0px' }" @click="closeOverlay">
-    <v-overlay :z-index="zIndex" :value="overlay" class="overlay">
+    <!-- <v-overlay :z-index="zIndex" :value="overlay" class="overlay">
       <p class="eng" style="padding-left: 25%; font-size: calc(1.5vw + 10px);">
         1. Click Play and Listen <br />
         2. Click Mic Button and Speak <br />
@@ -8,7 +8,7 @@
         4. Check your pronunciation <br />
       </p>
       <img src="@/assets/tutorialspeak.gif" class="gif-write" />
-    </v-overlay>
+    </v-overlay> -->
     <!-- left side -->
     <v-col class="youtubeContainer" cols="12" lg="8">
       <div class="d-flex justify-center youtube pa-5">
@@ -171,11 +171,11 @@
           </div>
         </v-col>
       </v-row>
-      <v-col cols="12">
+      <!-- <v-col cols="12">
         <v-btn icon class="question-btn" @click="question" v-show="!noteoverlay">
           <h5 class="eng" style="color:rgb(255, 127, 0)">HELP</h5>
         </v-btn>
-      </v-col>
+      </v-col> -->
     </v-col>
   </v-row>
 </template>

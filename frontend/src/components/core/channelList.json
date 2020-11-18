@@ -1,15 +1,33 @@
 [
   {
+    "id": 5,
+    "title": "BTS",
+    "groupname": "BTS",
+    "img": "/img/BTS/BTS.jpg"
+  },
+  {
+    "id": 9,
+    "title": "IU",
+    "groupname": "IU",
+    "img": "/img/IU/IU.jpg"
+  },
+  {
     "id": 4,
     "title": "BLACKPINK",
     "groupname": "BLACKPINK",
     "img": "/img/BLACKPINK/BLACKPINK.jpg"
   },
   {
-    "id": 5,
-    "title": "BTS",
-    "groupname": "BTS",
-    "img": "/img/BTS/BTS.jpg"
+    "id": 10,
+    "title": "MONSTA X",
+    "groupname": "MONSTA_X",
+    "img": "/img/MONSTA_X/MONSTA_X.jpg"
+  },
+  {
+    "id": 15,
+    "title": "SUPER JUNIOR",
+    "groupname": "SUPER_JUNIOR",
+    "img": "/img/SUPER_JUNIOR/SUPER_JUNIOR.jpg"
   },
   {
     "id": 6,
@@ -23,12 +41,7 @@
     "groupname": "APRIL",
     "img": "/img/APRIL/APRIL.jpg"
   },
-  {
-    "id": 9,
-    "title": "IU",
-    "groupname": "IU",
-    "img": "/img/IU/IU.jpg"
-  },
+ 
   {
     "id": 1,
     "title": "2PM",
@@ -53,12 +66,7 @@
     "groupname": "GIRLFRIEND",
     "img": "/img/GIRLFRIEND/GIRLFRIEND.jpg"
   },
-  {
-    "id": 10,
-    "title": "MONSTA X",
-    "groupname": "MONSTA_X",
-    "img": "/img/MONSTA_X/MONSTA_X.jpg"
-  },
+ 
   {
     "id": 11,
     "title": "NCT",
@@ -83,12 +91,7 @@
     "groupname": "SEVENTEEN",
     "img": "/img/SEVENTEEN/SEVENTEEN.jpg"
   },
-  {
-    "id": 15,
-    "title": "SUPER JUNIOR",
-    "groupname": "SUPER_JUNIOR",
-    "img": "/img/SUPER_JUNIOR/SUPER_JUNIOR.jpg"
-  },
+  
   {
     "id": 16,
     "title": "T-ARA",
