@@ -1,6 +1,6 @@
 <template>
   <v-row :style="{ marginTop: path === '/write' ? '100px' : '0px' }" @click="closeOverlay">
-    <v-overlay :z-index="zIndex" :value="overlay" class="overlay">
+    <!-- <v-overlay :z-index="zIndex" :value="overlay" class="overlay">
       <p class="eng" style="padding-left: 25%; font-size: calc(1.5vw + 10px);">
         1. Click Play Button <br />
         2. Drag word into Answer Box <br />
@@ -8,7 +8,7 @@
         4. Click '>' Button If you want the next sentence <br />
       </p>
       <img src="@/assets/tutorialwrite1.gif" class="gif-write" />
-    </v-overlay>
+    </v-overlay> -->
     <v-col class="youtubeContainer" cols="12" lg="8">
       <div class="d-flex justify-center youtube pa-5">
         <youtube
@@ -166,11 +166,11 @@
             </div>
           </draggable>
         </v-col>
-        <v-col cols="12" class="ma-15">
+        <!-- <v-col cols="12" class="ma-15">
           <v-btn icon class="question-btn" @click="question" v-show="!noteoverlay">
             <h5 class="eng" style="color:rgb(255, 127, 0)">HELP</h5>
           </v-btn>
-        </v-col>
+        </v-col> -->
       </v-row>
     </v-col>
   </v-row>

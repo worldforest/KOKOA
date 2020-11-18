@@ -56,7 +56,6 @@ export default {
     }
     this.team = cur.groupname;
     this.title = cur.title;
-    console.log(this.team);
     this.filters = this.team;
     this.members = [];
     this.members.push({ name: this.title });
