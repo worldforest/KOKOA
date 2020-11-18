@@ -148,15 +148,18 @@
         </v-btn>
         <span v-else></span> -->
       </div>
+      <div>
         <v-switch
-              v-model="autoMode"
-              label="orange"
-              color="orange"
-              value="orange"
-              hide-details
-              v-show="!notemode"
-        ></v-switch>
-
+          v-model="autoMode"
+          label=""
+          color="orange"
+          v-show="!notemode"
+          class="custom-red"
+        ><template v-slot:label>
+          <span class="input__label">MODE</span>
+        </template>
+        </v-switch>
+      </div>
       <div
         class="myTitle d-flex justify-space-around my-5 mx-5"
         :class="{ note: notemode }"
@@ -637,4 +640,15 @@ font {
   bottom: 8px;
   right: 5%;
 }
+.input__label{
+  color: white;
+}
+.custom-red .v-input--selection-controls__input div {
+  color: red;
+  z-index: 13;
+}
+/* .v-input--switch__track {
+  color: white;
+  background-color: white;
+} */
 </style>
