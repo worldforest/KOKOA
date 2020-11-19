@@ -34,9 +34,11 @@
         </div>
       </div>
       <div style="float:right;">
-        <v-switch v-model="autoMode" label="" color="orange" v-show="!notemode" class="custom-red"
+        <v-switch v-model="autoMode"  dark
+        label="mode" color="orange" v-show="!notemode" class="custom-red"
           ><template v-slot:label>
-            <span class="input__label">MODE</span>
+            <span v-if="autoMode" class="input__label">advanced</span>
+            <span v-else class="input__label">basic</span>
           </template>
         </v-switch>
       </div>
@@ -587,6 +589,7 @@ font {
   right: 5%;
 }
 .input__label {
+  margin-top: 7px;
   color: white;
 }
 .custom-red .v-input--selection-controls__input div {
