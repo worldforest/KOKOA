@@ -390,7 +390,8 @@ export default {
         this.moveFlag = false;
         this.settimer = window.setTimeout(() => {
           this.current += 1;
-        }, this.timer(this.video[this.current].endtime) * 1000 - this.timer(this.video[this.current].starttime) * 1000);
+        }, this.timer(this.video[this.current].endtime) * 1000
+        - this.timer(this.video[this.current].starttime) * 1000);
       } else {
         this.getCurrentTime().then((res) => {
           start = res;
