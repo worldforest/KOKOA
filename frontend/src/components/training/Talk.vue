@@ -81,7 +81,24 @@
 
       <!-- 자동재생일때 버튼 -->
       <div class="d-flex justify-space-around mt-5" v-else-if="autoMode">
-        <v-btn @click="playVideo" class="stickypink" icon>
+        <span></span>
+        <v-btn v-if="!pauseFlag" @click="playAdvanced" class="stickypink" icon>
+          <img src="@/assets/play-pink.gif" style="width:70px;margin:0.2em;" />
+
+          <span class="eng stickypink" :class="{ note: notemode }" style="font-size: 2em;"
+            >PLAY</span
+          >
+        </v-btn>
+
+        <v-btn v-else @click="stopAdvanced" class="stickypink" icon>
+          <v-icon style="font-size: 45px; margin:0.2em">
+            mdi-pause
+          </v-icon>
+          <span class="eng stickypink" :class="{ note: notemode }" style="font-size: 2em;"
+            >PAUSE &amp; practice</span
+          >
+        </v-btn>
+        <v-btn v-if="!pauseFlag" @click="playVideo" class="stickypink" icon>
           <v-icon style="font-size: 45px; margin:0.2em">
             mdi-replay
           </v-icon>
@@ -89,22 +106,7 @@
             >REPLAY</span
           >
         </v-btn>
-        <v-btn @click="playAdvanced" class="stickypink" icon>
-          <v-icon style="font-size: 45px; margin:0.2em">
-            mdi-play
-          </v-icon>
-          <span class="eng stickypink" :class="{ note: notemode }" style="font-size: 2em;"
-            >PLAY</span
-          >
-        </v-btn>
-        <v-btn @click="stopAdvanced" class="stickypink" icon>
-          <v-icon style="font-size: 45px; margin:0.2em">
-            mdi-pause
-          </v-icon>
-          <span class="eng stickypink" :class="{ note: notemode }" style="font-size: 2em;"
-            >PAUSE</span
-          >
-        </v-btn>
+        <span v-else></span>
       </div>
       <div
         class="myTitle d-flex justify-space-around my-5 mx-5"
