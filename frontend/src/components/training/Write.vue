@@ -1,14 +1,5 @@
 <template>
   <v-row :style="{ marginTop: path === '/write' ? '100px' : '0px' }" @click="closeOverlay">
-    <!-- <v-overlay :z-index="zIndex" :value="overlay" class="overlay">
-      <p class="eng" style="padding-left: 25%; font-size: calc(1.5vw + 10px);">
-        1. Click Play Button <br />
-        2. Drag word into Answer Box <br />
-        3. Hint will help you :) <br />
-        4. Click '>' Button If you want the next sentence <br />
-      </p>
-      <img src="@/assets/tutorialwrite1.gif" class="gif-write" />
-    </v-overlay> -->
     <v-col class="youtubeContainer" cols="12" lg="8">
       <div class="d-flex justify-center youtube pa-5">
         <youtube
@@ -32,43 +23,9 @@
           </div>
 
           <div class="ma-auto mt-15">
-            <!-- <img src="@/assets/dragtuto-slow.gif" style="width:67%">
-             -->
             <img v-if="path === '/write'" src="@/assets/dragtuto4.gif" style="width:90%" />
             <img v-else src="@/assets/dragtuto3.gif" style="width:67%" />
-
-            <!-- IF YOU WANT TO -->
           </div>
-
-          <!-- <div class="d-flex justify-space-around">
-            <div v-show="path === '/write'">
-              <div>GO BACK</div>
-              <v-icon
-                class="stickypink"
-                style="font-size: calc(1vw + 20px); line-height:calc(1vw + 20px);"
-              >
-                mdi-hand-pointing-down
-              </v-icon>
-            </div>
-            <div>
-              <div>TRY AGAIN</div>
-              <v-icon
-                class="stickypink"
-                style="font-size: calc(1vw + 20px); line-height:calc(1vw + 20px);"
-              >
-                mdi-hand-pointing-down
-              </v-icon>
-            </div>
-            <div v-show="path === '/write'">
-              <div>GO NEXT</div>
-              <v-icon
-                class="stickypink"
-                style="font-size: calc(1vw + 20px); line-height:calc(1vw + 20px);"
-              >
-                mdi-hand-pointing-down
-              </v-icon>
-            </div>
-          </div> -->
         </div>
       </div>
       <div class="d-flex justify-space-around mt-5">
@@ -79,9 +36,6 @@
         </v-btn>
         <span v-else></span>
         <v-btn v-if="!pause" @click="playVideo" color="rgb(73, 178, 134)" icon>
-          <!-- <v-icon v-show="!screen" style="font-size: 45px; margin:0.2em">
-            mdi-play
-          </v-icon> -->
           <img v-show="!screen" src="@/assets/play-green.gif" style="width:70px;margin:0.2em;" />
 
           <v-icon v-show="screen" style="font-size: 45px; margin:0.2em">
@@ -166,11 +120,6 @@
             </div>
           </draggable>
         </v-col>
-        <!-- <v-col cols="12" class="ma-15">
-          <v-btn icon class="question-btn" @click="question" v-show="!noteoverlay">
-            <h5 class="eng" style="color:rgb(255, 127, 0)">HELP</h5>
-          </v-btn>
-        </v-col> -->
       </v-row>
     </v-col>
   </v-row>
@@ -486,7 +435,6 @@ $stickypink: rgb(233, 103, 131);
 }
 .writeTitle {
   color: white;
-  /* display: flex; */
   align-content: center;
   justify-items: center;
   font-size: 3em;
@@ -567,14 +515,7 @@ $stickypink: rgb(233, 103, 131);
   height: 100%;
   width: 100%;
 }
-// .hoverTitle {
-//   color: steelblue;
-//   font-size: 25px;
-//   position: absolute;
-//   text-align: center;
-//   width: 100%;
-//   bottom: 0;
-// }
+
 .question-btn {
   position: absolute;
   bottom: 8px;
@@ -582,7 +523,6 @@ $stickypink: rgb(233, 103, 131);
 }
 .arrow {
   height: 100px;
-  // display: block;
   margin-left: auto;
   margin-right: auto;
 }

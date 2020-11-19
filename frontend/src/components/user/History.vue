@@ -11,14 +11,14 @@
     </v-layout>
     <h1 class="eng mt-10">Last-watched Videos</h1>
     <div class="eng toggle-btn">
-            <form class="tabber">
-              <label for="t1">Speaking</label>
-              <input id="t1" type="radio" value="Speaking" v-model="choice" />
-              <label for="t2">Writing</label>
-              <input id="t2" type="radio" value="Dictation" v-model="choice" />
-              <div class="blob"></div>
-            </form>
-          </div>
+      <form class="tabber">
+        <label for="t1">Speaking</label>
+        <input id="t1" type="radio" value="Speaking" v-model="choice" />
+        <label for="t2">Writing</label>
+        <input id="t2" type="radio" value="Dictation" v-model="choice" />
+        <div class="blob"></div>
+      </form>
+    </div>
     <div class="upcoming-contents ma-5">
       <VueSlickCarousel v-bind="settings" v-if="items.length">
         <figure v-for="(item, index) in items" :key="index">
@@ -54,14 +54,11 @@ export default {
       infos: [],
       tmp: channelList,
       settings: {
-        // lazyload: 'ondemand',
-        // fade: true,
         arrows: true,
         infinite: true,
         speed: 3000,
         slidesToShow: 3,
         slidesToScroll: 3,
-        // rows: 2,
         responsive: [
           {
             breakpoint: 1440,
@@ -121,13 +118,6 @@ export default {
       this.$router.push({ name: 'Talk', query: { index: String(index) } });
     },
     enter(id) {
-      // let j;
-      // for (let i = 0; i < this.tmp.length; i += 1) {
-      //   if (this.tmp[i].title === id) {
-      //     j = this.tmp[i];
-      //     break;
-      //   }
-      // }
       this.$router.push({ name: 'Artist', query: { groupid: String(id) } });
     },
   },
@@ -135,7 +125,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.temp{
+.temp {
   background-color: rgba(0, 0, 0, 0.89);
   padding: 1;
 }
@@ -152,7 +142,6 @@ export default {
 .tabber {
   color: white;
   width: 500px;
-  // height: 80%;
   position: relative;
   display: flex;
   align-items: center;
@@ -167,7 +156,6 @@ export default {
     transform: translateZ(0.5px);
     z-index: 1;
     transition: transform 90ms ease-in-out, filter 90ms ease-in-out;
-    // filter: blur(.25rem);
     &:hover {
       transform: scale(1.15);
       filter: blur(0px);

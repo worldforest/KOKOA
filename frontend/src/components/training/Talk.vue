@@ -1,15 +1,5 @@
 <template>
   <v-row :style="{ marginTop: path === '/talk' ? '100px' : '0px' }" @click="closeOverlay">
-    <!-- <v-overlay :z-index="zIndex" :value="overlay" class="overlay">
-      <p class="eng" style="padding-left: 25%; font-size: calc(1.5vw + 10px);">
-        1. Click Play and Listen <br />
-        2. Click Mic Button and Speak <br />
-        3. If you finished, Click mic button again <br />
-        4. Check your pronunciation <br />
-      </p>
-      <img src="@/assets/tutorialspeak.gif" class="gif-write" />
-    </v-overlay> -->
-    <!-- left side -->
     <v-col class="youtubeContainer" cols="12" lg="8">
       <div class="d-flex justify-center youtube pa-5">
         <youtube
@@ -29,63 +19,25 @@
             opacity: screen === false ? 0 : 0.9
           }"
         >
-
-         <div class="mt-auto" style="font-size: calc(1vw + 40px);"
-         :style="{color:path !== '/talk' ? '#1C1C1C' : 'lightgoldenrodyellow'}">
+          <div
+            class="mt-auto"
+            style="font-size: calc(1vw + 40px);"
+            :style="{ color: path !== '/talk' ? '#1C1C1C' : 'lightgoldenrodyellow' }"
+          >
             | How to Use |
           </div>
 
           <div class="ma-auto mt-8">
             <img v-if="path === '/talk'" src="@/assets/screenspeak-sephia.gif" style="width:90%" />
             <img v-else src="@/assets/screenspeak-neg.gif" style="width:67%" />
-
           </div>
-
-          <!-- <div class="mt-auto" style="font-size: calc(1vw + 40px);
-          line-height:calc(1vw + 40px);">
-            IF YOU WANT TO
-          </div>
-          <div class="d-flex justify-space-around">
-            <div v-show="path === '/talk'">
-              <div>GO BACK</div>
-              <v-icon
-                class="stickypink"
-                style="font-size: calc(1vw + 20px); line-height:calc(1vw + 20px);"
-              >
-                mdi-hand-pointing-down
-              </v-icon>
-            </div>
-            <div>
-              <div>TRY AGAIN</div>
-              <v-icon
-                class="stickypink"
-                style="font-size: calc(1vw + 20px); line-height:calc(1vw + 20px);"
-              >
-                mdi-hand-pointing-down
-              </v-icon>
-            </div>
-            <div v-show="path === '/talk'">
-              <div>GO NEXT</div>
-              <v-icon
-                class="stickypink"
-                style="font-size: calc(1vw + 20px); line-height:calc(1vw + 20px);"
-              >
-                mdi-hand-pointing-down
-              </v-icon>
-            </div>
-          </div> -->
         </div>
       </div>
       <div style="float:right;">
-        <v-switch
-          v-model="autoMode"
-          label=""
-          color="orange"
-          v-show="!notemode"
-          class="custom-red"
-        ><template v-slot:label>
-          <span class="input__label">MODE</span>
-        </template>
+        <v-switch v-model="autoMode" label="" color="orange" v-show="!notemode" class="custom-red"
+          ><template v-slot:label>
+            <span class="input__label">MODE</span>
+          </template>
         </v-switch>
       </div>
       <div class="d-flex justify-space-around mt-5" v-if="!autoMode">
@@ -96,9 +48,6 @@
         </v-btn>
         <span v-else></span>
         <v-btn v-if="!pause" @click="playVideo" class="stickypink" icon>
-          <!-- <v-icon v-show="!screen" style="font-size: 45px; margin:0.2em">
-            mdi-play
-          </v-icon> -->
           <img v-show="!screen" src="@/assets/play-pink.gif" style="width:70px;margin:0.2em;" />
 
           <v-icon v-show="screen" style="font-size: 45px; margin:0.2em">
@@ -132,51 +81,30 @@
 
       <!-- 자동재생일때 버튼 -->
       <div class="d-flex justify-space-around mt-5" v-else-if="autoMode">
-        <!-- <v-btn v-if="this.current !== 0" @click="previous" icon>
-          <v-icon color="white" style="font-size: 40px;">
-            mdi-chevron-left
-          </v-icon>
-        </v-btn>
-        <span v-else></span> -->
         <v-btn @click="playVideo" class="stickypink" icon>
           <v-icon style="font-size: 45px; margin:0.2em">
             mdi-replay
           </v-icon>
-          <span
-            class="eng stickypink"
-            :class="{ note: notemode }"
-            style="font-size: 2em;"
+          <span class="eng stickypink" :class="{ note: notemode }" style="font-size: 2em;"
             >REPLAY</span
           >
         </v-btn>
-         <v-btn @click="playAdvanced" class="stickypink" icon>
+        <v-btn @click="playAdvanced" class="stickypink" icon>
           <v-icon style="font-size: 45px; margin:0.2em">
             mdi-play
           </v-icon>
-          <span
-            class="eng stickypink"
-            :class="{ note: notemode }"
-            style="font-size: 2em;"
+          <span class="eng stickypink" :class="{ note: notemode }" style="font-size: 2em;"
             >PLAY</span
           >
         </v-btn>
-          <v-btn @click="stopAdvanced" class="stickypink" icon>
+        <v-btn @click="stopAdvanced" class="stickypink" icon>
           <v-icon style="font-size: 45px; margin:0.2em">
             mdi-pause
           </v-icon>
-          <span
-            class="eng stickypink"
-            :class="{ note: notemode }"
-            style="font-size: 2em;"
+          <span class="eng stickypink" :class="{ note: notemode }" style="font-size: 2em;"
             >PAUSE</span
           >
         </v-btn>
-        <!-- <v-btn v-if="this.current !== this.video.length - 1" @click="next" icon>
-          <v-icon color="white" style="font-size: 40px;">
-            mdi-chevron-right
-          </v-icon>
-        </v-btn>
-        <span v-else></span> -->
       </div>
       <div
         class="myTitle d-flex justify-space-around my-5 mx-5"
@@ -202,9 +130,7 @@
             id="result"
             :class="{ note: notemode }"
             :style="{ 'border-color': notemode ? 'black' : 'white' }"
-          >
-            <!-- {{ speechText }} -->
-          </h2>
+          ></h2>
           <div v-if="path === '/talk'" class="d-flex justify-space-around">
             <v-btn
               class="mb-5 eng stickypink"
@@ -216,9 +142,6 @@
               <v-icon class="mr-3" large>mdi-clipboard-edit-outline</v-icon>
               Add to Note
             </v-btn>
-            <!-- <div class="speech-bubble">
-              Focus on the marked area<br />and try to pronounce it :)
-            </div> -->
           </div>
 
           <div class="py-5 dictionary" v-for="(item, index) in dict" :key="index">
@@ -232,11 +155,6 @@
           </div>
         </v-col>
       </v-row>
-      <!-- <v-col cols="12">
-        <v-btn icon class="question-btn" @click="question" v-show="!noteoverlay">
-          <h5 class="eng" style="color:rgb(255, 127, 0)">HELP</h5>
-        </v-btn>
-      </v-col> -->
     </v-col>
   </v-row>
 </template>
@@ -244,7 +162,6 @@
 import { mapActions } from 'vuex';
 import Record from './Record.vue';
 import http from '../../util/http-common';
-// import func from '../../../vue-temp/vue-editor-bridge';
 
 export default {
   name: 'Talk',
@@ -273,15 +190,6 @@ export default {
       this.answer = this.video[0].kor.replace(/[&/\\#,+\-()$~%.'":*?!<>{}]/g, ' ');
       this.answerEng = this.video[0].eng.replace(/[&/\\#,+\-()$~%.'":*?!<>{}]/g, ' ');
     }
-
-    // const start = this.timer(this.video[0].starttime);
-    // const end = this.timer(this.video[0].endtime);
-    // this.player.loadVideoById({
-    //   videoId: this.url,
-    //   startSeconds: start,
-    //   endSeconds: end,
-    //   suggestedQuality: 'default',
-    // });
   },
   computed: {
     player() {
@@ -482,8 +390,7 @@ export default {
         this.moveFlag = false;
         this.settimer = window.setTimeout(() => {
           this.current += 1;
-        }, this.timer(this.video[this.current].endtime) * 1000
-          - this.timer(this.video[this.current].starttime) * 1000);
+        }, this.timer(this.video[this.current].endtime) * 1000 - this.timer(this.video[this.current].starttime) * 1000);
       } else {
         this.getCurrentTime().then((res) => {
           start = res;
@@ -537,8 +444,6 @@ export default {
       this.playMode();
     },
     speechText() {
-      // const answerTrimTrim = this.answerTrim.replaceAll(' ', '');
-      // const speechTextTrim = this.speechText.replaceAll(' ', '');
       const answerTrimTrim = this.answerTrim.trim();
       const speechTextTrim = this.speechText;
       const pos = document.getElementById('result');
@@ -678,14 +583,10 @@ font {
   bottom: 8px;
   right: 5%;
 }
-.input__label{
+.input__label {
   color: white;
 }
 .custom-red .v-input--selection-controls__input div {
   color: red;
 }
-/* .v-input--switch__track {
-  color: white;
-  background-color: white;
-} */
 </style>

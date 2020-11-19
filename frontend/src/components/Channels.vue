@@ -152,7 +152,6 @@ export default {
     font-weight: bold;
     background-color: transparent;
     background-position: center;
-    // background-position-y: 20%;
     background-size: cover;
   }
 }
@@ -176,11 +175,8 @@ export default {
     box-shadow: 0 0 5px 5px rgb(245, 236, 218);
   }
 }
-.swiperImg{
+.swiperImg {
   opacity: 1;
-  // display: block;
-  // height: auto;
-  // transition: .5s ease;
   backface-visibility: hidden;
 }
 
@@ -193,27 +189,21 @@ export default {
   height: 100%;
   width: 100%;
   opacity: 0;
-  transition: .5s ease;
+  transition: 0.5s ease;
   // text-align: center;
   display: block;
 }
 
-.swiperImg:hover .middle{
+.swiperImg:hover .middle {
   background-color: rgba(0, 0, 0, 0.5);
   opacity: 1;
 }
 .hoverTitle {
   color: white;
-  font-size: 4.0vw;
+  font-size: 4vw;
   position: absolute;
   text-align: center;
-  width:100%;
+  width: 100%;
   bottom: 5%;
-  // top: 80%;
-  // left: 50%;
-  // -webkit-transform: translate(-50%, -50%);
-  // -ms-transform: translate(-50%, -50%);
-  // transform: translate(-50%, -50%);
-  // overflow: auto !important;
 }
 </style>

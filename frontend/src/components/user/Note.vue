@@ -47,7 +47,6 @@
                   :noteitem="item"
                   :noteoverlay="true"
                   style="background: lightgoldenrodyellow; z-index:2"
-
                 />
               </div>
             </v-list>
@@ -61,7 +60,6 @@
           </div>
           <!-- writing 문장 목록 -->
           <div v-else>
-            <!-- <h3 class="eng notecolor">[Writing]</h3> -->
             <v-list
               v-for="(item, index) in writenote"
               :key="index"
@@ -144,7 +142,6 @@ export default {
   async created() {
     this.email = this.$store.state.email;
     await this.getData();
-    // this.answer = this.video[0].kor.replace(/[&/\\#,+()$~%.'":*?!<>{}]/g, ' ');
   },
   watch: {
     currentSpeechPage() {
@@ -279,7 +276,6 @@ $topval: 440px;
 .bookmarks {
   position: absolute;
   height: 129px;
-  // height: 9vw;
   box-shadow: inset 0px 0px 2px 0px #888;
   cursor: pointer;
   writing-mode: vertical-lr;
@@ -329,17 +325,16 @@ button:focus {
 .check button {
   display: none;
   background-color: transparent !important;
-  // color: rgb(255, 127, 0) !important;
   color: red !important;
 }
 .check:hover button {
   display: inherit;
 }
 .box {
-    -ms-overflow-style: none; /* IE and Edge */
-    scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
 }
 .box::-webkit-scrollbar {
-    display: none; /* Chrome, Safari, Opera*/
+  display: none; /* Chrome, Safari, Opera*/
 }
 </style>

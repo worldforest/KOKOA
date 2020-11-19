@@ -1,6 +1,5 @@
 <template>
   <div>
-    <!-- <v-btn @click='$refs.fullpage.api.moveTo(1, 1)' class='top-button'>👆</v-btn> -->
     <full-page :options="options" id="fullpage" ref="fullpage">
       <div class="section s0">
         <h3>Learn Korean</h3>
