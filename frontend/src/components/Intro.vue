@@ -71,7 +71,15 @@ export default {
       await this.$gAuth
         .signIn()
         .then((data) => {
-          this.email = data.xt.du; // 이메일
+          let tmpemail = '';
+          if (typeof data.vt !== 'undefined') {
+            tmpemail = data.vt.bu;
+          } else if (typeof data.xt !== 'undefined') {
+            tmpemail = data.xt.du;
+          } else {
+            tmpemail = data.wt.cu;
+          }
+          this.email = tmpemail;
           this.$store.dispatch('login', this.email);
         })
         .catch((error) => {
