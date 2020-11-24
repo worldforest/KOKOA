@@ -1,6 +1,5 @@
 <template>
   <div>
-    <!-- <v-btn @click='$refs.fullpage.api.moveTo(1, 1)' class='top-button'>👆</v-btn> -->
     <full-page :options="options" id="fullpage" ref="fullpage">
       <div class="section s0">
         <h3>Learn Korean</h3>
@@ -72,7 +71,15 @@ export default {
       await this.$gAuth
         .signIn()
         .then((data) => {
-          this.email = data.vt.bu; // 이메일
+          let tmpemail = '';
+          if (typeof data.vt !== 'undefined') {
+            tmpemail = data.vt.bu;
+          } else if (typeof data.xt !== 'undefined') {
+            tmpemail = data.xt.du;
+          } else {
+            tmpemail = data.wt.cu;
+          }
+          this.email = tmpemail;
           this.$store.dispatch('login', this.email);
         })
         .catch((error) => {

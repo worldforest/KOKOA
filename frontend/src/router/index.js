@@ -105,5 +105,11 @@ const router = new VueRouter({
   base: process.env.BASE_URL,
   routes,
 });
-
+router.beforeEach((to, from, next) => {
+  const QUICKMENU = document.querySelector('.quick-menu');
+  if (QUICKMENU !== null) {
+    QUICKMENU.classList.remove('active');
+  }
+  next(next);
+});
 export default router;

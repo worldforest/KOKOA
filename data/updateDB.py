@@ -29,8 +29,8 @@ def updatedata():
                 #     continue
                 # if row['id'] == "11":
                 #     break
-                sql = "UPDATE `video` SET `url` = (%s), `title` = (%s) WHERE `id` = (%s)"
-                answer = [row['url'], row['title'], row['id']]
+                sql = "UPDATE `video` SET `title` = (%s) WHERE `id` = (%s)"
+                answer = [row['title'], row['id']]
                 curs.execute(sql, answer)
                 conn.commit()
                 select_test(row['id'])
@@ -62,5 +62,5 @@ def insertdata():
 
 
 if __name__ == "__main__":
-    # updatedata()
-    insertdata()
+    updatedata()
+    # insertdata()

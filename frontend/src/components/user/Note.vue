@@ -1,55 +1,99 @@
 <template>
   <div class="container">
-    <div class="eng bookmarks bookmark-top" style="color: black;"
-    @click="type = 'Speaking';"
-      :class="{ expandbmk: type === 'Speaking', basic: type !== 'Speaking' }">Speaking</div>
-    <div class="eng bookmarks bookmark-bottom" style="color: black;"
-     @click="type = 'Writing';
-      "
-      :class="{ expandbmk: type === 'Writing', basic: type !== 'Writing' }">Writing</div>
+    <div
+      class="eng bookmarks bookmark-top"
+      style="color: black;"
+      @click="type = 'Speaking'"
+      :class="{ expandbmk: type === 'Speaking', basic: type !== 'Speaking' }"
+    >
+      Speaking
+    </div>
+    <div
+      class="eng bookmarks bookmark-bottom"
+      style="color: black;"
+      @click="type = 'Writing'"
+      :class="{ expandbmk: type === 'Writing', basic: type !== 'Writing' }"
+    >
+      Writing
+    </div>
     <div class="paper">
-      <h3 class="eng notecolor ml-15 mt-4">Review your sentences. - {{this.type}} Note</h3>
+      <h3 class="eng notecolor ml-15 mt-4">Review your sentences. - {{ this.type }} Note</h3>
       <div class="lines">
-        <div class="text">
+        <div class="text box">
           <br />
           <!-- 문장 목록 -->
           <div v-if="type === 'Speaking'">
-            <div v-for="(item, index) in speechnote" :key="index" style="">
-              <div
-                class="kor sentences"
-                @click="expanded === index ? (expanded = -'Writing') : setToTop(index)"
-                :id="'sentence' + index"
-              >
-                ({{ index + 1 }}) {{ item.content }}
+            <v-list
+              v-for="(item, index) in speechnote"
+              :key="index"
+              class="py-1"
+              style="background: transparent;"
+            >
+              <div class="check d-flex">
+                <v-btn @click="remove(item.id)" fab small depressed>
+                  <v-icon>mdi-close-circle-outline</v-icon>
+                </v-btn>
+                <div
+                  class="kor sentences"
+                  @click="expanded === index ? (expanded = -'Writing') : setToTop(index)"
+                  :id="'sentence' + index"
+                >
+                  ({{ index + 1 }}) {{ item.content }}
+                </div>
               </div>
               <div v-if="expanded === index">
                 <Talk
-                :notemode="true"
-                :noteitem="item"
-                :noteoverlay="true"
-                style="background: lightgoldenrodyellow; z-index:2" />
+                  :notemode="true"
+                  :noteitem="item"
+                  :noteoverlay="true"
+                  style="background: lightgoldenrodyellow; z-index:2"
+                />
               </div>
-            </div>
+            </v-list>
+            <v-pagination
+              color="none"
+              v-model="currentSpeechPage"
+              :length="speechTotalPage"
+              :total-visible="7"
+            >
+            </v-pagination>
           </div>
           <!-- writing 문장 목록 -->
           <div v-else>
-            <!-- <h3 class="eng notecolor">[Writing]</h3> -->
-            <div v-for="(item, index) in writenote" :key="index" style="">
-              <div
-                class="kor sentences"
-                @click="expanded === index ? (expanded = -1) : setToTop(index)"
-                :id="'sentence' + index"
-              >
-                ({{ index + 1 }}) {{ item.content }}
+            <v-list
+              v-for="(item, index) in writenote"
+              :key="index"
+              class="py-1"
+              style="background: transparent;"
+            >
+              <div class="check d-flex">
+                <v-btn @click="remove(item.id)" fab small depressed>
+                  <v-icon>mdi-close-circle-outline</v-icon>
+                </v-btn>
+                <div
+                  class="kor sentences"
+                  @click="expanded === index ? (expanded = -1) : setToTop(index)"
+                  :id="'sentence' + index"
+                >
+                  ({{ index + 1 }}) {{ item.content }}
+                </div>
               </div>
               <div v-if="expanded === index">
                 <Write
-                :notemode="true"
-                :noteitem="item"
-                :noteoverlay="true"
-                style="background: lightgoldenrodyellow; z-index:2" />
+                  :notemode="true"
+                  :noteitem="item"
+                  :noteoverlay="true"
+                  style="background: lightgoldenrodyellow; z-index:2"
+                />
               </div>
-            </div>
+            </v-list>
+            <v-pagination
+              color="none"
+              v-model="currentWritePage"
+              :length="writeTotalPage"
+              :total-visible="7"
+            >
+            </v-pagination>
           </div>
         </div>
       </div>
@@ -79,11 +123,30 @@ export default {
     writenote: [],
     expanded: -1,
     type: 'Speaking',
+    speechTotalPage: 1,
+    currentSpeechPage: 1,
+    writeTotalPage: 1,
+    currentWritePage: 1,
+    hover: false,
+    removeTry: {
+      icon: 'error',
+      title: '<span style="color:white">Oops...</span>',
+      html: '<span style="color:white">Do you want to remove?</span>',
+      showDenyButton: true,
+      confirmButtonText: 'YES',
+      denyButtonText: 'NO',
+      background: '#1C1C1C',
+      backdrop: 'rgba(0,0,0,0.89)',
+    },
   }),
   async created() {
     this.email = this.$store.state.email;
     await this.getData();
-    // this.answer = this.video[0].kor.replace(/[&/\\#,+()$~%.'":*?!<>{}]/g, ' ');
+  },
+  watch: {
+    currentSpeechPage() {
+      this.getData();
+    },
   },
   methods: {
     setToTop(index) {
@@ -91,36 +154,53 @@ export default {
       elmnt.scrollIntoView(true);
       this.expanded = index;
     },
+    async remove(noteid) {
+      let type = 1;
+      if (this.type === 'Speaking') {
+        type = 0;
+      }
+      const tmp = await this.$swal.fire(this.removeTry);
+      if (tmp.isConfirmed) {
+        await http
+          .delete('/note/delete/', { params: { email: this.email, noteid, type } })
+          .then(() => {});
+        await this.getData();
+      }
+    },
     async getData() {
       this.speechnote = [];
       this.writenote = [];
-      await http.get('/note/load/', { params: { email: this.email } }).then((res) => {
-        for (let i = 0; i < res.data.speechnote[0].length; i += 1) {
-          this.speechnote.push({
-            id: res.data.speechnote[0][i].id,
-            subtitleid: res.data.speechnote[0][i].subtitleid,
-            engsubtitleid: res.data.speechnote[0][i].engsubtitleid,
-            videoid: res.data.speechnote[0][i].videoid,
-            content: res.data.speechnote_sub[0][2 * i].content,
-            engcontent: res.data.speechnote_sub[0][2 * i + 1].content,
-            starttime: res.data.speechnote_sub[0][2 * i].starttime,
-            endtime: res.data.speechnote_sub[0][2 * i].endtime,
-          });
-        }
+      await http
+        .get('/note/load/', { params: { email: this.email, page: this.currentSpeechPage - 1 } })
+        .then((res) => {
+          this.speechTotalPage = res.data.speechnote[0].totalPages;
+          for (let i = 0; i < res.data.speechnote[0].content.length; i += 1) {
+            this.speechnote.push({
+              id: res.data.speechnote[0].content[i].id,
+              subtitleid: res.data.speechnote[0].content[i].subtitleid,
+              engsubtitleid: res.data.speechnote[0].content[i].engsubtitleid,
+              videoid: res.data.speechnote[0].content[i].videoid,
+              content: res.data.speechnote_sub[0][2 * i].content,
+              engcontent: res.data.speechnote_sub[0][2 * i + 1].content,
+              starttime: res.data.speechnote_sub[0][2 * i].starttime,
+              endtime: res.data.speechnote_sub[0][2 * i].endtime,
+            });
+          }
 
-        for (let i = 0; i < res.data.writenote[0].length; i += 1) {
-          this.writenote.push({
-            id: res.data.writenote[0][i].id,
-            subtitleid: res.data.writenote[0][i].subtitleid,
-            engsubtitleid: res.data.writenote[0][i].engsubtitleid,
-            videoid: res.data.writenote[0][i].videoid,
-            content: res.data.writenote_sub[0][2 * i].content,
-            engcontent: res.data.writenote_sub[0][2 * i + 1].content,
-            starttime: res.data.writenote_sub[0][2 * i].starttime,
-            endtime: res.data.writenote_sub[0][2 * i].endtime,
-          });
-        }
-      });
+          this.writeTotalPage = res.data.writenote[0].totalPages;
+          for (let i = 0; i < res.data.writenote[0].content.length; i += 1) {
+            this.writenote.push({
+              id: res.data.writenote[0].content[i].id,
+              subtitleid: res.data.writenote[0].content[i].subtitleid,
+              engsubtitleid: res.data.writenote[0].content[i].engsubtitleid,
+              videoid: res.data.writenote[0].content[i].videoid,
+              content: res.data.writenote_sub[0][2 * i].content,
+              engcontent: res.data.writenote_sub[0][2 * i + 1].content,
+              starttime: res.data.writenote_sub[0][2 * i].starttime,
+              endtime: res.data.writenote_sub[0][2 * i].endtime,
+            });
+          }
+        });
     },
   },
 };
@@ -196,7 +276,6 @@ $topval: 440px;
 .bookmarks {
   position: absolute;
   height: 129px;
-  // height: 9vw;
   box-shadow: inset 0px 0px 2px 0px #888;
   cursor: pointer;
   writing-mode: vertical-lr;
@@ -215,7 +294,7 @@ $topval: 440px;
   width: 7vw;
   left: 1%;
   font-size: 1.75vw;
-  padding-left: .7vw;
+  padding-left: 0.7vw;
 }
 .basic {
   width: 3vw;
@@ -225,5 +304,37 @@ $topval: 440px;
 }
 .notecolor {
   color: black;
+}
+.v-pagination * {
+  background-color: transparent !important;
+  color: black !important;
+  box-shadow: none !important;
+  font-family: "Merriweather", serif;
+  font-size: 30px !important;
+}
+.v-pagination__item--active .primary {
+  background-color: transparent !important;
+}
+.v-pagination__item--active {
+  color: rgb(255, 127, 0) !important;
+  background-color: transparent !important;
+}
+button:focus {
+  outline: 0;
+}
+.check button {
+  display: none;
+  background-color: transparent !important;
+  color: red !important;
+}
+.check:hover button {
+  display: inherit;
+}
+.box {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+.box::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera*/
 }
 </style>

@@ -1,15 +1,5 @@
 <template>
-  <v-row style="margin-top: 100px;" @click="closeOverlay">
-    <v-overlay :z-index="zIndex" :value="overlay" class="overlay">
-      <p class="eng" style="padding-left: 25%; font-size: calc(1.5vw + 10px);">
-        1. Click Play and Listen <br />
-        2. Click Mic Button and Speak <br />
-        3. If you finished, Click mic button again <br />
-        4. Check your pronunciation <br />
-      </p>
-      <img src="@/assets/tutorialspeak.gif" class="gif-write" />
-    </v-overlay>
-    <!-- left side -->
+  <v-row :style="{ marginTop: path === '/talk' ? '100px' : '0px' }" @click="closeOverlay">
     <v-col class="youtubeContainer" cols="12" lg="8">
       <div class="d-flex justify-center youtube pa-5">
         <youtube
@@ -23,57 +13,45 @@
           height="550"
         ></youtube>
         <div
-          class="middle d-flex flex-column justify-space-around eng stickypink"
+          class="middle d-flex flex-column justify-space-around eng"
           :style="{
             backgroundColor: path === '/talk' ? '#1C1C1C' : 'lightgoldenrodyellow',
-            opacity: screen === false ? 0 : 1.0
+            opacity: screen === false ? 0 : 0.9
           }"
         >
-          <div class="mt-auto" style="font-size: calc(1vw + 40px); line-height:calc(1vw + 40px);">
-            IF YOU WANT TO
+          <div
+            class="mt-auto"
+            style="font-size: calc(1vw + 40px);"
+            :style="{ color: path !== '/talk' ? '#1C1C1C' : 'lightgoldenrodyellow' }"
+          >
+            | How to Use |
           </div>
-          <div class="d-flex justify-space-around">
-            <div v-show="path === '/talk'">
-              <div>GO BACK</div>
-              <v-icon
-                class="stickypink"
-                style="font-size: calc(1vw + 20px); line-height:calc(1vw + 20px);"
-              >
-                mdi-hand-pointing-down
-              </v-icon>
-            </div>
-            <div>
-              <div>TRY AGAIN</div>
-              <v-icon
-                class="stickypink"
-                style="font-size: calc(1vw + 20px); line-height:calc(1vw + 20px);"
-              >
-                mdi-hand-pointing-down
-              </v-icon>
-            </div>
-            <div v-show="path === '/talk'">
-              <div>GO NEXT</div>
-              <v-icon
-                class="stickypink"
-                style="font-size: calc(1vw + 20px); line-height:calc(1vw + 20px);"
-              >
-                mdi-hand-pointing-down
-              </v-icon>
-            </div>
+
+          <div class="ma-auto mt-8">
+            <img v-if="path === '/talk'" src="@/assets/screenspeak-sephia.gif" style="width:90%" />
+            <img v-else src="@/assets/screenspeak-neg.gif" style="width:67%" />
           </div>
         </div>
       </div>
-      <div class="d-flex justify-space-around mt-5">
+      <div style="float:right;">
+        <v-switch v-model="autoMode"  dark
+        label="mode" color="orange" v-show="!notemode" class="custom-red"
+          ><template v-slot:label>
+            <span v-if="autoMode" class="input__label">advanced</span>
+            <span v-else class="input__label">basic</span>
+          </template>
+        </v-switch>
+      </div>
+      <div class="d-flex justify-space-around mt-5" v-if="!autoMode">
         <v-btn v-if="this.current !== 0" @click="previous" icon>
-          <v-icon color="white" style="font-size: 40px;">
-            mdi-chevron-left
+          <v-icon color="white" style="font-size: 35px;">
+            fas fa-backward
           </v-icon>
         </v-btn>
         <span v-else></span>
-        <v-btn @click="playVideo" class="stickypink" icon>
-          <v-icon v-show="!screen" style="font-size: 45px; margin:0.2em">
-            mdi-play
-          </v-icon>
+        <v-btn v-if="!pause" @click="playVideo" class="stickypink" icon>
+          <img v-show="!screen" src="@/assets/play-pink.gif" style="width:70px;margin:0.2em;" />
+
           <v-icon v-show="screen" style="font-size: 45px; margin:0.2em">
             mdi-replay
           </v-icon>
@@ -92,17 +70,54 @@
             >REPLAY</span
           >
         </v-btn>
+        <v-btn v-else icon @click="pauseVideo">
+          <v-icon class="stickypink" style="font-size:45px;">far fa-stop-circle</v-icon>
+        </v-btn>
         <v-btn v-if="this.current !== this.video.length - 1" @click="next" icon>
-          <v-icon color="white" style="font-size: 40px;">
-            mdi-chevron-right
+          <v-icon color="white" style="font-size: 35px;">
+            fas fa-forward
           </v-icon>
         </v-btn>
         <span v-else></span>
       </div>
-      <div class="myTitle d-flex justify-space-around my-5" :class="{ note: notemode }">
+
+      <!-- 자동재생일때 버튼 -->
+      <div class="d-flex justify-space-around mt-5" v-else-if="autoMode">
+        <span></span>
+        <v-btn v-if="!pauseFlag" @click="playAdvanced" class="stickypink" icon>
+          <img src="@/assets/play-pink.gif" style="width:70px;margin:0.2em;" />
+
+          <span class="eng stickypink" :class="{ note: notemode }" style="font-size: 2em;"
+            >PLAY</span
+          >
+        </v-btn>
+
+        <v-btn v-else @click="stopAdvanced" class="stickypink" icon>
+          <v-icon style="font-size: 45px; margin:0.2em">
+            mdi-pause
+          </v-icon>
+          <span class="eng stickypink" :class="{ note: notemode }" style="font-size: 2em;"
+            >PAUSE &amp; practice</span
+          >
+        </v-btn>
+        <v-btn v-if="!pauseFlag" @click="playVideo" class="stickypink" icon>
+          <v-icon style="font-size: 45px; margin:0.2em">
+            mdi-replay
+          </v-icon>
+          <span class="eng stickypink" :class="{ note: notemode }" style="font-size: 2em;"
+            >REPLAY</span
+          >
+        </v-btn>
+        <span v-else></span>
+      </div>
+      <div
+        class="myTitle d-flex justify-space-around my-5 mx-5"
+        :class="{ note: notemode }"
+        style="font-size:2em"
+      >
         {{ answer }}
       </div>
-      <div class="myTitle d-flex justify-space-around my-5" :class="{ note: notemode }">
+      <div class="myTitle d-flex justify-space-around my-5 mx-5" :class="{ note: notemode }">
         {{ answerEng }}
       </div>
     </v-col>
@@ -119,9 +134,7 @@
             id="result"
             :class="{ note: notemode }"
             :style="{ 'border-color': notemode ? 'black' : 'white' }"
-          >
-            <!-- {{ speechText }} -->
-          </h2>
+          ></h2>
           <div v-if="path === '/talk'" class="d-flex justify-space-around">
             <v-btn
               class="mb-5 eng stickypink"
@@ -133,9 +146,6 @@
               <v-icon class="mr-3" large>mdi-clipboard-edit-outline</v-icon>
               Add to Note
             </v-btn>
-            <!-- <div class="speech-bubble">
-              Focus on the marked area<br />and try to pronounce it :)
-            </div> -->
           </div>
 
           <div class="py-5 dictionary" v-for="(item, index) in dict" :key="index">
@@ -150,11 +160,6 @@
         </v-col>
       </v-row>
     </v-col>
-    <v-btn icon class="question-btn" @click="question" v-show="!noteoverlay">
-      <v-icon class="mr-2" color="rgb(233, 103, 131)" style="font-size:55px;"
-        >fas fa-question</v-icon
-      >
-    </v-btn>
   </v-row>
 </template>
 <script>
@@ -189,15 +194,6 @@ export default {
       this.answer = this.video[0].kor.replace(/[&/\\#,+\-()$~%.'":*?!<>{}]/g, ' ');
       this.answerEng = this.video[0].eng.replace(/[&/\\#,+\-()$~%.'":*?!<>{}]/g, ' ');
     }
-
-    // const start = this.timer(this.video[0].starttime);
-    // const end = this.timer(this.video[0].endtime);
-    // this.player.loadVideoById({
-    //   videoId: this.url,
-    //   startSeconds: start,
-    //   endSeconds: end,
-    //   suggestedQuality: 'default',
-    // });
   },
   computed: {
     player() {
@@ -206,6 +202,7 @@ export default {
   },
   data() {
     return {
+      pause: false,
       path: this.$route.path,
       screen: false,
       id: this.$route.query.index,
@@ -231,6 +228,13 @@ export default {
       overlay: this.$store.state.overlayTalk,
       zIndex: 10,
       flag: false,
+      settimer: '',
+      starttimer: '',
+      autoMode: false,
+      startFlag: false,
+      retryFlag: false,
+      moveFlag: false,
+      pauseFlag: false,
     };
   },
   mounted() {
@@ -240,21 +244,40 @@ export default {
     ...mapActions(['overlayTalk']),
     playing() {
       this.screen = false;
+      this.pause = true;
     },
     ended() {
       this.screen = true;
+      this.pause = false;
+      this.playCheck();
     },
     play() {
       const start = this.timer(this.video[this.current].starttime);
       const end = this.timer(this.video[this.current].endtime);
+
       this.player.loadVideoById({
         videoId: this.url,
         startSeconds: start,
         endSeconds: end,
         suggestedQuality: 'default',
       });
+      this.retryFlag = true;
+      window.clearTimeout(this.settimer);
+    },
+    playCheck() {
+      const end = this.timer(this.video[this.current].endtime);
+      this.player.loadVideoById({
+        videoId: this.url,
+        startSeconds: end,
+        suggestedQuality: 'default',
+      });
+      setTimeout(() => {
+        this.player.pauseVideo();
+      }, 500);
     },
     playVideo() {
+      this.screen = false;
+      this.pauseFlag = false;
       this.play();
     },
     timer(input) {
@@ -269,11 +292,19 @@ export default {
     },
     previous() {
       if (this.current > 0) {
+        if (this.autoMode) {
+          this.retryFlag = true;
+          this.moveFlag = true;
+        }
         this.current -= 1;
       }
     },
     next() {
       if (this.current < this.video.length - 1) {
+        if (this.autoMode) {
+          this.retryFlag = true;
+          this.moveFlag = true;
+        }
         this.current += 1;
       }
     },
@@ -343,6 +374,70 @@ export default {
     question() {
       this.flag = true;
     },
+    async getCurrentTime() {
+      return this.$refs.youtube.player.getCurrentTime();
+    },
+    subAdvanced() {
+      if (this.moveFlag) return;
+      this.getCurrentTime().then((res) => {
+        this.settimer = window.setTimeout(() => {
+          this.current += 1;
+        }, this.timer(this.video[this.current].endtime) * 1000 - res * 1000);
+      });
+    },
+    playAdvanced() {
+      if (this.pauseFlag) return;
+      let start = 0.001;
+      if (this.retryFlag || this.moveFlag) {
+        this.resumeAdvanced(this.retryFlag);
+        this.retryFlag = false;
+        this.moveFlag = false;
+        this.settimer = window.setTimeout(() => {
+          this.current += 1;
+        }, this.timer(this.video[this.current].endtime) * 1000
+        - this.timer(this.video[this.current].starttime) * 1000);
+      } else {
+        this.getCurrentTime().then((res) => {
+          start = res;
+          this.resumeAdvanced(this.retryFlag);
+          this.retryFlag = false;
+          this.settimer = window.setTimeout(() => {
+            this.current += 1;
+          }, this.timer(this.video[this.current].endtime) * 1000 - start * 1000);
+        });
+      }
+      this.startFlag = true;
+      this.pauseFlag = true;
+    },
+    stopAdvanced() {
+      window.clearTimeout(this.settimer);
+      this.$refs.youtube.player.pauseVideo();
+      this.pauseFlag = false;
+    },
+    resumeAdvanced(retryFlag) {
+      if (retryFlag) {
+        this.player.loadVideoById({
+          videoId: this.url,
+          startSeconds: this.timer(this.video[this.current].starttime),
+          endSeconds: this.timer(this.video[this.video.length - 1].endtime),
+          suggestedQuality: 'default',
+        });
+      } else {
+        this.$refs.youtube.player.playVideo();
+      }
+    },
+    playMode() {
+      if (this.autoMode) {
+        if (this.moveFlag) this.playAdvanced();
+        else if (this.startFlag) this.subAdvanced();
+        else this.playAdvanced();
+      } else this.playVideo();
+    },
+    pauseVideo() {
+      this.player.pauseVideo();
+      this.pause = false;
+      this.screen = true;
+    },
   },
   watch: {
     current() {
@@ -350,11 +445,12 @@ export default {
       this.dict = '';
       this.answer = this.video[this.current].kor.replace(/[&/\\#,+\-()$~%.'":*?!<>{}]/g, ' ');
       this.answerEng = this.video[this.current].eng.replace(/[&/\\#,+\-()$~%.'":*?!<>{}]/g, ' ');
-      this.play();
+      this.screen = false;
+      this.playMode();
     },
     speechText() {
-      const answerTrimTrim = this.answerTrim.replaceAll(' ', '');
-      const speechTextTrim = this.speechText.replaceAll(' ', '');
+      const answerTrimTrim = this.answerTrim.trim();
+      const speechTextTrim = this.speechText;
       const pos = document.getElementById('result');
       pos.innerHTML = '';
       let text;
@@ -365,14 +461,18 @@ export default {
         if (speechTextTrim.length > i) {
           if (speechTextTrim.charAt(i) === answerTrimTrim.charAt(i)) {
             text = document.createTextNode(speechTextTrim.charAt(i));
-            container.style.color = 'blue';
+            if (this.notemode) {
+              container.style.color = 'black';
+            } else {
+              container.style.color = 'white';
+            }
           } else {
             text = document.createTextNode(speechTextTrim.charAt(i));
-            container.style.color = 'red';
+            container.style.color = 'rgb(255, 127, 0)';
           }
         } else {
           text = document.createTextNode(speechTextTrim.charAt(i));
-          container.style.color = 'red';
+          container.style.color = 'rgb(255, 127, 0)';
           container.appendChild(text);
           pos.appendChild(container);
           break;
@@ -384,7 +484,7 @@ export default {
       for (i = 0; i < left.length; i += 1) {
         container = document.createElement('font');
         text = document.createTextNode(left.charAt(i));
-        container.style.color = 'red';
+        container.style.color = 'rgb(255, 127, 0)';
         container.appendChild(text);
         pos.appendChild(container);
       }
@@ -487,5 +587,12 @@ font {
   position: absolute;
   bottom: 8px;
   right: 5%;
+}
+.input__label {
+  margin-top: 7px;
+  color: white;
+}
+.custom-red .v-input--selection-controls__input div {
+  color: red;
 }
 </style>
